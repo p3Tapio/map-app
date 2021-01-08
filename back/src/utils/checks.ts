@@ -13,7 +13,7 @@ const parseInputString = (input: any): string => {
   return input;
 };
 
-const toNewUser = (object: any): NewUser => {
+const checkUserValues = (object: any): NewUser => {
   const newUser: NewUser = {
     username: parseInputString(object.username),
     password: parseInputString(object.password),
@@ -21,4 +21,4 @@ const toNewUser = (object: any): NewUser => {
   return newUser;
 };
 
-export { toNewUser };
+export { checkUserValues };

@@ -4,7 +4,7 @@ import { IUser } from '../utils/types';
 
 const userSchema: Schema = new Schema({
   username: { type: String, required: true, unique: true, uniqueCaseInsensitive: true, minlength: 5 },
-  passwordHashed: { type: String, required: true }
+  password: { type: String, required: true }
 });
 
 userSchema.plugin(uniqueValidator);
