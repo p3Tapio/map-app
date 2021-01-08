@@ -1,0 +1,16 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #DDF5EE;
+}
+.navLink {
+  font-size: 95%;
+  text-decoration: 'none'; 
+  color: gray; 
+  margin-right: 10px;
+}
+.navLink:hover {
+  font-size: 100%;
+  text-decoration: none !important;
+  color: lightgray; 
+  margin-right: 8px;
+}
