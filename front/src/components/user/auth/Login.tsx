@@ -1,18 +1,24 @@
 /* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/await-thenable */
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../../state/reducers/user/userActions';
 import UserAuthForm from './UserAuthForm';
 import { LoginFormValues } from './userAuthTypes';
 
-const Login: React.FC = () => {
+interface LoginProps {
+  setLogged: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+}
+
+const Login: React.FC<LoginProps> = ({ setLogged }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const onSubmit = async (values: LoginFormValues): Promise<void> => {
     try {
-      const response = await dispatch(loginUser({ username: values.username, password: values.password }));
-      const loggedUser = JSON.parse(window.localStorage.getItem('loggedUser') as string);
-      console.log('response', response)
-      console.log('loggedUser', loggedUser);
+      await dispatch(loginUser({ username: values.username, password: values.password }));
+      setLogged(true);
+      history.push('/userpage');
     } catch (err) {
       console.log('err', err);
     }

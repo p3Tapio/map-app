@@ -2,12 +2,12 @@ import {
   UserDispatchTypes, LoggedUser, REGISTER, LOGIN,
 } from './userTypes';
 
-interface DefaultState {
+interface UserState {
   user?: LoggedUser;
 }
-const defaultState: DefaultState = {};
-// eslint-disable-next-line max-len
-const userReducer = (state: DefaultState = defaultState, action: UserDispatchTypes): DefaultState => {
+const userState: UserState = { user: undefined };
+
+const userReducer = (state: UserState = userState, action: UserDispatchTypes): UserState => {
   switch (action.type) {
     case REGISTER:
       return { user: action.payload };
