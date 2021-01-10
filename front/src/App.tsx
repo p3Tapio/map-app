@@ -6,7 +6,8 @@ import Container from 'react-bootstrap/Container';
 
 import Navigation from './components/nav/Navigation';
 import Home from './components/Home';
-import Register from './components/user/Register';
+import Register from './components/user/auth/Register';
+import Login from './components/user/auth/Login';
 
 const App: React.FC = () => (
   <>
@@ -17,6 +18,9 @@ const App: React.FC = () => (
       </Switch>
       <Switch>
         <Route exact path="/register" component={Register} />
+      </Switch>
+      <Switch>
+        <Route exact path="/login" component={Login} />
       </Switch>
     </Container>
   </>

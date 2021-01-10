@@ -3,7 +3,7 @@
     "browser": true,
     "es6": true
   },
-  "parser":  "@typescript-eslint/parser",
+  "parser": "@typescript-eslint/parser",
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -19,12 +19,27 @@
     "project": "./tsconfig.json"
   },
   "rules": {
-    "jsx-a11y/label-has-associated-control":0,
+    "jsx-a11y/label-has-associated-control": 0,
     "import/no-unresolved": 0,
-    "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "react/jsx-filename-extension": [
+      2,
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    ],
     "import/extensions": 0,
     "linebreak-style": 0,
     "react/jsx-props-no-spreading": 0,
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "import/prefer-default-export": 0,
+    "@typescript-eslint/indent": [
+      "error",
+      2
+    ]
   }
 }
