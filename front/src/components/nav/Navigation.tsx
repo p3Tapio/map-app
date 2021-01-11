@@ -4,13 +4,12 @@ import { Navbar, Nav } from 'react-bootstrap';
 
 interface NavProps {
   logged: boolean | undefined;
-  setLogged: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+  setLogged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Navigation: React.FC<NavProps> = ({ logged, setLogged }) => {
   const history = useHistory();
 
-  console.log('logged', logged)
   const handleLogout = (): void => {
     window.localStorage.clear();
     setLogged(false);

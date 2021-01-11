@@ -39,3 +39,18 @@ body {
   font-size: 14px;
   margin-bottom: 0;
 }
+.authFormInfo {
+  font-size: 12px;
+  color: darkgray;
+  margin-bottom: -2px;
+}
+.authFormLink {
+  font-size: 12px;
+  color: rgb(92, 92, 92);
+  margin-bottom: -2px;
+}
+.authFormLink:hover {
+  font-size: 12px;
+  color: rgb(59, 59, 59);
+  margin-bottom: -2px;
+}

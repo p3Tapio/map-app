@@ -12,11 +12,13 @@ import UserPage from './components/user/UserPage';
 
 import PrivateRoute from './components/PrivateRoute';
 import { getUser } from './state/localStore';
-// TODO poista localstore käyttö ?? https://github.com/rt2zz/redux-persist
+// TODO
+// errorit rekisteröinnissä ja loggauksessa
+// poista localstore käyttö ?? https://github.com/rt2zz/redux-persist
 // state.user.user ???
 
 const App: React.FC = () => {
-  const [logged, setLogged] = useState<boolean | undefined>(undefined);
+  const [logged, setLogged] = useState<boolean>(false);
   useEffect(() => { setLogged(!!getUser()); }, [logged]);
 
   return (

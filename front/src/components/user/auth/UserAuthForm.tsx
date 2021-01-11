@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 import ErrorMessage from './ErrorMessage';
 import { UserAuthFormProps } from './userAuthTypes';
+import { Link } from 'react-router-dom';
 
 const UserAuthForm: React.FC<UserAuthFormProps> = ({ onSubmit, headline }) => {
   const initialValues = { username: '', password: '', passwordconfirm: '' };
@@ -74,9 +75,20 @@ const UserAuthForm: React.FC<UserAuthFormProps> = ({ onSubmit, headline }) => {
                       <Col className="text-right">
                         <Button size="sm" variant="outline-secondary" type="reset">Reset</Button>
                         <Button size="sm" variant="outline-dark" type="submit" style={{ marginLeft: '5px' }}>Submit</Button>
+                        <br />
+                        {headline === 'Register'
+                          ? (
+                            <div style={{ marginTop: '15px' }}>
+                              <p className="authFormInfo">Already registered?</p>
+                              <p className="authFormInfo">Click here to <Link to="/login" className="authFormLink">login</Link></p>
+                            </div>)
+                          : (
+                            <div style={{ marginTop: '15px' }}>
+                              <p className="authFormInfo">Don't have an account?</p>
+                              <p className="authFormInfo">Click here to <Link to="/register" className="authFormLink">register</Link></p>
+                            </div>)}
                       </Col>
                     </Form>
-
                   )}
                 </Formik>
               </Card.Body>
