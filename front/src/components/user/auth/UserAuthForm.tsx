@@ -4,9 +4,9 @@ import * as Yup from 'yup';
 import {
   Form as BootstrapForm, Button, Col, Card, Container, Row,
 } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import ErrorMessage from './ErrorMessage';
 import { UserAuthFormProps } from './userAuthTypes';
-import { Link } from 'react-router-dom';
 
 const UserAuthForm: React.FC<UserAuthFormProps> = ({ onSubmit, headline }) => {
   const initialValues = { username: '', password: '', passwordconfirm: '' };
@@ -80,13 +80,21 @@ const UserAuthForm: React.FC<UserAuthFormProps> = ({ onSubmit, headline }) => {
                           ? (
                             <div style={{ marginTop: '15px' }}>
                               <p className="authFormInfo">Already registered?</p>
-                              <p className="authFormInfo">Click here to <Link to="/login" className="authFormLink">login</Link></p>
-                            </div>)
+                              <p className="authFormInfo">
+                                Click here to
+                                <Link to="/login" className="authFormLink">login</Link>
+                              </p>
+                            </div>
+                          )
                           : (
                             <div style={{ marginTop: '15px' }}>
-                              <p className="authFormInfo">Don't have an account?</p>
-                              <p className="authFormInfo">Click here to <Link to="/register" className="authFormLink">register</Link></p>
-                            </div>)}
+                              <p className="authFormInfo">Don&apos;t have an account?</p>
+                              <p className="authFormInfo">
+                                Click here to
+                                <Link to="/register" className="authFormLink">register</Link>
+                              </p>
+                            </div>
+                          )}
                       </Col>
                     </Form>
                   )}

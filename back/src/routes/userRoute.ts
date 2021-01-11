@@ -28,7 +28,7 @@ router.post('/register', (req: Request, res: Response) => {
     });
 
   } catch (err) {
-    res.status(400).send((err as Error).message);
+    res.status(400).json({ error: (err as Error).message });
   }
 });
 // TODO fix: 
@@ -45,7 +45,7 @@ router.post('/login', async (req: Request, res: Response) => {
     } else res.status(401).json({ error: 'wrong username or password' });
 
   } catch (err) {
-    res.status(400).send((err as Error).message);
+    res.status(400).json({ error: (err as Error).message });
   }
 });
 
