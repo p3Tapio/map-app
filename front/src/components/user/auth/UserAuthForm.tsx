@@ -73,8 +73,8 @@ const UserAuthForm: React.FC<UserAuthFormProps> = ({ onSubmit, headline }) => {
                       </div>
                       <hr style={{ marginTop: '25px' }} />
                       <Col className="text-right">
-                        <Button size="sm" variant="outline-secondary" type="reset">Reset</Button>
-                        <Button size="sm" variant="outline-dark" type="submit" style={{ marginLeft: '5px' }}>Submit</Button>
+                        <Button size="sm" variant="outline-secondary" id="reset" type="reset">Reset</Button>
+                        <Button size="sm" variant="outline-dark" id="submit" type="submit" style={{ marginLeft: '5px' }}>Submit</Button>
                         <br />
                         {headline === 'Register'
                           ? (
@@ -82,7 +82,7 @@ const UserAuthForm: React.FC<UserAuthFormProps> = ({ onSubmit, headline }) => {
                               <p className="authFormInfo">Already registered?</p>
                               <p className="authFormInfo">
                                 Click here to
-                                <Link to="/login" className="authFormLink">login</Link>
+                                <Link to="/login" className="authFormLink"> login</Link>
                               </p>
                             </div>
                           )
@@ -91,7 +91,7 @@ const UserAuthForm: React.FC<UserAuthFormProps> = ({ onSubmit, headline }) => {
                               <p className="authFormInfo">Don&apos;t have an account?</p>
                               <p className="authFormInfo">
                                 Click here to
-                                <Link to="/register" className="authFormLink">register</Link>
+                                <Link to="/register" className="authFormLink"> register</Link>
                               </p>
                             </div>
                           )}
