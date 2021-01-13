@@ -32,8 +32,9 @@ router.post('/register', (req: Request, res: Response) => {
   }
 });
 // TODO fix: 
+
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', async (req: Request, res: Response)  => {
   try {
     const body = checkUserValues(req.body);
     const user = await User.findOne({ username: body.username }) as IUser;
@@ -47,6 +48,7 @@ router.post('/login', async (req: Request, res: Response) => {
   } catch (err) {
     res.status(400).json({ error: (err as Error).message });
   }
+  
 });
 
 export default router; 

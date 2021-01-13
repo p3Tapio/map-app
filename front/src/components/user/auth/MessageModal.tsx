@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 
@@ -24,7 +24,7 @@ const MessageModal: React.FC<ModalProps> = ({
     if (info.header === 'Success') history.push('/userpage');
   };
   return (
-    <Modal show={show} size="sm">
+    <Modal show={show} size="sm" onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
           <h5>{info.header}</h5>

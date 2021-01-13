@@ -12,16 +12,16 @@ const UserAuthForm: React.FC<UserAuthFormProps> = ({ onSubmit, headline }) => {
   const initialValues = { username: '', password: '', passwordconfirm: '' };
 
   const reqistrationSchema = Yup.object({
-    username: Yup.string().max(20, 'Name must be 20 characters or less').min(5, 'Name must be 5 characters or more').required('Name is required'),
-    password: Yup.string().max(15, 'Password must be 15 charachters or less').min(5, 'Password must be at least 5 characters').required('Password required'),
+    username: Yup.string().max(20, 'Name must be 20 characters or less').min(5, 'Name must be 5 characters or more').required('Username is required'),
+    password: Yup.string().max(15, 'Password must be 15 charachters or less').min(5, 'Password must be at least 5 characters').required('Password is required'),
     passwordconfirm: Yup.string()
       .oneOf([Yup.ref('password')], 'Passwords do not match')
       .required('Password confirmation is required'),
   });
 
   const loginSchema = Yup.object({
-    username: Yup.string().required('Name is required'),
-    password: Yup.string().required('Password required'),
+    username: Yup.string().required('Username is required'),
+    password: Yup.string().required('Password is required'),
   });
 
   const validationSchema = headline === 'Register' ? reqistrationSchema : loginSchema;
@@ -45,23 +45,20 @@ const UserAuthForm: React.FC<UserAuthFormProps> = ({ onSubmit, headline }) => {
                       <div className="row align-items-center justify-content-center">
                         <div style={{ flexDirection: 'column' }}>
                           <BootstrapForm.Group>
-                            <BootstrapForm.Label className="formLabel">Username</BootstrapForm.Label>
-                            <br />
-                            <Field className="textInputField" id="username" name="username" type="text" />
+                            <BootstrapForm.Label htmlFor="username" className="formLabel">Username</BootstrapForm.Label>
+                            <Field className="form-control" id="username" name="username" type="text" />
                             <ErrorMessage touched={touched.username} error={errors.username} />
                           </BootstrapForm.Group>
                           <BootstrapForm.Group>
                             <BootstrapForm.Label className="formLabel">Password</BootstrapForm.Label>
-                            <br />
-                            <Field id="password" name="password" type="password" />
+                            <Field className="form-control" id="password" name="password" type="password" />
                             <ErrorMessage touched={touched.password} error={errors.password} />
                           </BootstrapForm.Group>
                           {headline === 'Register'
                             ? (
                               <BootstrapForm.Group>
-                                <BootstrapForm.Label className="formLabel">Password confirmation:</BootstrapForm.Label>
-                                <br />
-                                <Field id="passwordconfirm" name="passwordconfirm" type="password" />
+                                <BootstrapForm.Label className="formLabel">Password confirmation</BootstrapForm.Label>
+                                <Field className="form-control" id="passwordconfirm" name="passwordconfirm" type="password" />
                                 <ErrorMessage
                                   touched={touched.passwordconfirm}
                                   error={errors.passwordconfirm}
