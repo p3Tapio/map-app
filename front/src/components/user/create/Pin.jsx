@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import * as ELG from 'esri-leaflet-geocoder';
 import { Marker } from 'react-leaflet';
 
-// TODO reverseGeocodesta puuttuu tyypitykset :( 
+// TODO reverseGeocodesta puuttuu tyypitykset ?? :(
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const Pin = ({ pinPosition, setPinPosition, setAddress }) => {
   useEffect(() => {
     if (pinPosition[0] !== 0) {
@@ -16,6 +17,5 @@ const Pin = ({ pinPosition, setPinPosition, setAddress }) => {
     }
   }, [pinPosition, setPinPosition, setAddress]);
   return pinPosition && <Marker key={pinPosition[0]} position={pinPosition} interactive={false} />;
-
-}
-export default Pin
+};
+export default Pin;
