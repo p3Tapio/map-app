@@ -18,7 +18,7 @@ const Navigation: React.FC<NavProps> = ({ logged, setLogged }) => {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark">
+      <Navbar variant="dark" className="navBar">
         <Navbar.Brand>App</Navbar.Brand>
         <Nav className="mr-auto ml-2">
           <Link to="/" className="navLink">

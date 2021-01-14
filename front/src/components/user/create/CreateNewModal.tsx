@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import CreateNewForm from './CreateNewForm';
+import MapComponent from './MapComponent';
 
 import { NewEntry, CreateNewModalProps } from './NewEntryTypes';
 
@@ -23,6 +24,7 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <MapComponent />
         <CreateNewForm onSubmit={onSubmit} />
       </Modal.Body>
       <Modal.Footer>
@@ -30,7 +32,7 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({
         <Button variant="outline-dark" type="button" onClick={handleClose}>Save</Button>
       </Modal.Footer>
     </Modal>
-  )
+  );
 };
 
 export default CreateNewModal;

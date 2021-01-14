@@ -41,9 +41,10 @@ const CreateNewForm: React.FC<CreateNewFormProps> = ({ onSubmit }) => {
             <Col sm={9}>
               <Field as="select" className="form-control" id="category" name="category">
                 <option value="">Select category</option>
-                <option value="a">Aaaa</option>
-                <option value="b">Beee</option>
-                <option value="c">Cee</option>
+                <option value="sights">Sights</option>
+                <option value="foodDrink">Food &amp; Drink</option>
+                <option value="shopping">Shopping</option>
+                <option value="museumArt">Museums &amp; Art</option>
               </Field>
             </Col>
           </BootstrapForm.Group>

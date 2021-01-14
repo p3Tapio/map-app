@@ -25,7 +25,7 @@ const UserPage: React.FC = () => {
           !
         </h4>
         <p>
-          Below you can see locations that you have added to the map.
+          Below you can see the locations that you have added to the map.
           You can create a new one by clicking the create new button!
         </p>
         <Button onClick={handleCreateNewClick} size="sm" variant="outline-secondary">Create New</Button>
