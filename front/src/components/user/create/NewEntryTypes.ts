@@ -13,3 +13,9 @@ export interface NewEntry {
 export interface CreateNewFormProps {
   onSubmit: (values: NewEntry) => void;
 }
+export interface MapProps {
+  pinPosition: number[];
+  setPinPosition: React.Dispatch<React.SetStateAction<number[]>>;
+  address: string;
+  setAddress: React.Dispatch<React.SetStateAction<string>>;
+}

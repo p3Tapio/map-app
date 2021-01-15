@@ -3,7 +3,6 @@ import * as ELG from 'esri-leaflet-geocoder';
 import { Marker } from 'react-leaflet';
 
 // TODO reverseGeocodesta puuttuu tyypitykset ?? :(
-
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const Pin = ({ pinPosition, setPinPosition, setAddress }) => {
   useEffect(() => {

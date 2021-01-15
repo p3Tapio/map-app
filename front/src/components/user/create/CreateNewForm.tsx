@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 // import * as Yup from 'yup';
 import {
-  Form as BootstrapForm, Col, Container,
+  Form as BootstrapForm, Col, Container, Modal, Button,
 } from 'react-bootstrap';
 import { CreateNewFormProps } from './NewEntryTypes';
 
@@ -54,6 +54,10 @@ const CreateNewForm: React.FC<CreateNewFormProps> = ({ onSubmit }) => {
               <Field className="form-control" id="imagelink" name="imagelink" type="text" />
             </Col>
           </BootstrapForm.Group>
+          <Modal.Footer>
+            <Button variant="outline-secondary" type="reset">Reset</Button>
+            <Button variant="outline-dark" type="submit">Save</Button>
+          </Modal.Footer>
         </Form>
       </Formik>
     </Container>
