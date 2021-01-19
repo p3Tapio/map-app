@@ -21,7 +21,7 @@ router.post('/register', (req: Request, res: Response) => {
 
     user.save().then((result) => {
       const token = createToken(result.username, result.id);
-      res.json({ id: result.id, username: result.username, token: token });
+      res.json({ id: result.id as string, username: result.username, token: token });
     }).catch((e) => {
       const errMsg: string = (e as Error).message;
       res.status(400).json({ error: errMsg });
@@ -31,9 +31,7 @@ router.post('/register', (req: Request, res: Response) => {
     res.status(400).json({ error: (err as Error).message });
   }
 });
-// TODO fix: 
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.post('/login', async (req: Request, res: Response)  => {
   try {
     const body = checkUserValues(req.body);
@@ -41,14 +39,13 @@ router.post('/login', async (req: Request, res: Response)  => {
     const passCorrect: boolean = user === null ? false : await bcrypt.compare(body.password, user.password);
 
     if (passCorrect) {
-      const token = createToken(user.username, user._id);
-      res.json({ id: user.id, username: user.username, token: token });
+      const token = createToken(user.username, user._id.toString());
+      res.json({ id: user.id as string, username: user.username, token: token });
     } else res.status(401).json({ error: 'wrong username or password' });
 
   } catch (err) {
     res.status(400).json({ error: (err as Error).message });
   }
-  
 });
 
 export default router; 

@@ -20,13 +20,13 @@ interface Location {
   category: string;
   imageLink: string;
 }
-
 export interface CreateNewFormProps {
   location: Location;
   setLocation: React.Dispatch<React.SetStateAction<Location>>;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   address: string;
   setAddress: React.Dispatch<React.SetStateAction<string>>;
+  setPinPosition: React.Dispatch<React.SetStateAction<number[]>>;
 }
 export interface MapProps {
   pinPosition: number[];

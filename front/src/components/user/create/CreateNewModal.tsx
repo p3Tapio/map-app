@@ -74,6 +74,7 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({ setShow, show }) => {
           setLocation={setLocation}
           address={address}
           setAddress={setAddress}
+          setPinPosition={setPinPosition}
         />
       </Modal.Body>
     </Modal>

@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import { unknownEndpoint } from './utils/middleware';
 import testingRouter from './routes/testingRoute';
 import userRouter from './routes/userRoute';
+import locationRouter from './routes/locationRoute';
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,7 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true,
 
 app.use(express.json());
 app.use('/api/user', userRouter);
+app.use('/api/location', locationRouter);
 
 if (process.env.NODE_ENV === 'test') {
   app.use('/api/testing', testingRouter);
