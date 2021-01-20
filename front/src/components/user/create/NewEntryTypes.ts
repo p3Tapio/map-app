@@ -1,38 +1,32 @@
 import { FormEvent } from 'react';
+import { NewLocation } from '../../../state/reducers/location/locationTypes';
 
+export interface ValidationMessage {
+  nameErr?: string;
+  addressErr?: string;
+  coordinatesErr?: string;
+  descriptionErr?: string;
+  categoryErr?: string;
+}
 export interface CreateNewModalProps {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export interface NewEntry {
-  name: string;
-  description: string;
-  category: string;
-  address: string;
-  coordinates: string;
-  imageLink: string;
-}
-interface Location {
-  name: string;
-  address: string;
-  coordinates: { lat: number; lng: number };
-  description: string;
-  category: string;
-  imageLink: string;
-}
 export interface CreateNewFormProps {
-  location: Location;
-  setLocation: React.Dispatch<React.SetStateAction<Location>>;
+  location: NewLocation;
+  setLocation: React.Dispatch<React.SetStateAction<NewLocation>>;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   address: string;
   setAddress: React.Dispatch<React.SetStateAction<string>>;
   setPinPosition: React.Dispatch<React.SetStateAction<number[]>>;
+  validationMsg: ValidationMessage;
 }
 export interface MapProps {
   pinPosition: number[];
   setPinPosition: React.Dispatch<React.SetStateAction<number[]>>;
   address: string;
   setAddress: React.Dispatch<React.SetStateAction<string>>;
-  location: Location;
-  setLocation: React.Dispatch<React.SetStateAction<Location>>;
+  location: NewLocation;
+  setLocation: React.Dispatch<React.SetStateAction<NewLocation>>;
+  validationMsg: ValidationMessage;
 }

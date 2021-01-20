@@ -7,8 +7,8 @@ interface ModalProps {
   info: {
     message: string;
     header: string;
-  }
-  setInfo: React.Dispatch<React.SetStateAction<{ header: string; message: string; }>>;
+  };
+  setInfo: React.Dispatch<React.SetStateAction<{ header: string; message: string }>>;
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -19,9 +19,9 @@ const MessageModal: React.FC<ModalProps> = ({
   const history = useHistory();
   const handleClose = (): void => {
     setShow(false);
-    setInfo({ message: '', header: '' })
+    setInfo({ message: '', header: '' });
 
-    if (info.header === 'Success') history.push('/userpage');
+    if (info.header === 'Success' && info.message.includes('Welcome')) history.push('/userpage');
   };
   return (
     <Modal show={show} size="sm" onHide={handleClose}>
@@ -37,7 +37,7 @@ const MessageModal: React.FC<ModalProps> = ({
         <Button size="sm" variant="outline-dark" type="button" onClick={handleClose}>Ok</Button>
       </Modal.Footer>
     </Modal>
-  )
+  );
 };
 
 export default MessageModal;

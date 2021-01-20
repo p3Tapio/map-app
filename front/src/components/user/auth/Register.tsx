@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { registerUser } from '../../../state/reducers/user/userActions';
 import UserAuthForm from './UserAuthForm';
 import { AllFormValues } from './userAuthTypes';
-import MessageModal from './MessageModal';
+import MessageModal from '../../MessageModal';
 
 interface RegProps {
   setLogged: React.Dispatch<React.SetStateAction<boolean>>;

@@ -4,3 +4,8 @@ export const getUser = (): LoggedUser => JSON.parse(window.localStorage.getItem(
 export const setUser = (user: LoggedUser): void => {
   window.localStorage.setItem('loggedUser', JSON.stringify(user));
 };
+export const getToken = (): string | undefined => {
+  const user = JSON.parse(window.localStorage.getItem('loggedUser') as string);
+  if (user) return user.token;
+  return undefined;
+};

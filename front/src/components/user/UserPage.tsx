@@ -21,7 +21,7 @@ const UserPage: React.FC = () => {
         <h4>
           Hi,
           {' '}
-          {user.data.username}
+          {user.username}
           !
         </h4>
         <p>

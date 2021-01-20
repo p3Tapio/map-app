@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import './style/App.css';
 import Container from 'react-bootstrap/Container';
@@ -12,14 +13,20 @@ import UserPage from './components/user/UserPage';
 
 import PrivateRoute from './components/PrivateRoute';
 import { getUser } from './state/localStore';
+import { getAllLocations } from './state/reducers/location/locationActions';
 // TODO
 // errorit rekisteröinnissä ja loggauksessa
 // poista localstore käyttö ?? https://github.com/rt2zz/redux-persist
-// state.user.user ???
-
+// state.user.user ??? sama locationissa
+// tyypitykset yhteen paikkaan tai ainakin pois komponenteista ???
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);
-  useEffect(() => { setLogged(!!getUser()); }, [logged]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setLogged(!!getUser());
+    dispatch(getAllLocations());
+  }, [logged, dispatch]);
 
   return (
     <>

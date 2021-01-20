@@ -2,11 +2,9 @@ export const REGISTER = 'REGISTER';
 export const LOGIN = 'LOGIN';
 
 export type LoggedUser = {
-  data: {
-    id: string;
-    username: string;
-    token: string;
-  };
+  id: string;
+  username: string;
+  token: string;
 }
 export type SigningUser = {
   username: string;

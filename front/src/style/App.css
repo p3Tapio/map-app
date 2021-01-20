@@ -36,7 +36,6 @@ body {
   border: none;
   outline: none;
   background: none;
-
 }
 .formLabel{
   font-size: 14px;
@@ -84,4 +83,19 @@ body {
 }
 .jumboHome {
   background-color: white;
+}
+.newLocationError {
+  margin-top: 2px;
+  margin-bottom: -10px;
+  font-size: 80%;
+  color: red;
+}
+.newLocationErrorField {
+  margin-bottom: 0;
+}
+.newLocationOkField {
+  margin-bottom: 11px;
+}
+.newLocationOkTextfield {
+  margin-bottom: -5px;
 }

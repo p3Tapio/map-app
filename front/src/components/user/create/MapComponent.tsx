@@ -10,7 +10,9 @@ import 'leaflet-defaulticon-compatibility';
 
 import Pin from './Pin';
 
-const MapComponent: React.FC<MapProps> = ({ setPinPosition, pinPosition, setAddress }) => {
+const MapComponent: React.FC<MapProps> = ({
+  setPinPosition, pinPosition, setAddress, validationMsg,
+}) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>();
   useEffect(() => {
@@ -18,7 +20,7 @@ const MapComponent: React.FC<MapProps> = ({ setPinPosition, pinPosition, setAddr
   });
 
   return (
-    <div className="mb-4 mx-4">
+    <div className="mx-4" style={validationMsg.coordinatesErr ? { marginBottom: '18px' } : { marginBottom: '30px' }}>
       <Map
         ref={mapRef}
         center={pinPosition[0] === 0 ? [60.195, 24.92] : [pinPosition[0], pinPosition[1]]}
@@ -38,6 +40,7 @@ const MapComponent: React.FC<MapProps> = ({ setPinPosition, pinPosition, setAddr
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
       </Map>
+      {(validationMsg.coordinatesErr && <p className="newLocationError">{validationMsg.coordinatesErr}</p>)}
     </div>
   );
 };

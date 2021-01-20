@@ -1,25 +1,27 @@
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import {
-  LoggedUser, LOGIN, REGISTER, SigningUser, UserDispatchTypes,
+  LOGIN, REGISTER, SigningUser, UserDispatchTypes,
 } from './userTypes';
 import { setUser } from '../../localStore';
 
 const baseUrl = process.env.REACT_APP_URL;
 
 export const registerUser = (newUser: SigningUser) => async (dispatch: Dispatch<UserDispatchTypes>): Promise<void> => {
-  const registeredUser: LoggedUser = await axios.post(`${baseUrl}/api/user/register/`, newUser);
-  setUser(registeredUser); 
+  const res = await axios.post(`${baseUrl}/api/user/register/`, newUser);
+  const { data } = res;
+  setUser(data);
   dispatch({
     type: REGISTER,
-    payload: registeredUser,
+    payload: data,
   });
 };
 export const loginUser = (user: SigningUser) => async (dispatch: Dispatch<UserDispatchTypes>): Promise<void> => {
-  const loggedUser: LoggedUser = await axios.post(`${baseUrl}/api/user/login/`, user);
-  setUser(loggedUser); 
+  const res = await axios.post(`${baseUrl}/api/user/login/`, user);
+  const { data } = res;
+  setUser(data);
   dispatch({
     type: LOGIN,
-    payload: loggedUser,
-  })
-}
+    payload: data,
+  });
+};

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { loginUser } from '../../../state/reducers/user/userActions';
 import UserAuthForm from './UserAuthForm';
 import { LoginFormValues } from './userAuthTypes';
-import MessageModal from './MessageModal';
+import MessageModal from '../../MessageModal';
 
 interface LoginProps {
   setLogged: React.Dispatch<React.SetStateAction<boolean>>;
