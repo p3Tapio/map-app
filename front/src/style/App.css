@@ -99,3 +99,31 @@ body {
 .newLocationOkTextfield {
   margin-bottom: -5px;
 }
+.locationCardBtn {
+  font-size: 12px;
+  color: rgb(92, 92, 92);
+  margin-top: 5px;
+  margin-bottom: -2px;
+  margin-right: -22px;
+  appearance: none;
+  border: none;
+  outline: none;
+  background: none;
+}
+.locationCardBtn:hover {
+  color: rgb(53, 53, 53);
+  appearance: none;
+  border: none;
+  outline: none;
+  background: none;
+}
+.locationCardBtn:focus {
+  appearance: none;
+  border: none;
+  outline: none;
+  background: none;
+}
+.singleLocationMap {
+  width: 100%;
+  max-width: none!important;
+}

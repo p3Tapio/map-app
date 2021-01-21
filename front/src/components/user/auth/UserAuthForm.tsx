@@ -13,7 +13,9 @@ const UserAuthForm: React.FC<UserAuthFormProps> = ({ onSubmit, headline }) => {
 
   const reqistrationSchema = Yup.object({
     username: Yup.string().max(20, 'Name must be 20 characters or less').min(5, 'Name must be 5 characters or more').required('Username is required'),
-    password: Yup.string().max(15, 'Password must be 15 charachters or less').min(5, 'Password must be at least 5 characters').required('Password is required'),
+    password: Yup.string()
+      .max(15, 'Password must be 15 charachters or less')
+      .min(5, 'Password must be at least 5 characters').required('Password is required'),
     passwordconfirm: Yup.string()
       .oneOf([Yup.ref('password')], 'Passwords do not match')
       .required('Password confirmation is required'),

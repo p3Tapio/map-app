@@ -14,11 +14,12 @@ import UserPage from './components/user/UserPage';
 import PrivateRoute from './components/PrivateRoute';
 import { getUser } from './state/localStore';
 import { getAllLocations } from './state/reducers/location/locationActions';
+
 // TODO
-// errorit rekisteröinnissä ja loggauksessa
 // poista localstore käyttö ?? https://github.com/rt2zz/redux-persist
 // state.user.user ??? sama locationissa
 // tyypitykset yhteen paikkaan tai ainakin pois komponenteista ???
+// kohteen deletointi ja editointi
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -36,12 +37,12 @@ const App: React.FC = () => {
           <Route exact path="/" component={Home} />
         </Switch>
         <Switch>
-          <Route exact path="/register">
+          <Route path="/register">
             <Register setLogged={setLogged} />
           </Route>
         </Switch>
         <Switch>
-          <Route exact path="/login">
+          <Route path="/login">
             <Login setLogged={setLogged} />
           </Route>
         </Switch>

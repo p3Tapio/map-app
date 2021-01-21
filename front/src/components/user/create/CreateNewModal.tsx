@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -11,6 +10,7 @@ import { CreateNewModalProps, ValidationMessage } from './NewEntryTypes';
 import { createNewLocation } from '../../../state/reducers/location/locationActions';
 import { validateLocation } from './validation';
 import { NewLocation } from '../../../state/reducers/location/locationTypes';
+import MessageModal from '../../MessageModal';
 
 const CreateNewModal: React.FC<CreateNewModalProps> = ({ setShow, show }) => {
   const dispatch = useDispatch();
@@ -26,6 +26,8 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({ setShow, show }) => {
   const [location, setLocation] = useState(initialLocation);
   const [address, setAddress] = useState('');
   const [pinPosition, setPinPosition] = useState([0, 0]);
+  const [info, setInfo] = useState({ header: '', message: '' });
+  const [showMsgModal, setShowMsgModal] = useState(false);
   const mapBoxUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places';
 
   const handleClose = (): void => {
@@ -35,8 +37,7 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({ setShow, show }) => {
     setShow(false);
     setValidationMsg({});
   };
-  // TODO
-  // try catch ja joku viesti onnistuneesta tallennuksesta 
+
   const onSubmit = async (ev: FormEvent): Promise<void> => {
     ev.preventDefault();
     let newLocation = {
@@ -59,12 +60,18 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({ setShow, show }) => {
         };
       }
     }
-    console.log('location: ---- ', newLocation);
+
     const validated: NewLocation | ValidationMessage = validateLocation(newLocation);
     if ('name' in validated) {
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await dispatch(createNewLocation(validated));
-      setValidationMsg({});
+      try {
+        dispatch(createNewLocation(validated));
+        setInfo({ header: 'Success', message: 'New location added!' });
+        setShow(false);
+        setShowMsgModal(true);
+        setValidationMsg({});
+      } catch {
+        setInfo({ header: 'Error', message: 'Oh no, something went wrong! Try again.' });
+      }
     } else {
       setValidationMsg(validated);
     }
@@ -98,6 +105,7 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({ setShow, show }) => {
           />
         </Modal.Body>
       </Modal>
+      <MessageModal info={info} setInfo={setInfo} show={showMsgModal} setShow={setShowMsgModal} />
     </>
   );
 };
