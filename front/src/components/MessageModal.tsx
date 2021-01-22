@@ -27,7 +27,7 @@ const MessageModal: React.FC<ModalProps> = ({
     <Modal show={show} size="sm" onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
-          <h5>{info.header}</h5>
+          {info.header}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

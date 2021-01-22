@@ -1,15 +1,14 @@
 export const REGISTER = 'REGISTER';
 export const LOGIN = 'LOGIN';
 
-export type LoggedUser = {
-  id: string;
-  username: string;
-  token: string;
-}
-export type SigningUser = {
+export interface SigningUser  {
   username: string;
   password: string;
 }
+export interface LoggedUser extends SigningUser {
+  id: string;
+}
+
 export interface Register {
   type: typeof REGISTER;
   payload: LoggedUser;

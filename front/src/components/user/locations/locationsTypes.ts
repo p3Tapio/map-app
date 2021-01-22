@@ -5,3 +5,16 @@ export interface SingleLocationMapProps {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
+export interface LocationListProps {
+  locations: Location[] | undefined;
+  handleDelete: (id: string, name: string) => void;
+  showDelete: boolean;
+  setShowDelete: React.Dispatch<React.SetStateAction<boolean>>;
+}
+export interface DeleteModalProps {
+  id: string;
+  name: string;
+  handleDelete: (id: string, name: string) => void;
+  showDelete: boolean;
+  setShowDelete: React.Dispatch<React.SetStateAction<boolean>>;
+}

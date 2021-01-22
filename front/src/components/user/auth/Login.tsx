@@ -29,7 +29,7 @@ const Login: React.FC<LoginProps> = ({ setLogged }) => {
       }
     }
   };
-
+  // TODO miksi ternary??? show/setShow hoitaa?
   return (
     <>
       <UserAuthForm onSubmit={onSubmit} headline="Login" />

@@ -48,6 +48,7 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({ setShow, show }) => {
       category: location.category,
       imageLink: location.imageLink,
     };
+    // TODO onko tämä tarpeen? onBlur lomakkeessa ja validoinnit pitäisi riittää?
     if (newLocation.coordinates.lat === 0 && address !== '') {
       const response = await axios.get(`${mapBoxUrl}/${address}.json?access_token=${process.env.REACT_APP_MAPBOX}`);
       if (response.data.features[0]) {
@@ -81,7 +82,7 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({ setShow, show }) => {
       <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>
-            <h5>Create new entry</h5>
+            Create new entry
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

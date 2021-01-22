@@ -9,3 +9,7 @@ export const getToken = (): string | undefined => {
   if (user) return user.token;
   return undefined;
 };
+export const createConfig = (): { headers: { token?: string } } => {
+  const token = getToken();
+  return { headers: { token } };
+};

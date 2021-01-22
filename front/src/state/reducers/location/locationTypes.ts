@@ -10,14 +10,8 @@ export interface NewLocation {
   category: string;
   imageLink: string;
 }
-export interface Location {
+export interface Location extends NewLocation {
   _id: string;
-  name: string;
-  address: string;
-  coordinates: { lat: number; lng: number };
-  description: string;
-  category: string;
-  imageLink: string;
   createdBy: string;
 }
 export interface CreateLocation {

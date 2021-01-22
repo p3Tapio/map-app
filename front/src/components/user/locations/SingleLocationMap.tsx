@@ -13,7 +13,7 @@ const SingleLocationModal: React.FC<SingleLocationMapProps> = ({ location, show,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>();
   useEffect(() => {
-    if (location) mapRef.current.leafletElement.invalidateSize(false);
+    if (location && mapRef.current) mapRef.current.leafletElement.invalidateSize(false);
   });
   const handleClose = (): void => {
     setShow(false);
@@ -24,7 +24,7 @@ const SingleLocationModal: React.FC<SingleLocationMapProps> = ({ location, show,
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>
-          <h5>{location.name}</h5>
+          {location.name}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -61,5 +61,4 @@ const SingleLocationModal: React.FC<SingleLocationMapProps> = ({ location, show,
     </Modal>
   );
 };
-
 export default SingleLocationModal;

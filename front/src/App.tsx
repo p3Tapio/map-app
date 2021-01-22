@@ -20,6 +20,9 @@ import { getAllLocations } from './state/reducers/location/locationActions';
 // state.user.user ??? sama locationissa
 // tyypitykset yhteen paikkaan tai ainakin pois komponenteista ???
 // kohteen deletointi ja editointi
+// kuvattoman kohteen hallinta -> joku template ?
+// logout poista käyttäjän tiedot -> redux action
+
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -27,7 +30,7 @@ const App: React.FC = () => {
   useEffect(() => {
     setLogged(!!getUser());
     dispatch(getAllLocations());
-  }, [logged, dispatch]);
+  }, [dispatch]);
 
   return (
     <>

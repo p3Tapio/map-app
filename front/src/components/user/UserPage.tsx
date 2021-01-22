@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import {
   Container, Button,
@@ -12,15 +13,19 @@ import LocationList from './locations/LocationList';
 const UserPage: React.FC = () => {
   const user = getUser();
   const [show, setShow] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const dispatch = useDispatch();
   const locations = useSelector((state: RootStore) => state.locations.userLocations);
 
-  useEffect(() => {
-    dispatch(getUserLocations());
-  }, [dispatch]);
+  useEffect(() => { dispatch(getUserLocations()); }, [dispatch]);
 
   const handleCreateNewClick = (): void => {
     setShow(true);
+  };
+  const handleDelete = (id: string, name: string): void => {
+    console.log('id', id);
+    console.log('name', name);
+    setShowDelete(false);
   };
   if (!user && !locations) return null;
   return (
@@ -39,7 +44,7 @@ const UserPage: React.FC = () => {
         </p>
         <Button onClick={handleCreateNewClick} size="sm" variant="outline-secondary">Create New</Button>
         <hr />
-        <LocationList locations={locations} />
+        <LocationList locations={locations} handleDelete={handleDelete} setShowDelete={setShowDelete} showDelete={showDelete} />
       </Container>
       <CreateNewModal setShow={setShow} show={show} />
     </>
