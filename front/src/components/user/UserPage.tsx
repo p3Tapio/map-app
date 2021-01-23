@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import {
   Container, Button,
@@ -6,14 +5,17 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '../../state/store';
 import { getUser } from '../../state/localStore';
-import { getUserLocations } from '../../state/reducers/location/locationActions';
+import { getUserLocations, deleteLocation } from '../../state/reducers/location/locationActions';
 import CreateNewModal from './create/CreateNewModal';
 import LocationList from './locations/LocationList';
+import MessageModal from '../MessageModal';
 
 const UserPage: React.FC = () => {
   const user = getUser();
   const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [info, setInfo] = useState({ header: '', message: '' });
   const dispatch = useDispatch();
   const locations = useSelector((state: RootStore) => state.locations.userLocations);
 
@@ -22,10 +24,18 @@ const UserPage: React.FC = () => {
   const handleCreateNewClick = (): void => {
     setShow(true);
   };
-  const handleDelete = (id: string, name: string): void => {
-    console.log('id', id);
-    console.log('name', name);
-    setShowDelete(false);
+  const handleDelete = async (id: string, name: string): Promise<void> => {
+    try {
+      setShowDelete(false);
+      // error ei putoo catchiin ilman awaittia ...
+      // eslint-disable-next-line @typescript-eslint/await-thenable
+      await dispatch(deleteLocation(id));
+      setInfo({ header: 'Success', message: `Location ${name} deleted!` });
+      setShowMessage(true);
+    } catch {
+      setInfo({ header: 'Error', message: 'Oh no, something went wrong :(' });
+      setShowMessage(true);
+    }
   };
   if (!user && !locations) return null;
   return (
@@ -47,6 +57,7 @@ const UserPage: React.FC = () => {
         <LocationList locations={locations} handleDelete={handleDelete} setShowDelete={setShowDelete} showDelete={showDelete} />
       </Container>
       <CreateNewModal setShow={setShow} show={show} />
+      <MessageModal setInfo={setInfo} info={info} setShow={setShowMessage} show={showMessage} />
     </>
   );
 };

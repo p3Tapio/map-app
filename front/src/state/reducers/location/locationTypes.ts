@@ -1,6 +1,7 @@
 export const GETLOCATIONS = 'GETLOCATIONS';
 export const CREATELOCATION = 'CREATELOCATION';
 export const GETUSERLOCATIONS = 'GETUSERLOCATIONS';
+export const DELETELOCATION = 'DELETELOCATION';
 
 export interface NewLocation {
   name: string;
@@ -26,5 +27,9 @@ export interface GetUserLocations {
   type: typeof GETUSERLOCATIONS;
   payload: Location[];
 }
+export interface DeleteLocation {
+  type: typeof DELETELOCATION;
+  payload: string;
+}
 
-export type LocationDispatchTypes = CreateLocation | GetLocations | GetUserLocations;
+export type LocationDispatchTypes = CreateLocation | GetLocations | GetUserLocations | DeleteLocation;

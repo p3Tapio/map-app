@@ -3,7 +3,7 @@
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import {
-  LocationDispatchTypes, GETLOCATIONS, NewLocation, CREATELOCATION, CreateLocation, GETUSERLOCATIONS,
+  LocationDispatchTypes, GETLOCATIONS, NewLocation, CREATELOCATION, GETUSERLOCATIONS, DELETELOCATION,
 } from './locationTypes';
 import { createConfig } from '../../localStore';
 
@@ -28,7 +28,7 @@ export const getUserLocations = () => async (dispatch: Dispatch<LocationDispatch
     });
   }
 };
-export const createNewLocation = (location: NewLocation) => async (dispatch: Dispatch<CreateLocation>): Promise<void> => {
+export const createNewLocation = (location: NewLocation) => async (dispatch: Dispatch<LocationDispatchTypes>): Promise<void> => {
   const config = createConfig();
   if (config.headers.token) {
     const res = await axios.post(`${baseUrl}/api/location/create`, location, config);
@@ -36,6 +36,16 @@ export const createNewLocation = (location: NewLocation) => async (dispatch: Dis
     dispatch({
       type: CREATELOCATION,
       payload: data,
+    });
+  }
+};
+export const deleteLocation = (id: string) => async (dispatch: Dispatch<LocationDispatchTypes>): Promise<void> => {
+  const config = createConfig();
+  if (config.headers.token) {
+    await axios.delete(`${baseUrl}/api/location/delete/${id}`, config);
+    dispatch({
+      type: DELETELOCATION,
+      payload: id,
     });
   }
 };

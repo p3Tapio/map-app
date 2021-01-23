@@ -58,5 +58,20 @@ router.post('/create', async (req: Request, res: Response) => {
     res.status(400).json({ error: (err as Error).message });
   }
 });
-
+router.delete('/delete/:id', async (req: Request, res: Response) => {
+  try {
+    if (req.header('token') && checkToken(req.header('token'))) {
+      const userId = checkToken(req.header('token'));
+      const location = await Location.findById(req.params.id) as ILocation;
+      if (!location) throw new Error('No location found');
+      if (location.createdBy.toString() === userId) {
+        await Location.findOneAndRemove({ _id: req.params.id });
+        res.status(204).end();
+      }
+    }
+    res.status(401).send({ error: 'unauthorized' });
+  } catch (err) {
+    res.status(400).json({ error: (err as Error).message });
+  }
+});
 export default router;
