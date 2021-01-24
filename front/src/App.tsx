@@ -18,10 +18,12 @@ import { getAllLocations } from './state/reducers/location/locationActions';
 // TODO
 // poista localstore käyttö ?? https://github.com/rt2zz/redux-persist
 // state.user.user ??? sama locationissa
-// tyypitykset yhteen paikkaan tai ainakin pois komponenteista ???
-// kohteen deletointi ja editointi
-// kuvattoman kohteen hallinta -> joku template ?
-// logout poista käyttäjän tiedot -> redux action
+// tyypitykset yhteen paikkaan tai ainakin pois komponenteista ??? + extendaa niitä, nyt toistuu tyypitykset
+// Formeissa overlappia, kantsistko tehdä uudelleen käytettävät createlle ja editille ??? --> locationFromElements.ts
+// edit/create kartat kanssa toistensa kaltaiset... Koklaa nostaa address ja pin statet ylös, jolloin sama karttakomponentti todnäk on ok
+// ^ tällöin create/edit funktiot molemmat olisi userPagess, kuten delete
+// delete route heittää UnhandledPromiseRejectionWarning??
+// CRUD valmis niin eka Heroku?
 
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);

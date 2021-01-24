@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../../state/reducers/location/locationActions';
 
 interface NavProps {
   logged: boolean | undefined;
@@ -9,9 +11,9 @@ interface NavProps {
 
 const Navigation: React.FC<NavProps> = ({ logged, setLogged }) => {
   const history = useHistory();
-
+  const dispatch = useDispatch();
   const handleLogout = (): void => {
-    window.localStorage.clear();
+    dispatch(logoutUser());
     setLogged(false);
     history.push('/');
   };

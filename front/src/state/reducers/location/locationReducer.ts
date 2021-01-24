@@ -1,5 +1,5 @@
 import {
-  LocationDispatchTypes, Location, GETLOCATIONS, CREATELOCATION, GETUSERLOCATIONS, DELETELOCATION,
+  LocationDispatchTypes, Location, GETLOCATIONS, CREATELOCATION, GETUSERLOCATIONS, DELETELOCATION, CLEARUSERDATA,
 } from './locationTypes';
 
 interface LocationState {
@@ -24,6 +24,8 @@ const locationReducer = (state: LocationState = locationState, action: LocationD
       const locations = state.userLocations?.filter((x) => x._id !== action.payload);
       return { ...state, locations, userLocations };
     }
+    case CLEARUSERDATA:
+      return { ...state, userLocations: undefined };
     default:
       return state;
   }

@@ -3,9 +3,9 @@ import { Modal } from 'react-bootstrap';
 import {
   Map, Marker, Popup, TileLayer,
 } from 'react-leaflet';
-import { LeafletMouseEvent } from '../../../../node_modules/@types/leaflet';
-import { SingleLocationMapProps } from './locationsTypes';
-import '../../../style/mapstyle.css';
+import { LeafletMouseEvent } from 'leaflet';
+import { SingleLocationMapProps } from '../locationsTypes';
+import '../../../../style/mapstyle.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
 

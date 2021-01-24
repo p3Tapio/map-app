@@ -1,28 +1,16 @@
 import { Document, Types } from 'mongoose';
 
-export interface IUser extends Document {
-  _id: Types.ObjectId;
+export interface NewUser {
   username: string;
   password: string;
+}
+export interface IUser extends Document, NewUser {
+  _id: Types.ObjectId;
   locations: ILocation[];
 }
 export interface NewUser {
   username: string;
   password: string;
-}
-
-export interface ILocation extends Document {
-  _id: Types.ObjectId;
-  name: string;
-  address: string;
-  coordinates: {
-    lat: number;
-    lng: number;
-  }
-  description: string;
-  category: string;
-  imageLink?: string;
-  createdBy: IUser;
 }
 export interface NewLocation {
   name: string;
@@ -35,6 +23,16 @@ export interface NewLocation {
   category: string;
   imageLink?: string;
 }
+
+export interface ILocation extends Document, NewLocation {
+  _id: Types.ObjectId;
+  createdBy: IUser;
+}
+export interface UpdatedLocation extends NewLocation {
+  _id: Types.ObjectId;
+  createdBy: IUser;
+}
+
 export enum Category {
   Sights = "sights",
   FoodDrink = "foodDrink",

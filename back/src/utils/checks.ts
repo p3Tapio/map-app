@@ -27,12 +27,21 @@ const parseCategory = (input: any): string => {
   return input;
 };
 const parseImageLink = (input: any): string | undefined => {
-  if(!input) {
+  if (!input) {
     return undefined;
   } else if (!isString(input)) {
     throw new Error('input in wrong format');
-  } 
+  }
   return input;
+};
+
+const parseCoordinates = (input: any): { lat: number; lng: number; } => {
+  if (!input) throw new Error('input missing or in wrong format');
+  const coordinates = {
+    lat: parseInputNumber(input.lat),
+    lng: parseInputNumber(input.lng),
+  };
+  return coordinates;
 };
 
 const checkUserValues = (object: any): NewUser => {
@@ -46,16 +55,12 @@ const checkLocationValues = (object: any): NewLocation => {
   const newLocation = {
     name: parseInputString(object.name),
     address: parseInputString(object.address),
-    coordinates: {
-      lat: parseInputNumber(object.coordinates.lat),
-      lng: parseInputNumber(object.coordinates.lng),
-    },
+    coordinates: parseCoordinates(object.coordinates),
     description: parseInputString(object.description),
     category: parseCategory(object.category),
     imageLink: parseImageLink(object.imageLink)
   };
   return newLocation;
 };
-
 
 export { checkUserValues, checkLocationValues };

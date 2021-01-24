@@ -3,15 +3,18 @@ import {
   Container, Card, Col, Row, OverlayTrigger, Tooltip,
 } from 'react-bootstrap';
 import { Pen, Trash } from 'react-bootstrap-icons';
-import { Location } from '../../../state/reducers/location/locationTypes';
+import { Location } from '../../../../state/reducers/location/locationTypes';
 import SingleLocationMap from './SingleLocationMap';
-import altImg from '../../../style/images/bluepin.png';
-import { LocationListProps } from './locationsTypes';
+import altImg from '../../../../style/images/bluepin.png';
+import { LocationListProps } from '../locationsTypes';
 import DeleteModal from './DeleteModal';
+import EditModal from '../edit/EditModal';
 
 const LocationList: React.FC<LocationListProps> = ({
-  locations, handleDelete, setShowDelete, showDelete,
+  locations, handleDelete, address, setAddress, pinPosition, setPinPosition, validationMsg, setValidationMsg
 }) => {
+  const [showDelete, setShowDelete] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [location, setLocation] = useState<Location | undefined>(undefined);
   const [showMap, setShowMap] = useState(false);
 
@@ -81,7 +84,15 @@ const LocationList: React.FC<LocationListProps> = ({
                           <Tooltip id="editTooltip">Edit location details</Tooltip>
                         }
                       >
-                        <button type="button" className="locationCardBtn">
+                        <button
+                          type="button"
+                          className="locationCardBtn"
+                          onClick={(): void => {
+                            setLocation(x);
+                            setPinPosition([x.coordinates.lat, x.coordinates.lng])
+                            setShowEdit(true);
+                          }}
+                        >
                           <Pen size={22} />
                         </button>
                       </OverlayTrigger>
@@ -95,7 +106,29 @@ const LocationList: React.FC<LocationListProps> = ({
       </Container>
       <SingleLocationMap location={location} show={showMap} setShow={setShowMap} />
       {location
-        ? <DeleteModal id={location._id} name={location.name} showDelete={showDelete} setShowDelete={setShowDelete} handleDelete={handleDelete} />
+        ? (
+          <>
+            <DeleteModal
+              id={location._id}
+              name={location.name}
+              show={showDelete}
+              setShow={setShowDelete}
+              handleDelete={handleDelete}
+            />
+            <EditModal
+              show={showEdit}
+              setShow={setShowEdit}
+              location={location}
+              setLocation={setLocation}
+              address={address}
+              setAddress={setAddress}
+              pinPosition={pinPosition}
+              setPinPosition={setPinPosition}
+              validationMsg={validationMsg}
+              setValidationMsg={setValidationMsg}
+            />
+          </>
+        )
         : null}
     </>
   );

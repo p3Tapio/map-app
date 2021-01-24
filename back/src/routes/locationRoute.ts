@@ -4,7 +4,7 @@ import Location from '../models/locationModel';
 import User from '../models/userModel';
 import { checkLocationValues } from '../utils/checks';
 import { checkToken } from '../utils/tokens';
-import { IUser, ILocation } from '../utils/types';
+import { IUser, ILocation, UpdatedLocation } from '../utils/types';
 const router = express.Router();
 
 
@@ -58,6 +58,24 @@ router.post('/create', async (req: Request, res: Response) => {
     res.status(400).json({ error: (err as Error).message });
   }
 });
+router.put('/update/:id', async (req: Request, res: Response) => {
+  try {
+    if (req.header('token') && checkToken(req.header('token'))) {
+      const userId = checkToken(req.header('token'));
+      const body = checkLocationValues(req.body) as UpdatedLocation;
+      const location = await Location.findById(req.params.id) as ILocation;
+
+      if (!location) throw new Error('No location found');
+      else if (location.createdBy.toString() === userId) {
+        const updated = await Location.findByIdAndUpdate({ _id: req.params.id }, body, { new: true }) as ILocation;
+        res.json(updated);
+      } else res.status(401).send({ error: 'unauthorized' });
+    } else throw new Error('No token');
+  } catch (err) {
+    res.status(400).json({ error: (err as Error).message });
+  }
+});
+
 router.delete('/delete/:id', async (req: Request, res: Response) => {
   try {
     if (req.header('token') && checkToken(req.header('token'))) {
@@ -67,6 +85,7 @@ router.delete('/delete/:id', async (req: Request, res: Response) => {
       if (location.createdBy.toString() === userId) {
         await Location.findOneAndRemove({ _id: req.params.id });
         res.status(204).end();
+        return;
       }
     }
     res.status(401).send({ error: 'unauthorized' });

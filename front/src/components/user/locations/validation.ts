@@ -1,5 +1,5 @@
 import { NewLocation } from '../../../state/reducers/location/locationTypes';
-import { ValidationMessage } from './NewEntryTypes';
+import { ValidationMessage } from './locationsTypes';
 
 let validationMsg: ValidationMessage;
 

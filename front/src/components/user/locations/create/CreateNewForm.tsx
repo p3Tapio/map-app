@@ -3,7 +3,7 @@ import React, { FormEvent } from 'react';
 import {
   Form, Col, Container, Modal, Button,
 } from 'react-bootstrap';
-import { CreateNewFormProps } from './NewEntryTypes';
+import { CreateNewFormProps } from '../locationsTypes';
 
 const CreateNewForm: React.FC<CreateNewFormProps> = ({
   onSubmit, location, setLocation, address, setAddress, setPinPosition, validationMsg,
@@ -69,7 +69,7 @@ const CreateNewForm: React.FC<CreateNewFormProps> = ({
           </Col>
         </Form.Group>
         <Form.Group className="row">
-          <Form.Label htmlFor="description" className="col-sm-3">Category</Form.Label>
+          <Form.Label htmlFor="category" className="col-sm-3">Category</Form.Label>
           <Col sm={9} className={validationMsg.categoryErr ? 'newLocationErrorField' : 'newLocationOkField'}>
             <Form.Control
               as="select"

@@ -1,7 +1,7 @@
 export const REGISTER = 'REGISTER';
 export const LOGIN = 'LOGIN';
 
-export interface SigningUser  {
+export interface SigningUser {
   username: string;
   password: string;
 }
@@ -17,4 +17,5 @@ export interface Login {
   type: typeof LOGIN;
   payload: LoggedUser;
 }
+
 export type UserDispatchTypes = Register | Login;
