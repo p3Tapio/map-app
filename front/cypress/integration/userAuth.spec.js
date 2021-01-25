@@ -44,8 +44,10 @@ describe('Login', function() {
     cy.get('#username').type('tester');
     cy.get('#password').type('secret');
     cy.get('#submit').click();
-
     cy.contains('Welcome tester!');
+    cy.contains('Ok').click();
+    cy.contains('Hi, tester!');
+    cy.contains('Logout');
   })
   it('Login fails with wrong password', function() {
     cy.visit('http://localhost:3000/login');
@@ -64,5 +66,9 @@ describe('Login', function() {
     cy.get('#submit').click();
 
     cy.contains('Wrong username or password');
+  })
+  it('User cannot access userpage without logging in and is forwarded to login', function() {
+    cy.visit('http://localhost:3000/userpage');
+    cy.contains('Login');
   })
 });

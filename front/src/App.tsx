@@ -22,6 +22,7 @@ import { getAllLocations } from './state/reducers/location/locationActions';
 // Formeissa overlappia, kantsistko tehdä uudelleen käytettävät createlle ja editille ??? --> locationFromElements.ts
 // CRUD valmis niin eka Heroku?
 // himmee parametrin passaus create/update locationissa :DDDDD tee jotain ...
+// Map: nested ternary
 
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);

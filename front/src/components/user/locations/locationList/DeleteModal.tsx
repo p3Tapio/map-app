@@ -23,10 +23,17 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="outline-secondary" type="button" onClick={handleClose}>Cancel</Button>
-        <Button variant="outline-danger" type="button" onClick={(): void => {
-          setShow(false);
-          handleDelete(id, name);
-        }}>Delete</Button>
+        <Button
+          variant="outline-danger"
+          type="button"
+          id="confirmDelete"
+          onClick={(): void => {
+            setShow(false);
+            handleDelete(id, name);
+          }}
+        >
+          Delete
+        </Button>
       </Modal.Footer>
     </Modal>
   );
