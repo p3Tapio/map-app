@@ -51,16 +51,6 @@ describe('Creating new location', function () {
     cy.contains('Seems like you have not yet added any locations. You can start by adding one by clicking the create new button!')
   })
 })
-// describe('Editing location', function() {
-//   beforeEach(function () {
-//     init();
-//     create();
-//   })
-//   it('Location can be edited', function() {
-//     cy.get('#edit').click();
-//   })
-// })
-
 describe('Deleting location', function () {
   beforeEach(function() {
     init();
