@@ -3,7 +3,7 @@
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import {
-  LocationDispatchTypes, GETLOCATIONS, NewLocation, CREATELOCATION, GETUSERLOCATIONS, DELETELOCATION, CLEARUSERDATA,
+  LocationDispatchTypes, GETLOCATIONS, NewLocation, CREATELOCATION, GETUSERLOCATIONS, DELETELOCATION, CLEARUSERDATA, Location, UPDATELOCATION,
 } from './locationTypes';
 import { createConfig } from '../../localStore';
 
@@ -35,6 +35,17 @@ export const createNewLocation = (location: NewLocation) => async (dispatch: Dis
     const { data } = res;
     dispatch({
       type: CREATELOCATION,
+      payload: data,
+    });
+  }
+};
+export const updateLocation = (location: Location) => async (dispatch: Dispatch<LocationDispatchTypes>): Promise<void> => {
+  const config = createConfig();
+  if (config.headers.token) {
+    const res = await axios.put(`${baseUrl}/api/location/update/${location._id}`, location, config);
+    const { data } = res;
+    dispatch({
+      type: UPDATELOCATION,
       payload: data,
     });
   }

@@ -7,7 +7,7 @@ import MapComponent from '../map/MapComponent';
 
 import { CreateNewModalProps, ValidationMessage } from '../locationsTypes';
 import { createNewLocation } from '../../../../state/reducers/location/locationActions';
-import { validateLocation } from '../validation';
+import { validateNewLocation } from '../validation';
 import { NewLocation } from '../../../../state/reducers/location/locationTypes';
 import MessageModal from '../../../MessageModal';
 import { initialLocation } from '../../UserPage';
@@ -37,7 +37,7 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({
       category: location.category,
       imageLink: location.imageLink,
     };
-    const validated: NewLocation | ValidationMessage = validateLocation(newLocation);
+    const validated: NewLocation | ValidationMessage = validateNewLocation(newLocation);
     if ('name' in validated) {
       try {
         // eslint-disable-next-line @typescript-eslint/await-thenable

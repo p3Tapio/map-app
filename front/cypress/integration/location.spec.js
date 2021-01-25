@@ -38,7 +38,7 @@ describe('Creating new location', function () {
     cy.contains('Description is required.');
     cy.contains('Category is required.');
   })
-  it('Created location is not visible in another user\'s userpage', function(){
+  it('Created location is not visible in another user\'s userpage', function () {
     create();
     cy.contains('Logout').click();
     const another = { username: 'another', password: 'terces' };
@@ -49,6 +49,38 @@ describe('Creating new location', function () {
     cy.get('#submit').click();
     cy.contains('Ok').click();
     cy.contains('Seems like you have not yet added any locations. You can start by adding one by clicking the create new button!')
+  })
+})
+describe('Editing location', function () {
+  beforeEach(function () {
+    init();
+    create();
+  })
+  it('Location can be edited', function () {
+    cy.get('#edit').click();
+    cy.get('#name').clear();
+    cy.get('#name').type('Edited location');
+    cy.get('#address').clear();
+    cy.get('#address').type('Ilmailutie, vantaa');
+    cy.get('#description').clear();
+    cy.get('#description').type('this is an edited location');
+    cy.get('#category').select('Shopping');
+    cy.wait(1000);
+    cy.contains('Save').click();
+    cy.contains('Ok').click();
+    cy.contains('Edited location');
+    cy.contains('Ilmailutie');
+    cy.contains('this is an edited location');
+  })
+  it('When values are missing, validation messages are shown', function() {
+    cy.get('#edit').click();
+    cy.get('#name').clear();
+    cy.get('#address').clear();
+    cy.get('#description').clear();
+    cy.contains('Save').click();
+    cy.contains('Name is required.');
+    cy.contains('Address is required.');
+    cy.contains('Description is required.');
   })
 })
 describe('Deleting location', function () {

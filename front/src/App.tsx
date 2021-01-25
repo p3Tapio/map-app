@@ -20,9 +20,11 @@ import { getAllLocations } from './state/reducers/location/locationActions';
 // state.user.user ??? sama locationissa
 // tyypitykset yhteen paikkaan tai ainakin pois komponenteista ??? + extendaa niitä, nyt toistuu tyypitykset
 // Formeissa overlappia, kantsistko tehdä uudelleen käytettävät createlle ja editille ??? --> locationFromElements.ts
+// ^ onko niissä mitään eroa?
 // CRUD valmis niin eka Heroku?
 // himmee parametrin passaus create/update locationissa :DDDDD tee jotain ...
 // Map: nested ternary
+// ja edelleen välillä:  Cannot read property '_leaflet_pos' of undefined :((
 
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);

@@ -76,4 +76,7 @@ export interface EditFormProps {
   validationMsg: ValidationMessage;
   handleEdit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   handleClose: () => void;
+  address: string;
+  setAddress: React.Dispatch<React.SetStateAction<string>>;
+  setPinPosition: React.Dispatch<React.SetStateAction<number[]>>;
 }

@@ -1,5 +1,5 @@
 import {
-  LocationDispatchTypes, Location, GETLOCATIONS, CREATELOCATION, GETUSERLOCATIONS, DELETELOCATION, CLEARUSERDATA,
+  LocationDispatchTypes, Location, GETLOCATIONS, CREATELOCATION, GETUSERLOCATIONS, DELETELOCATION, CLEARUSERDATA, UPDATELOCATION,
 } from './locationTypes';
 
 interface LocationState {
@@ -18,6 +18,10 @@ const locationReducer = (state: LocationState = locationState, action: LocationD
       const locations = state.locations?.concat(action.payload);
       const userLocations = state.userLocations?.concat(action.payload);
       return { ...state, locations, userLocations };
+    }
+    case UPDATELOCATION: {
+      const newUserLocations = state.userLocations?.map((x) => (x._id === action.payload._id ? action.payload : x));
+      return { ...state, userLocations: newUserLocations };
     }
     case DELETELOCATION: {
       const userLocations = state.userLocations?.filter((x) => x._id !== action.payload);
