@@ -2,9 +2,9 @@ import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Location from '../models/locationModel';
 import User from '../models/userModel';
-import { checkLocationValues } from '../utils/checks';
+import { checkNewLocationValues, checkUpdatedValues } from '../utils/checks';
 import { checkToken } from '../utils/tokens';
-import { IUser, ILocation, UpdatedLocation } from '../utils/types';
+import { IUser, ILocation } from '../utils/types';
 const router = express.Router();
 
 
@@ -31,7 +31,7 @@ router.post('/create', async (req: Request, res: Response) => {
   try {
     if (req.header('token')) {
       const userId = checkToken(req.header('token'));
-      const newLocation = checkLocationValues(req.body);
+      const newLocation = checkNewLocationValues(req.body);
 
       const user = await User.findById(userId) as IUser;
       const location = new Location({
@@ -62,7 +62,7 @@ router.put('/update/:id', async (req: Request, res: Response) => {
   try {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
-      const body = checkLocationValues(req.body) as UpdatedLocation;
+      const body = checkUpdatedValues(req.body);
       const location = await Location.findById(req.params.id) as ILocation;
 
       if (!location) throw new Error('No location found');

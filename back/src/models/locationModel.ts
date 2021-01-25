@@ -13,6 +13,6 @@ const locationSchema: Schema = new Schema({
   imageLink: String,
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
-
+locationSchema.set('versionKey', false);
 
 export default mongoose.model<ILocation>('Location', locationSchema);

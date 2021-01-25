@@ -17,12 +17,14 @@ const EditModal: React.FC<EditModalProps> = ({
   const handleEdit = async (ev: FormEvent): Promise<void> => {
     ev.preventDefault();
     const editedLocation = {
+      _id: location._id,
       name: location.name,
       address,
       coordinates: { lat: pinPosition[0], lng: pinPosition[1] },
       description: location.description,
       category: location.category,
       imageLink: location.imageLink,
+      createdBy: location.createdBy,
     };
     const validated: NewLocation | ValidationMessage = validateLocation(editedLocation);
     if ('name' in validated) {

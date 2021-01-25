@@ -2,7 +2,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { NewUser, Category, NewLocation } from "./types";
+import { Types } from "mongoose";
+import { NewUser, Category, NewLocation, UpdatedLocation, IUser } from "./types";
 
 const isString = (text: any): text is string => typeof text === 'string' || text instanceof String;
 const isNumeric = (no: any): no is number => !isNaN(Number(no));
@@ -43,6 +44,20 @@ const parseCoordinates = (input: any): { lat: number; lng: number; } => {
   };
   return coordinates;
 };
+// TODO ... miten tyypin tarkistat? Tässä 12345 menee läpi
+const parseId = (input: any): Types.ObjectId  => {
+  if (!input) {
+    throw new Error('input missing or in wrong format');
+  }
+  return input as Types.ObjectId;
+};
+// Tässä väärä palauttaa "Cast to ObjectId failed for value \"12345\" at path \"createdBy\""
+const parseUser = (input: any): IUser => {
+  if (!input) {
+    throw new Error('input missing or in wrong format');
+  }
+  return input as IUser;
+};
 
 const checkUserValues = (object: any): NewUser => {
   const newUser: NewUser = {
@@ -51,16 +66,31 @@ const checkUserValues = (object: any): NewUser => {
   };
   return newUser;
 };
-const checkLocationValues = (object: any): NewLocation => {
-  const newLocation = {
+const checkNewLocationValues = (object: any): NewLocation => {
+    const newLocation = {
+      name: parseInputString(object.name),
+      address: parseInputString(object.address),
+      coordinates: parseCoordinates(object.coordinates),
+      description: parseInputString(object.description),
+      category: parseCategory(object.category),
+      imageLink: parseImageLink(object.imageLink)
+    };
+    return newLocation;
+};
+
+
+const checkUpdatedValues = (object: any): UpdatedLocation => {
+  const updated = {
+    _id: parseId(object._id),
     name: parseInputString(object.name),
     address: parseInputString(object.address),
     coordinates: parseCoordinates(object.coordinates),
     description: parseInputString(object.description),
     category: parseCategory(object.category),
-    imageLink: parseImageLink(object.imageLink)
+    imageLink: parseImageLink(object.imageLink),
+    createdBy: parseUser(object.createdBy),
   };
-  return newLocation;
+  return updated;
 };
 
-export { checkUserValues, checkLocationValues };
+export { checkUserValues, checkNewLocationValues, checkUpdatedValues };
