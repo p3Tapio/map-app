@@ -6,18 +6,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '../../state/store';
 import { getUser } from '../../state/localStore';
 import { getUserLocations, deleteLocation } from '../../state/reducers/location/locationActions';
-import CreateNewModal from './locations/create/CreateNewModal';
+import CreateNewModal from './locations/CreateNewModal';
 import LocationList from './locations/locationList/LocationList';
 import MessageModal from '../MessageModal';
 import { ValidationMessage } from './locations/locationsTypes';
 
 export const initialLocation = {
+  _id: '',
   name: '',
   address: '',
   coordinates: { lat: 0, lng: 0 },
   description: '',
   category: '',
   imageLink: '',
+  createdBy: '',
 };
 
 const UserPage: React.FC = () => {
@@ -81,6 +83,8 @@ const UserPage: React.FC = () => {
           setAddress={setAddress}
           validationMsg={validationMsg}
           setValidationMsg={setValidationMsg}
+          location={location}
+          setLocation={setLocation}
         />
       </Container>
       <CreateNewModal

@@ -3,23 +3,20 @@ import {
   Container, Card, Col, Row, OverlayTrigger, Tooltip,
 } from 'react-bootstrap';
 import { Pen, Trash } from 'react-bootstrap-icons';
-import { Location } from '../../../../state/reducers/location/locationTypes';
 import SingleLocationMap from './SingleLocationMap';
 import altImg from '../../../../style/images/bluepin.png';
 import { LocationListProps } from '../locationsTypes';
 import DeleteModal from './DeleteModal';
-import EditModal from '../edit/EditModal';
+import EditModal from '../EditModal';
 
 const LocationList: React.FC<LocationListProps> = ({
-  locations, handleDelete, address, setAddress, pinPosition, setPinPosition, validationMsg, setValidationMsg,
+  locations, handleDelete, address, setAddress, pinPosition, setPinPosition, validationMsg, setValidationMsg, location, setLocation,
 }) => {
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [location, setLocation] = useState<Location | undefined>(undefined);
   const [showMap, setShowMap] = useState(false);
 
   if (!locations) return null;
-
   return (
     <>
       <Container>
@@ -92,6 +89,7 @@ const LocationList: React.FC<LocationListProps> = ({
                           onClick={(): void => {
                             setLocation(x);
                             setPinPosition([x.coordinates.lat, x.coordinates.lng]);
+                            setAddress(x.address);
                             setShowEdit(true);
                           }}
                         >

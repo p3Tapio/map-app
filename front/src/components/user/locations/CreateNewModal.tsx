@@ -2,15 +2,15 @@ import React, { FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Modal from 'react-bootstrap/Modal';
 
-import CreateNewForm from './CreateNewForm';
-import MapComponent from '../map/MapComponent';
+import LocationForm from './LocationsForm';
+import MapComponent from './map/MapComponent';
 
-import { CreateNewModalProps, ValidationMessage } from '../locationsTypes';
-import { createNewLocation } from '../../../../state/reducers/location/locationActions';
-import { validateNewLocation } from '../validation';
-import { NewLocation } from '../../../../state/reducers/location/locationTypes';
-import MessageModal from '../../../MessageModal';
-import { initialLocation } from '../../UserPage';
+import { CreateNewModalProps, ValidationMessage } from './locationsTypes';
+import { createNewLocation } from '../../../state/reducers/location/locationActions';
+import { validateNewLocation } from './validation';
+import { NewLocation } from '../../../state/reducers/location/locationTypes';
+import MessageModal from '../../MessageModal';
+import { initialLocation } from '../UserPage';
 
 const CreateNewModal: React.FC<CreateNewModalProps> = ({
   setShow, show, setAddress, address, pinPosition, setPinPosition, location, setLocation, validationMsg, setValidationMsg,
@@ -24,7 +24,6 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({
     setLocation(initialLocation);
     setShow(false);
     setValidationMsg({});
-    setPinPosition([0, 0]);
   };
 
   const onSubmit = async (ev: FormEvent): Promise<void> => {
@@ -69,7 +68,7 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({
             setAddress={setAddress}
             validationMsg={validationMsg}
           />
-          <CreateNewForm
+          <LocationForm
             onSubmit={onSubmit}
             location={location}
             setLocation={setLocation}
@@ -77,6 +76,7 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({
             setAddress={setAddress}
             setPinPosition={setPinPosition}
             validationMsg={validationMsg}
+            handleClose={handleClose}
           />
         </Modal.Body>
       </Modal>

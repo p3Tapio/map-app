@@ -3,10 +3,10 @@ import React, { FormEvent } from 'react';
 import {
   Form, Col, Container, Modal, Button,
 } from 'react-bootstrap';
-import { CreateNewFormProps } from '../locationsTypes';
+import { LocationFormProps } from './locationsTypes';
 
-const CreateNewForm: React.FC<CreateNewFormProps> = ({
-  onSubmit, location, setLocation, address, setAddress, setPinPosition, validationMsg,
+const LocationForm: React.FC<LocationFormProps> = ({
+  onSubmit, location, setLocation, address, setAddress, validationMsg, handleClose, setPinPosition,
 }) => {
   const mapBoxUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places';
 
@@ -29,6 +29,7 @@ const CreateNewForm: React.FC<CreateNewFormProps> = ({
               id="name"
               name="name"
               type="text"
+              value={location.name}
               onChange={(e: FormEvent): void => {
                 setLocation({ ...location, name: (e.target as HTMLTextAreaElement).value });
               }}
@@ -61,6 +62,7 @@ const CreateNewForm: React.FC<CreateNewFormProps> = ({
               id="description"
               name="description"
               type="text"
+              value={location.description}
               onChange={(e: FormEvent): void => {
                 setLocation({ ...location, description: (e.target as HTMLTextAreaElement).value });
               }}
@@ -76,6 +78,7 @@ const CreateNewForm: React.FC<CreateNewFormProps> = ({
               className="form-control"
               id="category"
               name="category"
+              value={location.category}
               onChange={(e: FormEvent): void => {
                 setLocation({ ...location, category: (e.target as HTMLTextAreaElement).value });
               }}
@@ -96,6 +99,7 @@ const CreateNewForm: React.FC<CreateNewFormProps> = ({
               id="imagelink"
               name="imagelink"
               type="text"
+              value={location.imageLink}
               onChange={(e: FormEvent): void => {
                 setLocation({ ...location, imageLink: (e.target as HTMLTextAreaElement).value });
               }}
@@ -103,11 +107,11 @@ const CreateNewForm: React.FC<CreateNewFormProps> = ({
           </Col>
         </Form.Group>
         <Modal.Footer>
-          <Button variant="outline-secondary" type="reset">Reset</Button>
+          <Button variant="outline-secondary" type="button" onClick={handleClose}>Cancel</Button>
           <Button variant="outline-dark" type="submit">Save</Button>
         </Modal.Footer>
       </Form>
     </Container>
   );
 };
-export default CreateNewForm;
+export default LocationForm;
