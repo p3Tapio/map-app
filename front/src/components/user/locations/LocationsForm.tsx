@@ -6,7 +6,7 @@ import {
 import { LocationFormProps } from './locationsTypes';
 
 const LocationForm: React.FC<LocationFormProps> = ({
-  onSubmit, location, setLocation, address, setAddress, validationMsg, handleClose, setPinPosition,
+  onSubmit, location, setLocation, validationMsg, handleClose, address, setAddress,
 }) => {
   const mapBoxUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places';
 
@@ -14,8 +14,13 @@ const LocationForm: React.FC<LocationFormProps> = ({
     if (address.length >= 3) {
       const response = await axios.get(`${mapBoxUrl}/${address}.json?access_token=${process.env.REACT_APP_MAPBOX}`);
       if (response.data.features[0]) {
-        setPinPosition([response.data.features[0].geometry.coordinates[1],
-          response.data.features[0].geometry.coordinates[0]]);
+        setLocation({
+          ...location,
+          coordinates: {
+            lat: response.data.features[0].geometry.coordinates[1],
+            lng: response.data.features[0].geometry.coordinates[0],
+          },
+        });
       }
     }
   };

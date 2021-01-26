@@ -12,7 +12,7 @@ const init = () => {
 const create = () => {
   cy.contains('Create New').click();
   cy.get('#name').type('test location');
-  cy.get('#address').type('Turbiinitie');
+  cy.get('#address').type('Turbiinitie').blur().wait(500);
   cy.get('#description').type('this is a location for testing');
   cy.get('#category').select('Sights');
   cy.contains('Save').click();

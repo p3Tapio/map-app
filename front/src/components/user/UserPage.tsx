@@ -28,8 +28,6 @@ const UserPage: React.FC = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [info, setInfo] = useState({ header: '', message: '' });
-  const [address, setAddress] = useState('');
-  const [pinPosition, setPinPosition] = useState([0, 0]);
   const [validationMsg, setValidationMsg] = useState<ValidationMessage>({});
   const [location, setLocation] = useState(initialLocation);
 
@@ -40,8 +38,6 @@ const UserPage: React.FC = () => {
 
   const handleCreateNewClick = (): void => {
     setLocation(initialLocation);
-    setPinPosition([0, 0]);
-    setAddress('');
     setShowCreate(true);
   };
 
@@ -77,10 +73,6 @@ const UserPage: React.FC = () => {
         <LocationList
           locations={locations}
           handleDelete={handleDelete}
-          setPinPosition={setPinPosition}
-          pinPosition={pinPosition}
-          address={address}
-          setAddress={setAddress}
           validationMsg={validationMsg}
           setValidationMsg={setValidationMsg}
           location={location}
@@ -90,10 +82,6 @@ const UserPage: React.FC = () => {
       <CreateNewModal
         setShow={setShowCreate}
         show={showCreate}
-        address={address}
-        setAddress={setAddress}
-        pinPosition={pinPosition}
-        setPinPosition={setPinPosition}
         validationMsg={validationMsg}
         setValidationMsg={setValidationMsg}
         location={location}

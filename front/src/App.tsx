@@ -19,10 +19,8 @@ import { getAllLocations } from './state/reducers/location/locationActions';
 // poista localstore käyttö ?? https://github.com/rt2zz/redux-persist
 // state.user.user ??? sama locationissa
 // tyypitykset yhteen paikkaan tai ainakin pois komponenteista ??? + extendaa niitä, nyt toistuu tyypitykset
-// Formeissa overlappia, kantsistko tehdä uudelleen käytettävät createlle ja editille ??? --> locationFromElements.ts
-// ^ onko niissä mitään eroa?
 // CRUD valmis niin eka Heroku?
-// himmee parametrin passaus create/update locationissa :DDDDD tee jotain ...
+// ks.Pin.jsx
 // Map: nested ternary
 // ja edelleen välillä:  Cannot read property '_leaflet_pos' of undefined :((
 

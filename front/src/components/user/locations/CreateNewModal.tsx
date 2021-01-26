@@ -10,32 +10,24 @@ import { createNewLocation } from '../../../state/reducers/location/locationActi
 import { validateNewLocation } from './validation';
 import { NewLocation } from '../../../state/reducers/location/locationTypes';
 import MessageModal from '../../MessageModal';
-import { initialLocation } from '../UserPage';
 
 const CreateNewModal: React.FC<CreateNewModalProps> = ({
-  setShow, show, setAddress, address, pinPosition, setPinPosition, location, setLocation, validationMsg, setValidationMsg,
+  setShow, show, location, setLocation, validationMsg, setValidationMsg,
 }) => {
   const dispatch = useDispatch();
   const [info, setInfo] = useState({ header: '', message: '' });
   const [showMsgModal, setShowMsgModal] = useState(false);
+  const [address, setAddress] = useState('');
 
   const handleClose = (): void => {
-    setAddress('');
-    setLocation(initialLocation);
     setShow(false);
+    setAddress('');
     setValidationMsg({});
   };
 
   const onSubmit = async (ev: FormEvent): Promise<void> => {
     ev.preventDefault();
-    const newLocation = {
-      name: location.name,
-      address,
-      coordinates: { lat: pinPosition[0], lng: pinPosition[1] },
-      description: location.description,
-      category: location.category,
-      imageLink: location.imageLink,
-    };
+    const newLocation = { ...location, address };
     const validated: NewLocation | ValidationMessage = validateNewLocation(newLocation);
     if ('name' in validated) {
       try {
@@ -45,8 +37,7 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({
         setShow(false);
         setShowMsgModal(true);
         setValidationMsg({});
-        setPinPosition([0, 0]);
-      } catch {
+      } catch { // TODO: 400 ainakaa ei putoa tänne ???
         setInfo({ header: 'Error', message: 'Oh no, something went wrong! Try again.' });
       }
     } else {
@@ -63,20 +54,20 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({
         </Modal.Header>
         <Modal.Body>
           <MapComponent
-            setPinPosition={setPinPosition}
-            pinPosition={pinPosition}
-            setAddress={setAddress}
+            location={location}
+            setLocation={setLocation}
             validationMsg={validationMsg}
+            address={address}
+            setAddress={setAddress}
           />
           <LocationForm
             onSubmit={onSubmit}
             location={location}
             setLocation={setLocation}
-            address={address}
-            setAddress={setAddress}
-            setPinPosition={setPinPosition}
             validationMsg={validationMsg}
             handleClose={handleClose}
+            address={address}
+            setAddress={setAddress}
           />
         </Modal.Body>
       </Modal>

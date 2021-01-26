@@ -7,34 +7,24 @@ import { EditModalProps, ValidationMessage } from './locationsTypes';
 import { Location } from '../../../state/reducers/location/locationTypes';
 import { validateUpdated } from './validation';
 import { updateLocation } from '../../../state/reducers/location/locationActions';
-import { initialLocation } from '../UserPage';
 import LocationForm from './LocationsForm';
 
 const EditModal: React.FC<EditModalProps> = ({
-  show, setShow, location, setLocation, setPinPosition, pinPosition, setAddress, validationMsg, setValidationMsg, address,
+  show, setShow, location, setLocation, validationMsg, setValidationMsg,
 }) => {
   const [info, setInfo] = useState({ header: '', message: '' });
   const [showMsgModal, setShowMsgModal] = useState(false);
+  const [address, setAddress] = useState('');
   const dispatch = useDispatch();
 
   const handleClose = (): void => {
-    setAddress('');
-    setLocation(initialLocation);
     setShow(false);
+    setAddress('');
     setValidationMsg({});
   };
   const handleEdit = async (ev: FormEvent): Promise<void> => {
     ev.preventDefault();
-    const editedLocation: Location = {
-      _id: location._id,
-      name: location.name,
-      address,
-      coordinates: { lat: pinPosition[0], lng: pinPosition[1] },
-      description: location.description,
-      category: location.category,
-      imageLink: location.imageLink,
-      createdBy: location.createdBy,
-    };
+    const editedLocation: Location = { ...location, address };
     const validated: Location | ValidationMessage = validateUpdated(editedLocation);
     if ('name' in validated) {
       try {
@@ -60,7 +50,13 @@ const EditModal: React.FC<EditModalProps> = ({
           <Modal.Title>Edit Location</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <MapComponent setPinPosition={setPinPosition} pinPosition={pinPosition} setAddress={setAddress} validationMsg={validationMsg} />
+          <MapComponent
+            location={location}
+            setLocation={setLocation}
+            address={address}
+            setAddress={setAddress}
+            validationMsg={validationMsg}
+          />
           <LocationForm
             location={location}
             setLocation={setLocation}
@@ -69,19 +65,7 @@ const EditModal: React.FC<EditModalProps> = ({
             handleClose={handleClose}
             address={address}
             setAddress={setAddress}
-            setPinPosition={setPinPosition}
           />
-
-          {/* <EditForm
-            location={location}
-            setLocation={setLocation}
-            validationMsg={validationMsg}
-            onSubmit={handleEdit}
-            handleClose={handleClose}
-            address={address}
-            setAddress={setAddress}
-            setPinPosition={setPinPosition}
-          /> */}
         </Modal.Body>
       </Modal>
       <MessageModal info={info} setInfo={setInfo} show={showMsgModal} setShow={setShowMsgModal} />

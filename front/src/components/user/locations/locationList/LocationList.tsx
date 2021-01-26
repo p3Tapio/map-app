@@ -10,7 +10,7 @@ import DeleteModal from './DeleteModal';
 import EditModal from '../EditModal';
 
 const LocationList: React.FC<LocationListProps> = ({
-  locations, handleDelete, address, setAddress, pinPosition, setPinPosition, validationMsg, setValidationMsg, location, setLocation,
+  locations, handleDelete, validationMsg, setValidationMsg, location, setLocation,
 }) => {
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -88,8 +88,6 @@ const LocationList: React.FC<LocationListProps> = ({
                           className="locationCardBtn"
                           onClick={(): void => {
                             setLocation(x);
-                            setPinPosition([x.coordinates.lat, x.coordinates.lng]);
-                            setAddress(x.address);
                             setShowEdit(true);
                           }}
                         >
@@ -120,10 +118,6 @@ const LocationList: React.FC<LocationListProps> = ({
               setShow={setShowEdit}
               location={location}
               setLocation={setLocation}
-              address={address}
-              setAddress={setAddress}
-              pinPosition={pinPosition}
-              setPinPosition={setPinPosition}
               validationMsg={validationMsg}
               setValidationMsg={setValidationMsg}
             />
