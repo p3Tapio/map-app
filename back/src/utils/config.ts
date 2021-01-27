@@ -2,7 +2,8 @@ import * as dotenv from 'dotenv';
 
 dotenv.config({ path: '.env' });
 
-const { PORT, SECRET } = process.env;
+const { SECRET } = process.env;
+const PORT = process.env.PORT || 3001;
 let MONGODB_URI: string = process.env.MONGODB_URI as string;
 
 if (process.env.NODE_ENV === 'test') {

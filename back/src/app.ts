@@ -9,11 +9,11 @@ import locationRouter from './routes/locationRoute';
 
 const app = express();
 app.use(cors());
+app.use(express.static('build'));
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(() => console.log('Connected to MongoDB: ', MONGODB_URI))
   .catch((error) => console.error('Failed to connect: ', error));
-
 
 app.use(express.json());
 app.use('/api/user', userRouter);

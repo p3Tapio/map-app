@@ -54,7 +54,7 @@ describe('User account can be created with correct input and not with incorrect 
     const users = await User.find({});
 
     expect(response.body.token).toHaveLength(175);
-    expect(user.username).toEqual('tester');
+    expect(user?.username).toEqual('tester');
     expect(users).toHaveLength(1);
   });
   test('If username is already taken, status code is 400 and the user is not created', async () => {

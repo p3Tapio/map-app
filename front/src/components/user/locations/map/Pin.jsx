@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import * as ELG from 'esri-leaflet-geocoder';
 import { Marker } from 'react-leaflet';
 
-// TODO (reverse)Geocodesta puuttuu tyypitykset ?? location puuttuu depseistä, mutta haittaako ?? :(
-// riittäisikö jos joko address tai coordinate on omassa statessa?
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const Pin = ({ location, setAddress }) => {
   useEffect(() => {
