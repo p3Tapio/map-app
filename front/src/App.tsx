@@ -23,6 +23,7 @@ import { getAllLocations } from './state/reducers/location/locationActions';
 // ks.Pin.jsx
 // Map: nested ternary
 // ja edelleen välillä:  Cannot read property '_leaflet_pos' of undefined :((
+// ROUTE (404 antaa "unknown endpoint" & osoitteet ei toimi)
 
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);
