@@ -33,12 +33,12 @@ describe('login works with correct credentials and not with wrong ones', () => {
   test('If username is in wrong format, the status code is 400 and a correct error message is returned', async () => {
     const wrongUser = { username: 123456, password: 'secret' };
     const response = await api.post('/api/user/login/').send(wrongUser).expect(400);
-    expect(response.body.error).toEqual('input missing or in wrong format');
+    expect(response.body.error).toEqual('input missing or in wrong format: string expected.');
   })
   test('If password is in wrong format, the status code is 400 and a correct error message is returned', async () => {
     const wrongUser = { username: 'tester', password: 123456 };
     const response = await api.post('/api/user/login/').send(wrongUser).expect(400);
-    expect(response.body.error).toEqual('input missing or in wrong format');
+    expect(response.body.error).toEqual('input missing or in wrong format: string expected.');
   })
 
 })
@@ -73,7 +73,7 @@ describe('User account can be created with correct input and not with incorrect 
     const response = await api.post('/api/user/register/').send(wrongUser).expect(400);
     const users = await User.find({});
 
-    expect(response.body.error).toEqual('input missing or in wrong format');
+    expect(response.body.error).toEqual('input missing or in wrong format: string expected.');
     expect(users).toHaveLength(0);
   })
   test('If password is not a string, status code is 400 and the user is not created', async () => {
@@ -81,7 +81,7 @@ describe('User account can be created with correct input and not with incorrect 
     const response = await api.post('/api/user/register/').send(wrongUser).expect(400);
     const users = await User.find({});
 
-    expect(response.body.error).toEqual('input missing or in wrong format');
+    expect(response.body.error).toEqual('input missing or in wrong format: string expected.');
     expect(users).toHaveLength(0);
   })
 })

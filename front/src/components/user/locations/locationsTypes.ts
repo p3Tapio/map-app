@@ -9,11 +9,11 @@ export interface ValidationMessage {
   categoryErr?: string;
 }
 // modals ----------------------------------------------
-interface ModalProps {
+export interface ModalProps {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export interface CreateNewModalProps extends ModalProps {
+export interface CreateNewLocationModalProps extends ModalProps {
   validationMsg: ValidationMessage;
   setValidationMsg: React.Dispatch<React.SetStateAction<ValidationMessage>>;
   location: Location;

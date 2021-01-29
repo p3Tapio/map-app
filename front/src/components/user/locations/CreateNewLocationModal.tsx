@@ -5,13 +5,13 @@ import Modal from 'react-bootstrap/Modal';
 import LocationForm from './LocationsForm';
 import MapComponent from './map/MapComponent';
 
-import { CreateNewModalProps, ValidationMessage } from './locationsTypes';
+import { CreateNewLocationModalProps, ValidationMessage } from './locationsTypes';
 import { createNewLocation } from '../../../state/reducers/location/locationActions';
 import { validateNewLocation } from './validation';
 import { NewLocation } from '../../../state/reducers/location/locationTypes';
 import MessageModal from '../../MessageModal';
 
-const CreateNewModal: React.FC<CreateNewModalProps> = ({
+const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({
   setShow, show, location, setLocation, validationMsg, setValidationMsg,
 }) => {
   const dispatch = useDispatch();
@@ -76,4 +76,4 @@ const CreateNewModal: React.FC<CreateNewModalProps> = ({
   );
 };
 
-export default CreateNewModal;
+export default CreateNewLocationModal;

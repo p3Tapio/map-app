@@ -7,7 +7,10 @@ import { unknownEndpoint } from './utils/middleware';
 import testingRouter from './routes/testingRoute';
 import userRouter from './routes/userRoute';
 import locationRouter from './routes/locationRoute';
+import listRouter from './routes/listRoute';
 
+// TODO location.delete --> poista refrenssi myös listasta
+// listModeliin / typeihin tieto kartan default näkymästä: center - zoom 
 const app = express();
 app.use(cors());
 
@@ -19,8 +22,9 @@ app.use(express.json());
 app.use(express.static('build'));
 app.use('/api/user', userRouter);
 app.use('/api/location', locationRouter);
+app.use('/api/list', listRouter);
 
-if (process.env.NODE_ENV === 'production') {  // TODO cross-env ei skulaa herokussa, kommentoi tämä pois toistaiseksi kun deploy 
+if (process.env.NODE_ENV === 'production') {  // TODO cross-env ei skulaa herokussa, kommentoi tämä pois toistaiseksi
   app.get('*', (_req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
   });

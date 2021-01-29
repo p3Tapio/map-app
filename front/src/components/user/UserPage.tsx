@@ -6,29 +6,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '../../state/store';
 import { getUser } from '../../state/localStore';
 import { getUserLocations, deleteLocation } from '../../state/reducers/location/locationActions';
-import CreateNewModal from './locations/CreateNewModal';
 import LocationList from './locations/locationList/LocationList';
+import ListList from './lists/ListList'
 import MessageModal from '../MessageModal';
 import { ValidationMessage } from './locations/locationsTypes';
-
-export const initialLocation = {
-  _id: '',
-  name: '',
-  address: '',
-  coordinates: { lat: 0, lng: 0 },
-  description: '',
-  category: '',
-  imageLink: '',
-  createdBy: '',
-};
+import CreateNewLocationModal from './locations/CreateNewLocationModal';
+import CreateNewListModal from './lists/CreateNewListModal';
+import { initialList, initialLocation } from './initials';
 
 const UserPage: React.FC = () => {
   const user = getUser();
 
-  const [showCreate, setShowCreate] = useState(false);
+  const [showCreateList, setShowCreateList] = useState(true);
   const [showMessage, setShowMessage] = useState(false);
   const [info, setInfo] = useState({ header: '', message: '' });
   const [validationMsg, setValidationMsg] = useState<ValidationMessage>({});
+  const [newList, setNewList] = useState(initialList);
   const [location, setLocation] = useState(initialLocation);
 
   const dispatch = useDispatch();
@@ -37,11 +30,12 @@ const UserPage: React.FC = () => {
   useEffect(() => { dispatch(getUserLocations()); }, [dispatch]);
 
   const handleCreateNewClick = (): void => {
+    setNewList(initialList);
     setLocation(initialLocation);
-    setShowCreate(true);
+    setShowCreateList(true);
   };
 
-  const handleDelete = async (id: string, name: string): Promise<void> => {
+  const handleDelete = async (id: string, name: string): Promise<void> => { // nosta locationListiin
     try {
       // error ei putoo catchiin ilman awaittia ...
       // eslint-disable-next-line @typescript-eslint/await-thenable
@@ -53,6 +47,7 @@ const UserPage: React.FC = () => {
       setShowMessage(true);
     }
   };
+
   if (!user && !locations) return null;
   return (
     <>
@@ -70,23 +65,31 @@ const UserPage: React.FC = () => {
         </p>
         <Button onClick={handleCreateNewClick} size="sm" variant="outline-secondary">Create New</Button>
         <hr />
-        <LocationList
+        <ListList />
+
+        {/* <LocationList
           locations={locations}
           handleDelete={handleDelete}
           validationMsg={validationMsg}
           setValidationMsg={setValidationMsg}
           location={location}
           setLocation={setLocation}
-        />
+        /> */}
       </Container>
-      <CreateNewModal
+      <CreateNewListModal
+        show={showCreateList}
+        setShow={setShowCreateList}
+        newList={newList}
+        setNewList={setNewList}
+      />
+      {/* <CreateNewLocationModal
         setShow={setShowCreate}
         show={showCreate}
         validationMsg={validationMsg}
         setValidationMsg={setValidationMsg}
         location={location}
         setLocation={setLocation}
-      />
+      /> */}
       <MessageModal setInfo={setInfo} info={info} setShow={setShowMessage} show={showMessage} />
     </>
   );

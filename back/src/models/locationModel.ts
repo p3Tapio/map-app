@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { ILocation } from '../utils/types';
 
 const locationSchema: Schema = new Schema({
@@ -11,8 +11,9 @@ const locationSchema: Schema = new Schema({
   description: String,
   category: { type: String, required: true },
   imageLink: String,
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  list: { type: Schema.Types.ObjectId, ref: 'List', required: true},
 });
 locationSchema.set('versionKey', false);
 
-export default mongoose.model<ILocation>('Location', locationSchema);
+export default model<ILocation>('Location', locationSchema);

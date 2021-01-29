@@ -7,6 +7,9 @@ const userSchema: Schema = new Schema({
   password: { type: String, required: true },
   locations: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'Location' },
+  ],
+  lists: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'List'},
   ]
 });
 
