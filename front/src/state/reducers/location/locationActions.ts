@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import {

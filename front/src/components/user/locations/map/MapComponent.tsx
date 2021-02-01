@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 
 import { Map, TileLayer } from 'react-leaflet';
-import { LeafletMouseEvent } from 'leaflet';
+import Leaflet, { LeafletMouseEvent } from 'leaflet';
 import { MapProps } from '../locationsTypes';
 
 import '../../../../style/mapstyle.css';
@@ -15,6 +15,10 @@ const MapComponent: React.FC<MapProps> = ({
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>();
+  const southWest = Leaflet.latLng(-89.98155760646617, -180);
+  const northEast = Leaflet.latLng(89.99346179538875, 180);
+  const bounds = Leaflet.latLngBounds(southWest, northEast);
+
   useEffect(() => {
     mapRef.current.leafletElement.invalidateSize(false);
   });
@@ -26,6 +30,9 @@ const MapComponent: React.FC<MapProps> = ({
         center={location.coordinates.lat === 0 ? [60.195, 24.92] : [location.coordinates.lat, location.coordinates.lng]}
         // eslint-disable-next-line no-nested-ternary
         zoom={location.coordinates.lat === 0 ? 11 : mapRef.current ? mapRef.current.leafletElement._zoom : 15}
+        maxBoundsViscosity={1.0}
+        maxBounds={bounds}
+        minZoom={2}
         scrollWheelZoom
         onclick={(e: LeafletMouseEvent): void => {
           setLocation({

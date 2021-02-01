@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { Location } from '../../../state/reducers/location/locationTypes';
 
-export interface ValidationMessage {
+export interface LocationValidationMessage {
   nameErr?: string;
   addressErr?: string;
   coordinatesErr?: string;
@@ -14,8 +14,8 @@ export interface ModalProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface CreateNewLocationModalProps extends ModalProps {
-  validationMsg: ValidationMessage;
-  setValidationMsg: React.Dispatch<React.SetStateAction<ValidationMessage>>;
+  validationMsg: LocationValidationMessage;
+  setValidationMsg: React.Dispatch<React.SetStateAction<LocationValidationMessage>>;
   location: Location;
   setLocation: React.Dispatch<React.SetStateAction<Location>>;
 }
@@ -25,8 +25,8 @@ export interface DeleteModalProps extends ModalProps {
   handleDelete: (id: string, name: string) => void;
 }
 export interface EditModalProps extends ModalProps {
-  validationMsg: ValidationMessage;
-  setValidationMsg: React.Dispatch<React.SetStateAction<ValidationMessage>>;
+  validationMsg: LocationValidationMessage;
+  setValidationMsg: React.Dispatch<React.SetStateAction<LocationValidationMessage>>;
   location: Location;
   setLocation: React.Dispatch<React.SetStateAction<Location>>;
 }
@@ -37,7 +37,7 @@ export interface SingleLocationMapProps extends ModalProps {
 interface BaseLocationComponentsProps {
   location: Location;
   setLocation: React.Dispatch<React.SetStateAction<Location>>;
-  validationMsg: ValidationMessage;
+  validationMsg: LocationValidationMessage;
 }
 export interface LocationFormProps extends BaseLocationComponentsProps {
   onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
@@ -52,5 +52,5 @@ export interface MapProps extends BaseLocationComponentsProps {
 export interface LocationListProps extends BaseLocationComponentsProps {
   locations: Location[] | undefined;
   handleDelete: (id: string, name: string) => void;
-  setValidationMsg: React.Dispatch<React.SetStateAction<ValidationMessage>>;
+  setValidationMsg: React.Dispatch<React.SetStateAction<LocationValidationMessage>>;
 }

@@ -5,9 +5,9 @@ import Modal from 'react-bootstrap/Modal';
 import LocationForm from './LocationsForm';
 import MapComponent from './map/MapComponent';
 
-import { CreateNewLocationModalProps, ValidationMessage } from './locationsTypes';
+import { CreateNewLocationModalProps, LocationValidationMessage } from './locationsTypes';
 import { createNewLocation } from '../../../state/reducers/location/locationActions';
-import { validateNewLocation } from './validation';
+import { validateNewLocation } from '../validation';
 import { NewLocation } from '../../../state/reducers/location/locationTypes';
 import MessageModal from '../../MessageModal';
 
@@ -28,7 +28,7 @@ const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({
   const onSubmit = async (ev: FormEvent): Promise<void> => {
     ev.preventDefault();
     const newLocation = { ...location, address };
-    const validated: NewLocation | ValidationMessage = validateNewLocation(newLocation);
+    const validated: NewLocation | LocationValidationMessage = validateNewLocation(newLocation);
     if ('name' in validated) {
       try {
         // eslint-disable-next-line @typescript-eslint/await-thenable
@@ -39,6 +39,7 @@ const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({
         setValidationMsg({});
       } catch { // TODO: 400 ainakaa ei putoa tänne ???
         setInfo({ header: 'Error', message: 'Oh no, something went wrong! Try again.' });
+        setShowMsgModal(true);
       }
     } else {
       setValidationMsg(validated);

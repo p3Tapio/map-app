@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from 'react';
 import { Map, TileLayer } from 'react-leaflet';
-
 import '../../../style/mapstyle.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
@@ -8,7 +7,7 @@ import 'leaflet-defaulticon-compatibility';
 import Leaflet, { LeafletEvent } from 'leaflet';
 import { DefaultViewMapProps } from './listTypes';
 
-const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ newList, setNewList }) => {
+const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ newList, setNewList, validationMsg }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>();
   const southWest = Leaflet.latLng(-89.98155760646617, -180);
@@ -20,12 +19,13 @@ const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ newList, setNewList }) 
   });
 
   return (
-    <div className="mx-4" style={{ marginBottom: '30px' }}>
+    <div className="mx-4" style={validationMsg.defaultviewErr ? { marginBottom: '18px' } : { marginBottom: '30px' }}>
       <Map
         ref={mapRef}
         center={[newList.defaultview.lat, newList.defaultview.lng]}
         maxBoundsViscosity={1.0}
         maxBounds={bounds}
+        minZoom={2}
         zoom={newList.defaultview.zoom}
         scrollWheelZoom
         style={{ height: 500 }}
@@ -55,7 +55,7 @@ const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ newList, setNewList }) 
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
       </Map>
-      {/* { (validationMsg.coordinatesErr && <p className="newLocationError">{validationMsg.coordinatesErr}</p>) } */}
+      { (validationMsg.defaultviewErr && <p className="newLocationError">{validationMsg.defaultviewErr}</p>) }
     </div>
   );
 };

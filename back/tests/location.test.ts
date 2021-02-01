@@ -9,7 +9,7 @@ const api = supertest(app);
 
 const user = { username: 'tester', password: 'secret' };
 const anotherUser = { username: 'another', password: 'terces' };
-const list = { name: 'Alist', defaultview: { lat: 61.23, lng: 24.123, zoom: 11 }, public: true };
+const list = { name: 'Alist', description: 'testing list', defaultview: { lat: 61.23, lng: 24.123, zoom: 11 }, country:'Finland', place: 'Helsinki', public: true };
 
 const createValidLocation = async () => {
   const login = await api.post('/api/user/login/').send(user);

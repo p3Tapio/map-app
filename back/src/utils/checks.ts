@@ -8,7 +8,7 @@ import { NewUser, Category, NewLocation, UpdatedLocation, NewList, Defaultview }
 const isString = (text: any): text is string => typeof text === 'string' || text instanceof String;
 const isNumeric = (no: any): no is number => !isNaN(Number(no));
 const isCategory = (cat: any): cat is Category => Object.values(Category).includes(cat);
-const isBoolean = (value: any): value is boolean =>  typeof value === 'boolean' || value instanceof Boolean;
+const isBoolean = (value: any): value is boolean => typeof value === 'boolean' || value instanceof Boolean;
 
 function parseInputString(input: any): string {
   if (!input || !isString(input)) {
@@ -105,7 +105,10 @@ const checkUpdatedValues = (object: any): UpdatedLocation => {
 const checkNewListValues = (object: any): NewList => {
   const newList = {
     name: parseInputString(object.name),
+    description: parseInputString(object.description),
     defaultview: parseDefaultview(object.defaultview),
+    country: parseInputString(object.country),
+    place: parseInputString(object.place),
     public: parseInputBoolean(object.public),
   };
   return newList;

@@ -6,6 +6,9 @@ export const initialList = {
     lng: 10,
     zoom: 2,
   },
+  public: false,
+  country: '',
+  place: '',
 };
 export const initialLocation = {
   _id: '',

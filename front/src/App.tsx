@@ -22,7 +22,7 @@ import { getAllLocations } from './state/reducers/location/locationActions';
 // CRUD valmis niin eka Heroku?
 // ks.Pin.jsx
 // Map: nested ternary
-// ja edelleen välillä:  Cannot read property '_leaflet_pos' of undefined :((
+// 404 page
 
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);

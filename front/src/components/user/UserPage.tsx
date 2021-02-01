@@ -9,25 +9,32 @@ import { getUserLocations, deleteLocation } from '../../state/reducers/location/
 import LocationList from './locations/locationList/LocationList';
 import ListList from './lists/ListList'
 import MessageModal from '../MessageModal';
-import { ValidationMessage } from './locations/locationsTypes';
+import { LocationValidationMessage } from './locations/locationsTypes';
 import CreateNewLocationModal from './locations/CreateNewLocationModal';
 import CreateNewListModal from './lists/CreateNewListModal';
 import { initialList, initialLocation } from './initials';
+import { getPublicLists, getUserLists } from '../../state/reducers/list/listActions';
 
 const UserPage: React.FC = () => {
   const user = getUser();
 
-  const [showCreateList, setShowCreateList] = useState(true);
+  const [showCreateList, setShowCreateList] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [info, setInfo] = useState({ header: '', message: '' });
-  const [validationMsg, setValidationMsg] = useState<ValidationMessage>({});
+  const [LocationValidationMsg, setLocationValidationMsg] = useState<LocationValidationMessage>({});
   const [newList, setNewList] = useState(initialList);
   const [location, setLocation] = useState(initialLocation);
 
   const dispatch = useDispatch();
   const locations = useSelector((state: RootStore) => state.locations.userLocations);
+  const lists = useSelector((state: RootStore) => state.lists);
 
-  useEffect(() => { dispatch(getUserLocations()); }, [dispatch]);
+  console.log('lists', lists)
+  useEffect(() => {
+    dispatch(getUserLocations());
+    dispatch(getPublicLists());
+    dispatch(getUserLists())
+  }, [dispatch]);
 
   const handleCreateNewClick = (): void => {
     setNewList(initialList);
@@ -60,8 +67,8 @@ const UserPage: React.FC = () => {
         </h4>
         <p>
           {!locations || locations.length === 0
-            ? 'Seems like you have not yet added any locations. You can start by adding one by clicking the create new button!'
-            : 'Below you can see the locations that you have added to the map. You can create a new one by clicking the create new button!'}
+            ? 'Seems like you have not created any location lists yet. You can start by clicking the create new button!'
+            : 'Below you can see the location lists that you have created.'}
         </p>
         <Button onClick={handleCreateNewClick} size="sm" variant="outline-secondary">Create New</Button>
         <hr />
@@ -70,8 +77,8 @@ const UserPage: React.FC = () => {
         {/* <LocationList
           locations={locations}
           handleDelete={handleDelete}
-          validationMsg={validationMsg}
-          setValidationMsg={setValidationMsg}
+          validationMsg={locationValidationMsg}
+          setValidationMsg={setLocationValidationMsg}
           location={location}
           setLocation={setLocation}
         /> */}
@@ -85,11 +92,12 @@ const UserPage: React.FC = () => {
       {/* <CreateNewLocationModal
         setShow={setShowCreate}
         show={showCreate}
-        validationMsg={validationMsg}
-        setValidationMsg={setValidationMsg}
+          validationMsg={locationValidationMsg}
+          setValidationMsg={setLocationValidationMsg}
         location={location}
         setLocation={setLocation}
       /> */}
+
       <MessageModal setInfo={setInfo} info={info} setShow={setShowMessage} show={showMessage} />
     </>
   );

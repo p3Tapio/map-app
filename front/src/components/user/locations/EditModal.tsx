@@ -3,9 +3,9 @@ import Modal from 'react-bootstrap/Modal';
 import { useDispatch } from 'react-redux';
 import MapComponent from './map/MapComponent';
 import MessageModal from '../../MessageModal';
-import { EditModalProps, ValidationMessage } from './locationsTypes';
+import { EditModalProps, LocationValidationMessage } from './locationsTypes';
 import { Location } from '../../../state/reducers/location/locationTypes';
-import { validateUpdated } from './validation';
+import { validateUpdated } from '../validation';
 import { updateLocation } from '../../../state/reducers/location/locationActions';
 import LocationForm from './LocationsForm';
 
@@ -25,7 +25,7 @@ const EditModal: React.FC<EditModalProps> = ({
   const handleEdit = async (ev: FormEvent): Promise<void> => {
     ev.preventDefault();
     const editedLocation: Location = { ...location, address };
-    const validated: Location | ValidationMessage = validateUpdated(editedLocation);
+    const validated: Location | LocationValidationMessage = validateUpdated(editedLocation);
     if ('name' in validated) {
       try {
         // eslint-disable-next-line @typescript-eslint/await-thenable

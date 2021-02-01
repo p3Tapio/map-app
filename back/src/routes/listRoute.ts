@@ -8,7 +8,7 @@ import { checkToken } from '../utils/tokens';
 const router = express.Router();
 
 router.get('/allpublic', async (_req: Request, res: Response) => {
-  const lists = await List.find({public: true}).populate('locations');
+  const lists = await List.find({ public: true }).populate('locations');
   res.json(lists);
 });
 
@@ -32,12 +32,15 @@ router.post('/create', async (req: Request, res: Response) => {
       const user = await User.findById(userId) as IUser;
       const list = new List({
         name: newList.name,
+        description: newList.description,
         createdBy: userId,
         defaultview: {
           lat: newList.defaultview.lat,
           lng: newList.defaultview.lng,
           zoom: newList.defaultview.zoom,
         },
+        country: newList.country,
+        place: newList.place,
         public: newList.public,
       });
       const savedList: IList = await list.save();

@@ -46,8 +46,11 @@ export interface Defaultview {
 }
 export interface NewList {
   name: string;
+  description: string;
   defaultview: Defaultview;
   public: boolean;
+  country: string;
+  place: string;
 }
 export interface List extends NewList {
   createdBy: Types.ObjectId;

@@ -16,6 +16,7 @@ export interface NewLocation {
 export interface Location extends NewLocation {
   _id: string;
   createdBy: string;
+  list: string;
 }
 export interface CreateLocation {
   type: typeof CREATELOCATION;
