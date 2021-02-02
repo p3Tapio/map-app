@@ -1,7 +1,8 @@
 import React, { FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import Modal from 'react-bootstrap/Modal';
+import { useParams } from 'react-router-dom';
 
+import Modal from 'react-bootstrap/Modal';
 import LocationForm from './LocationsForm';
 import MapComponent from './map/MapComponent';
 
@@ -10,24 +11,27 @@ import { createNewLocation } from '../../../state/reducers/location/locationActi
 import { validateNewLocation } from '../validation';
 import { NewLocation } from '../../../state/reducers/location/locationTypes';
 import MessageModal from '../../MessageModal';
+import { initialLocation } from '../initials';
 
-const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({
-  setShow, show, location, setLocation, validationMsg, setValidationMsg,
-}) => {
+const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({ setShow, show, defaultview }) => {
   const dispatch = useDispatch();
+  const { id } = useParams<{ id?: string }>();
   const [info, setInfo] = useState({ header: '', message: '' });
   const [showMsgModal, setShowMsgModal] = useState(false);
+  const [locationValidationMsg, setLocationValidationMsg] = useState<LocationValidationMessage>({});
+  const [location, setLocation] = useState(initialLocation);
   const [address, setAddress] = useState('');
 
   const handleClose = (): void => {
     setShow(false);
     setAddress('');
-    setValidationMsg({});
+    setLocationValidationMsg({});
+    setLocation(initialLocation); // koita muualla jos kaatuilee, kartta heittää välillä errorin puuttuvasta sijainnista.
   };
 
   const onSubmit = async (ev: FormEvent): Promise<void> => {
     ev.preventDefault();
-    const newLocation = { ...location, address };
+    const newLocation = { ...location, address, list: id };
     const validated: NewLocation | LocationValidationMessage = validateNewLocation(newLocation);
     if ('name' in validated) {
       try {
@@ -36,13 +40,14 @@ const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({
         setInfo({ header: 'Success', message: 'New location added!' });
         setShow(false);
         setShowMsgModal(true);
-        setValidationMsg({});
-      } catch { // TODO: 400 ainakaa ei putoa tänne ???
+        setAddress('');
+        setLocationValidationMsg({});
+      } catch { // TODO: 400 ei pudonnut tänne ???
         setInfo({ header: 'Error', message: 'Oh no, something went wrong! Try again.' });
         setShowMsgModal(true);
       }
     } else {
-      setValidationMsg(validated);
+      setLocationValidationMsg(validated);
     }
   };
   return (
@@ -57,15 +62,16 @@ const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({
           <MapComponent
             location={location}
             setLocation={setLocation}
-            validationMsg={validationMsg}
+            validationMsg={locationValidationMsg}
             address={address}
             setAddress={setAddress}
+            defaultview={defaultview}
           />
           <LocationForm
             onSubmit={onSubmit}
             location={location}
             setLocation={setLocation}
-            validationMsg={validationMsg}
+            validationMsg={locationValidationMsg}
             handleClose={handleClose}
             address={address}
             setAddress={setAddress}

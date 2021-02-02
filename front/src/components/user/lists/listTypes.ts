@@ -1,6 +1,13 @@
 import { FormEvent } from 'react';
 import { ModalProps } from '../locations/locationsTypes'; // show, setShow
 import { NewList } from '../../../state/reducers/list/listTypes';
+import { Location } from '../../../state/reducers/location/locationTypes';
+
+export interface Defaultview {
+  lat: number;
+  lng: number;
+  zoom: number;
+}
 
 export interface ListValidationMessage {
   nameErr?: string;
@@ -23,4 +30,8 @@ export interface ListFormProps {
   newList: NewList;
   setNewList: React.Dispatch<React.SetStateAction<NewList>>;
   validationMsg: ListValidationMessage;
+}
+export interface ListLocationsMapProps {
+  defaultview: Defaultview;
+  locations: Location[] | undefined;
 }

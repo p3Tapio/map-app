@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import { Map, TileLayer } from 'react-leaflet';
-import '../../../style/mapstyle.css';
+import '../../../../style/mapstyle.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
 
 import Leaflet, { LeafletEvent } from 'leaflet';
-import { DefaultViewMapProps } from './listTypes';
+import { DefaultViewMapProps } from '../listTypes';
 
 const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ newList, setNewList, validationMsg }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

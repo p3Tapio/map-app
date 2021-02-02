@@ -19,4 +19,5 @@ export const initialLocation = {
   category: '',
   imageLink: '',
   createdBy: '',
+  list: '',
 };

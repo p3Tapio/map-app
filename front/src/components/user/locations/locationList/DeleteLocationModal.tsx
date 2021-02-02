@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { DeleteModalProps } from '../locationsTypes';
 
-const DeleteModal: React.FC<DeleteModalProps> = ({
+const DeleteLocationModal: React.FC<DeleteModalProps> = ({
   show, setShow, name, id, handleDelete,
 }) => {
   const handleClose = (): void => {
@@ -39,4 +39,4 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   );
 };
 
-export default DeleteModal;
+export default DeleteLocationModal;

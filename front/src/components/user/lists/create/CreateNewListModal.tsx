@@ -2,13 +2,14 @@ import React, { FormEvent, useState } from 'react';
 import axios from 'axios';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import DefaultViewMap from './DefaultViewMap';
-import { CreateNewListModalProps, ListValidationMessage } from './listTypes';
-import { NewList } from '../../../state/reducers/list/listTypes';
+import { CreateNewListModalProps, ListValidationMessage } from '../listTypes';
+import { NewList } from '../../../../state/reducers/list/listTypes';
 import ListForm from './ListForm';
-import { validateNewList } from '../validation';
-import { createNewList } from '../../../state/reducers/list/listActions';
-import MessageModal from '../../MessageModal';
+import { validateNewList } from '../../validation';
+import { createNewList } from '../../../../state/reducers/list/listActions';
+import MessageModal from '../../../MessageModal';
 
 const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
   show, setShow, newList, setNewList,
@@ -17,8 +18,8 @@ const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
   const [info, setInfo] = useState({ header: '', message: '' });
   const [showMsgModal, setShowMsgModal] = useState(false);
   const dispatch = useDispatch();
-
   const mapBoxUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places';
+
   const handleClose = (): void => {
     setShow(false);
   };
@@ -36,25 +37,25 @@ const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
         if (x.id.includes('place')) place = x.text;
         return null;
       });
-      const list = {
-        ...newList, place, country,
-      };
-      const validated: NewList | ListValidationMessage = validateNewList(list);
-      if ('name' in validated) {
-        try {
-          // eslint-disable-next-line @typescript-eslint/await-thenable
-          await dispatch(createNewList(validated));
-          setInfo({ header: 'Success', message: 'New list created!' });
-          setShow(false);
-          setShowMsgModal(true);
-          setListValidationMsg({});
-        } catch {
-          setInfo({ header: 'Error', message: 'Oh no, something went wrong! Try again.' });
-          setShowMsgModal(true);
-        }
-      } else {
-        setListValidationMsg(validated);
+    }
+    const list = {
+      ...newList, place, country,
+    };
+    const validated: NewList | ListValidationMessage = validateNewList(list);
+    if ('name' in validated) {
+      try {
+        // eslint-disable-next-line @typescript-eslint/await-thenable
+        await dispatch(createNewList(validated));
+        setInfo({ header: 'Success', message: 'New list created!' });
+        setShow(true);
+        setShowMsgModal(true);
+        setListValidationMsg({});
+      } catch {
+        setInfo({ header: 'Error', message: 'Oh no, something went wrong! Try again.' });
+        setShowMsgModal(true);
       }
+    } else {
+      setListValidationMsg(validated);
     }
   };
 

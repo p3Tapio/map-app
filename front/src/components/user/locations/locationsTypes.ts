@@ -1,5 +1,6 @@
 import { FormEvent } from 'react';
 import { Location } from '../../../state/reducers/location/locationTypes';
+import { Defaultview } from '../lists/listTypes';
 
 export interface LocationValidationMessage {
   nameErr?: string;
@@ -14,10 +15,7 @@ export interface ModalProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface CreateNewLocationModalProps extends ModalProps {
-  validationMsg: LocationValidationMessage;
-  setValidationMsg: React.Dispatch<React.SetStateAction<LocationValidationMessage>>;
-  location: Location;
-  setLocation: React.Dispatch<React.SetStateAction<Location>>;
+  defaultview: Defaultview;
 }
 export interface DeleteModalProps extends ModalProps {
   id: string;
@@ -25,10 +23,9 @@ export interface DeleteModalProps extends ModalProps {
   handleDelete: (id: string, name: string) => void;
 }
 export interface EditModalProps extends ModalProps {
-  validationMsg: LocationValidationMessage;
-  setValidationMsg: React.Dispatch<React.SetStateAction<LocationValidationMessage>>;
   location: Location;
   setLocation: React.Dispatch<React.SetStateAction<Location>>;
+  defaultview: Defaultview;
 }
 export interface SingleLocationMapProps extends ModalProps {
   location: Location | undefined;
@@ -48,9 +45,11 @@ export interface LocationFormProps extends BaseLocationComponentsProps {
 export interface MapProps extends BaseLocationComponentsProps {
   address: string;
   setAddress: React.Dispatch<React.SetStateAction<string>>;
+  defaultview: Defaultview;
 }
-export interface LocationListProps extends BaseLocationComponentsProps {
+export interface LocationListProps {
   locations: Location[] | undefined;
-  handleDelete: (id: string, name: string) => void;
-  setValidationMsg: React.Dispatch<React.SetStateAction<LocationValidationMessage>>;
+  location: Location;
+  setLocation: React.Dispatch<React.SetStateAction<Location>>;
+  defaultview: Defaultview;
 }

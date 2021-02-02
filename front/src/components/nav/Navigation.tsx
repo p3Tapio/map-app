@@ -30,9 +30,9 @@ const Navigation: React.FC<NavProps> = ({ logged, setLogged }) => {
             ? (
               <>
                 <Link to="/userpage" className="navLink">
-                  User
+                  Userpage
                 </Link>
-                <button type="button" className="navLink" onClick={handleLogout} style={{ marginLeft: '-15px' }}>Logout</button>
+                <button type="button" className="navLink" onClick={handleLogout} style={{ marginLeft: '20px' }}>Logout</button>
               </>
             )
             : (

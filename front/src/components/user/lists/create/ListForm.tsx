@@ -2,7 +2,7 @@ import React, { FormEvent } from 'react';
 import {
   Form, Col, Container, Modal, Button,
 } from 'react-bootstrap';
-import { ListFormProps } from './listTypes';
+import { ListFormProps } from '../listTypes';
 
 const ListForm: React.FC<ListFormProps> = ({
   handleClose, handleSubmit, newList, setNewList, validationMsg,

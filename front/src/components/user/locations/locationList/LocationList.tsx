@@ -3,20 +3,43 @@ import {
   Container, Card, Col, Row, OverlayTrigger, Tooltip,
 } from 'react-bootstrap';
 import { Pen, Trash } from 'react-bootstrap-icons';
+import { useDispatch } from 'react-redux';
 import SingleLocationMap from './SingleLocationMap';
 import altImg from '../../../../style/images/bluepin.png';
 import { LocationListProps } from '../locationsTypes';
-import DeleteModal from './DeleteModal';
-import EditModal from '../EditModal';
+import DeleteLocationModal from './DeleteLocationModal';
+import EditLocationModal from '../EditLocationModal';
+import MessageModal from '../../../MessageModal';
+import { deleteLocation } from '../../../../state/reducers/location/locationActions';
+import { initialLocation } from '../../initials';
 
 const LocationList: React.FC<LocationListProps> = ({
-  locations, handleDelete, validationMsg, setValidationMsg, location, setLocation,
+  locations, location, setLocation, defaultview,
 }) => {
+  const dispatch = useDispatch();
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
   const [showMap, setShowMap] = useState(false);
 
+  const [info, setInfo] = useState({ header: '', message: '' });
+
   if (!locations) return null;
+
+  const handleDelete = async (locationId: string, name: string): Promise<void> => { // nosta locationListiin
+    try {
+      // error ei putoo catchiin ilman awaittia ...
+      // eslint-disable-next-line @typescript-eslint/await-thenable
+      await dispatch(deleteLocation(locationId));
+      setInfo({ header: 'Success', message: `Location ${name} deleted!` });
+      setShowMessage(true);
+      setLocation(initialLocation);
+    } catch {
+      setInfo({ header: 'Error', message: 'Oh no, something went wrong :(' });
+      setShowMessage(true);
+    }
+  };
+
   return (
     <>
       <Container>
@@ -106,24 +129,24 @@ const LocationList: React.FC<LocationListProps> = ({
       {location
         ? (
           <>
-            <DeleteModal
+            <DeleteLocationModal
               id={location._id}
               name={location.name}
               show={showDelete}
               setShow={setShowDelete}
               handleDelete={handleDelete}
             />
-            <EditModal
+            <EditLocationModal
               show={showEdit}
               setShow={setShowEdit}
               location={location}
               setLocation={setLocation}
-              validationMsg={validationMsg}
-              setValidationMsg={setValidationMsg}
+              defaultview={defaultview}
             />
           </>
         )
         : null}
+      <MessageModal setInfo={setInfo} info={info} setShow={setShowMessage} show={showMessage} />
     </>
   );
 };

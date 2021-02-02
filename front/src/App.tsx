@@ -10,10 +10,12 @@ import Home from './components/Home';
 import Register from './components/user/auth/Register';
 import Login from './components/user/auth/Login';
 import UserPage from './components/user/UserPage';
+import ListPage from './components/user/lists/ListPage';
 
 import PrivateRoute from './components/PrivateRoute';
 import { getUser } from './state/localStore';
 import { getAllLocations } from './state/reducers/location/locationActions';
+
 
 // TODO
 // poista localstore käyttö ?? https://github.com/rt2zz/redux-persist
@@ -52,6 +54,9 @@ const App: React.FC = () => {
         </Switch>
         <Switch>
           <PrivateRoute path="/userpage" component={UserPage} />
+        </Switch>
+        <Switch>
+          <PrivateRoute path="/list/:id" component={ListPage} />
         </Switch>
       </Container>
     </>
