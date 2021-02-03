@@ -1,6 +1,6 @@
 import { FormEvent } from 'react';
 import { ModalProps } from '../locations/locationsTypes'; // show, setShow
-import { NewList } from '../../../state/reducers/list/listTypes';
+import { NewList, List } from '../../../state/reducers/list/listTypes';
 import { Location } from '../../../state/reducers/location/locationTypes';
 
 export interface Defaultview {
@@ -16,22 +16,25 @@ export interface ListValidationMessage {
 }
 
 export interface CreateNewListModalProps extends ModalProps {
-  newList: NewList;
-  setNewList: React.Dispatch<React.SetStateAction<NewList>>;
+  newList: List;
+  setNewList: React.Dispatch<React.SetStateAction<List>>;
 }
 export interface DefaultViewMapProps {
-  newList: NewList;
-  setNewList: React.Dispatch<React.SetStateAction<NewList>>;
+  newList: List;
+  setNewList: React.Dispatch<React.SetStateAction<List>>;
   validationMsg: ListValidationMessage;
 }
 export interface ListFormProps {
   handleClose: () => void;
   handleSubmit: (ev: FormEvent) => void;
-  newList: NewList;
-  setNewList: React.Dispatch<React.SetStateAction<NewList>>;
+  newList: List;
+  setNewList: React.Dispatch<React.SetStateAction<List>>;
   validationMsg: ListValidationMessage;
 }
 export interface ListLocationsMapProps {
   defaultview: Defaultview;
   locations: Location[] | undefined;
+}
+export interface ListListProps {
+  userLists: List[] | undefined;
 }

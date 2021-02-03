@@ -2,7 +2,6 @@ import React, { FormEvent, useState } from 'react';
 import axios from 'axios';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import DefaultViewMap from './DefaultViewMap';
 import { CreateNewListModalProps, ListValidationMessage } from '../listTypes';
 import { NewList } from '../../../../state/reducers/list/listTypes';

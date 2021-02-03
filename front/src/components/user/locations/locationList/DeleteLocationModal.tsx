@@ -16,7 +16,7 @@ const DeleteLocationModal: React.FC<DeleteModalProps> = ({
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Are you sure you want to delete location
+        Are you sure you want to delete
         {' '}
         {name}
         ?

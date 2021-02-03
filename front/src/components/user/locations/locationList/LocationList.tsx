@@ -26,7 +26,7 @@ const LocationList: React.FC<LocationListProps> = ({
 
   if (!locations) return null;
 
-  const handleDelete = async (locationId: string, name: string): Promise<void> => { // nosta locationListiin
+  const handleDelete = async (locationId: string, name: string): Promise<void> => {
     try {
       // error ei putoo catchiin ilman awaittia ...
       // eslint-disable-next-line @typescript-eslint/await-thenable

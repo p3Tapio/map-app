@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import {
-  ListDispatchTypes, GETPUBLICLISTS, NewList, CREATELIST, GETUSERLISTS,
+  ListDispatchTypes, GETPUBLICLISTS, NewList, CREATELIST, GETUSERLISTS, DELETELIST,
 } from './listTypes';
 import { createConfig } from '../../localStore';
 
@@ -35,6 +35,16 @@ export const createNewList = (list: NewList) => async (dispatch: Dispatch<ListDi
     dispatch({
       type: CREATELIST,
       payload: data,
+    });
+  }
+};
+export const deleteList = (id: string) => async (dispatch: Dispatch<ListDispatchTypes>): Promise<void> => {
+  const config = createConfig();
+  if (config.headers.token) {
+    await axios.delete(`${baseUrl}/api/list/delete/${id}`, config);
+    dispatch({
+      type: DELETELIST,
+      payload: id,
     });
   }
 };

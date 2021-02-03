@@ -16,15 +16,15 @@ import PrivateRoute from './components/PrivateRoute';
 import { getUser } from './state/localStore';
 import { getAllLocations } from './state/reducers/location/locationActions';
 
-
 // TODO
 // poista localstore käyttö ?? https://github.com/rt2zz/redux-persist
 // state.user.user ??? sama locationissa
 // tyypitykset yhteen paikkaan tai ainakin pois komponenteista ??? + extendaa niitä, nyt toistuu tyypitykset
 // CRUD valmis niin eka Heroku?
 // ks.Pin.jsx
-// Map: nested ternary
 // 404 page
+// routeihin sama 401 iffeihin, nyt osassa throw new Error
+// deletoituuko listan kohteen myös listan deletoinnin yhteydessä?
 
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);
@@ -56,6 +56,8 @@ const App: React.FC = () => {
           <PrivateRoute path="/userpage" component={UserPage} />
         </Switch>
         <Switch>
+          {/* private? Jos lista on public, niin sen tulee näkyä. Tee history.push() tjsp jos ei public ja ei oikea käyttäjä.
+          List.createdBy ===  loggedUser.id */}
           <PrivateRoute path="/list/:id" component={ListPage} />
         </Switch>
       </Container>

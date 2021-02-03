@@ -14,11 +14,16 @@ const Home: React.FC = () => (
           <h4>Currently implemented</h4>
           <p>Registered user can add locations to a map with name, address, description, category and image link.</p>
           <Col className="text-right mt-4">
-            <Button variant="outline-dark" id="submit" type="submit">
-              <Link to="/register" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+            <Link to="/register" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+              <Button variant="outline-dark" size="sm" type="button">
                 Register
-              </Link>
-            </Button>
+              </Button>
+            </Link>
+            <Link to="/login" style={{ color: 'inherit', textDecoration: 'inherit', marginLeft: '5px' }}>
+              <Button variant="outline-dark" size="sm" type="button">
+                Login
+              </Button>
+            </Link>
           </Col>
         </Jumbotron>
       </Col>

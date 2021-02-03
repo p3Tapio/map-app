@@ -3,6 +3,7 @@ import { Location } from '../location/locationTypes';
 export const GETPUBLICLISTS = 'GETPUBLICLISTS';
 export const GETUSERLISTS = 'GETUSERLISTS';
 export const CREATELIST = 'CREATELIST';
+export const DELETELIST = 'DELETELIST';
 
 export interface NewList {
   name: string;
@@ -29,10 +30,13 @@ export interface GetUserLists {
   type: typeof GETUSERLISTS;
   payload: List[];
 }
-
 export interface CreateList {
   type: typeof CREATELIST;
   payload: List;
 }
+export interface DeleteList {
+  type: typeof DELETELIST;
+  payload: string;
+}
 
-export type ListDispatchTypes = GetPublicLists | GetUserLists | CreateList
+export type ListDispatchTypes = GetPublicLists | GetUserLists | CreateList | DeleteList

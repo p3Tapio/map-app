@@ -40,7 +40,7 @@ const ListPage: React.FC = () => {
           Add location
         </Button>
         <Button size="sm" variant="outline-secondary" style={{ marginLeft: '5px' }} onClick={(): void => setShowMap(!showMap)}>
-          {showMap ? 'View as cards' : 'View on map'}
+          {showMap ? 'View list' : 'View map'}
         </Button>
         <hr />
         {!showMap && (
