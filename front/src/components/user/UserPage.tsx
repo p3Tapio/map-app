@@ -15,7 +15,7 @@ const UserPage: React.FC = () => {
 
   const [showCreateList, setShowCreateList] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const [showEdit, setShowEdit] = useState(true);
+  const [showEdit, setShowEdit] = useState(false);
   const [newList, setNewList] = useState(initialList);
 
   useEffect(() => {

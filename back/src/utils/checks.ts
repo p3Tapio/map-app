@@ -46,7 +46,7 @@ const parseCoordinates = (input: any): { lat: number; lng: number; } => {
   return coordinates;
 };
 // TODO ... miten tyypin tarkistat? 
-// nyt esim 12341451353 menee läpi
+// nyt esim 12341451353 menee läpi ja typeof input = string :(
 const parseId = (input: any): Types.ObjectId => {
   if (!input) {
     throw new Error('input missing or in wrong format: id missing.');
@@ -54,7 +54,7 @@ const parseId = (input: any): Types.ObjectId => {
   return input as Types.ObjectId;
 };
 const parseDefaultview = (input: any): Defaultview => {
-  if (!input) throw new Error('input missing or in wrong format: defaultview missing.');
+  if (!input || typeof input !=='object') throw new Error('input missing or in wrong format: defaultview missing.');
   const defaultview = {
     lat: parseInputNumber(input.lat),
     lng: parseInputNumber(input.lng),

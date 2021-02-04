@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get('/allpublic', async (_req: Request, res: Response) => {
   const lists = await List.find({ public: true }).populate('locations');
-  res.json(lists);
+  res.status(200).json(lists);
 });
 
 router.get('/user', async (req: Request, res: Response) => {
@@ -18,7 +18,7 @@ router.get('/user', async (req: Request, res: Response) => {
     if (req.header('token') && checkToken(req.header('token'))) { // checkToken testaus jotta 401 muuten 400
       const userId = checkToken(req.header('token'));
       const lists = await List.find({ createdBy: userId }).populate('locations');
-      res.json(lists);
+      res.status(200).json(lists);
     } else res.status(401).json({ error: 'unauthorized' });
   } catch (err) {
     res.status(400).json({ error: (err as Error).message });
@@ -48,7 +48,7 @@ router.post('/create', async (req: Request, res: Response) => {
       user.lists = user.lists.concat(savedList);
       await user.save();
       res.status(200).json(savedList);
-    } else throw new Error('No token');
+    } else res.status(401).send({error: 'unauthorized'});
   } catch (err) {
     res.status(400).json({ error: (err as Error).message });
   }
