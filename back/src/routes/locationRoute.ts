@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import Location from '../models/locationModel';
 import User from '../models/userModel';
 import List from '../models/listModel';
-import { checkNewLocationValues, checkUpdatedValues } from '../utils/checks';
+import { checkNewLocationValues, checkUpdatedLocationValues } from '../utils/checks';
 import { checkToken } from '../utils/tokens';
 import { IUser, ILocation, IList } from '../utils/types';
 
@@ -67,7 +67,7 @@ router.put('/update/:id', async (req: Request, res: Response) => {
   try {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
-      const body = checkUpdatedValues(req.body);
+      const body = checkUpdatedLocationValues(req.body);
       const location = await Location.findById(req.params.id) as ILocation;
 
       if (!location) throw new Error('No location found');

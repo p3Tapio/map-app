@@ -6,8 +6,8 @@ export interface NewUser {
 }
 export interface IUser extends Document, NewUser {
   _id: Types.ObjectId;
-  locations: ILocation[];
-  lists: IList[];
+  locations: Location[];
+  lists: List[];
 }
 export interface NewUser {
   username: string;
@@ -29,7 +29,7 @@ export interface ILocation extends Document, NewLocation {
   _id: Types.ObjectId;
   createdBy: Types.ObjectId;
 }
-export interface UpdatedLocation extends NewLocation {
+export interface Location extends NewLocation {
   _id: Types.ObjectId;
   createdBy: Types.ObjectId;
 }
@@ -37,7 +37,7 @@ export enum Category {
   Sights = "sights",
   FoodDrink = "foodDrink",
   Shopping = "shopping",
-  MuseumsArt = "museumsArt",
+  MuseumsArt = "museumArt",
 }
 export interface Defaultview {
   lat: number;
@@ -54,7 +54,7 @@ export interface NewList {
 }
 export interface List extends NewList {
   createdBy: Types.ObjectId;
-  locations: ILocation[];
+  locations: Location[];
 }
 export interface IList extends Document, NewList, List {
   _id: Types.ObjectId;

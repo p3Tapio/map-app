@@ -41,6 +41,7 @@ const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({ setShow
         setShow(false);
         setShowMsgModal(true);
         setAddress('');
+        setLocation(initialLocation);
         setLocationValidationMsg({});
       } catch { // TODO: 400 ei pudonnut tänne ???
         setInfo({ header: 'Error', message: 'Oh no, something went wrong! Try again.' });

@@ -1,5 +1,5 @@
 import {
-  ListDispatchTypes, GETPUBLICLISTS, CREATELIST, List, GETUSERLISTS, DELETELIST,
+  ListDispatchTypes, GETPUBLICLISTS, CREATELIST, List, GETUSERLISTS, DELETELIST, UPDATELIST,
 } from './listTypes';
 
 interface ListState {
@@ -22,7 +22,15 @@ const listReducer = (state: ListState = listState, action: ListDispatchTypes): L
       }
       return { ...state, userLists };
     }
-    case DELETELIST: {
+    case UPDATELIST: {
+      const userLists = state.userLists?.map((x) => (x._id === action.payload._id ? action.payload : x));
+      if (action.payload.public) {
+        const publicLists = state.publicLists?.map((x) => (x._id === action.payload._id ? action.payload : x));
+        return { ...state, userLists, publicLists };
+      }
+      return { ...state, userLists };
+    }
+    case DELETELIST: { // if ??? Jos ei skulaa, tässä potentiaalinen error
       const userLists = state.userLists?.filter((x) => x._id !== action.payload);
       const publicLists = state.publicLists?.filter((x) => x._id !== action.payload);
       return { ...state, userLists, publicLists };

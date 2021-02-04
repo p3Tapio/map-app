@@ -30,6 +30,9 @@ export interface EditModalProps extends ModalProps {
 export interface SingleLocationMapProps extends ModalProps {
   location: Location | undefined;
 }
+export interface LocationPopUpModalProps extends ModalProps {
+  location: Location;
+}
 //  -------------------------------
 interface BaseLocationComponentsProps {
   location: Location;
@@ -52,4 +55,5 @@ export interface LocationListProps {
   location: Location;
   setLocation: React.Dispatch<React.SetStateAction<Location>>;
   defaultview: Defaultview;
+
 }

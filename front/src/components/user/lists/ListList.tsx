@@ -9,18 +9,19 @@ import { deleteList } from '../../../state/reducers/list/listActions';
 import MessageModal from '../../MessageModal';
 import { initialList } from '../initials';
 import DeleteLocationModal from '../locations/locationList/DeleteLocationModal';
+import EditListModal from './EditListModal';
 import { ListListProps } from './listTypes';
 
-const ListList: React.FC<ListListProps> = ({ userLists }) => {
+const ListList: React.FC<ListListProps> = ({
+  userLists, showDelete, setShowDelete, showEdit, setShowEdit,
+}) => {
   const dispatch = useDispatch();
-  const [showDelete, setShowDelete] = useState(false);
   const [list, setList] = useState(initialList);
   const [showMessage, setShowMessage] = useState(false);
   const [info, setInfo] = useState({ header: '', message: '' });
 
-  const handleDelete = async (listId: string, name: string): Promise<void> => {
+  const handleDelete = (listId: string, name: string): void => {
     try {
-      // eslint-disable-next-line @typescript-eslint/await-thenable
       dispatch(deleteList(listId));
       setInfo({ header: 'Success', message: `List ${name} deleted!` });
       setShowMessage(true);
@@ -38,14 +39,15 @@ const ListList: React.FC<ListListProps> = ({ userLists }) => {
       <div>
         <Accordion>
           {userLists
-            ? userLists.map((x, i) => (
+            ? userLists.map((x) => (
               <Card style={{ marginBottom: '2px', borderRadius: '10px' }} key={x._id}>
-                <Accordion.Toggle as={Card.Header} eventKey={i.toString()}>
+                <Accordion.Toggle as={Card.Header} eventKey={x._id}>
                   {(x.country !== 'unknown' && x.place !== 'unknown' && `${x.name} - ${x.place}, ${x.country}`)}
                   {(x.country !== 'unknown' && x.place === 'unknown' && `${x.name} - ${x.country}`)}
                   {(x.country === 'unknown' && x.place !== 'unknown' && `${x.name} - ${x.place}`)}
+                  {(x.country === 'unknown' && x.place === 'unknown' && `${x.name}`)}
                 </Accordion.Toggle>
-                <Accordion.Collapse eventKey={i.toString()}>
+                <Accordion.Collapse eventKey={x._id}>
                   <Card.Body style={{ paddingLeft: 0, paddingRight: 0, paddingBottom: 0 }}>
                     <div className="px-4 mb-4">
                       {x.description}
@@ -65,7 +67,7 @@ const ListList: React.FC<ListListProps> = ({ userLists }) => {
                               type="button"
                               className="locationCardBtn"
                             >
-                              Click here to see the locations!
+                              Click here to see the locations and add more!
                             </button>
                           </Link>
                         </Col>
@@ -98,8 +100,10 @@ const ListList: React.FC<ListListProps> = ({ userLists }) => {
                               type="button"
                               id="edit"
                               className="locationCardBtn"
-                              // onClick={(): void => {
-                              // }}
+                              onClick={(): void => {
+                                setList(x);
+                                setShowEdit(true);
+                              }}
                             >
                               <Pen size={22} />
                             </button>
@@ -114,15 +118,23 @@ const ListList: React.FC<ListListProps> = ({ userLists }) => {
             : null}
         </Accordion>
       </div>
-      {list
+      {list // tämä ei kätsää tyhjää, mutta onko edes tarpeen?
         ? (
-          <DeleteLocationModal
-            id={list._id}
-            name={list.name}
-            show={showDelete}
-            setShow={setShowDelete}
-            handleDelete={handleDelete}
-          />
+          <>
+            <DeleteLocationModal
+              id={list._id}
+              name={list.name}
+              show={showDelete}
+              setShow={setShowDelete}
+              handleDelete={handleDelete}
+            />
+            <EditListModal
+              show={showEdit}
+              setShow={setShowEdit}
+              list={list}
+              setList={setList}
+            />
+          </>
         ) : null}
       <MessageModal setInfo={setInfo} info={info} setShow={setShowMessage} show={showMessage} />
     </>

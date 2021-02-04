@@ -3,15 +3,15 @@ import axios from 'axios';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import DefaultViewMap from './DefaultViewMap';
-import { CreateNewListModalProps, ListValidationMessage } from '../listTypes';
-import { NewList } from '../../../../state/reducers/list/listTypes';
+import { CreateNewListModalProps, ListValidationMessage } from './listTypes';
+import { NewList } from '../../../state/reducers/list/listTypes';
 import ListForm from './ListForm';
-import { validateNewList } from '../../validation';
-import { createNewList } from '../../../../state/reducers/list/listActions';
-import MessageModal from '../../../MessageModal';
+import { validateNewList } from '../validation';
+import { createNewList } from '../../../state/reducers/list/listActions';
+import MessageModal from '../../MessageModal';
 
 const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
-  show, setShow, newList, setNewList,
+  show, setShow, list, setList,
 }) => {
   const [listValidationMsg, setListValidationMsg] = useState<ListValidationMessage>({});
   const [info, setInfo] = useState({ header: '', message: '' });
@@ -28,7 +28,7 @@ const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
     let country = 'unknown';
     let place = 'unknown';
     const response = await axios.get(
-      `${mapBoxUrl}/${newList.defaultview.lng},${newList.defaultview.lat}.json?access_token=${process.env.REACT_APP_MAPBOX}`,
+      `${mapBoxUrl}/${list.defaultview.lng},${list.defaultview.lat}.json?access_token=${process.env.REACT_APP_MAPBOX}`,
     );
     if (response.data.features.length > 0) {
       response.data.features.filter((x: { id: string; text: string }) => {
@@ -37,16 +37,16 @@ const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
         return null;
       });
     }
-    const list = {
-      ...newList, place, country,
+    const newList = {
+      ...list, place, country,
     };
-    const validated: NewList | ListValidationMessage = validateNewList(list);
+    const validated: NewList | ListValidationMessage = validateNewList(newList);
     if ('name' in validated) {
       try {
         // eslint-disable-next-line @typescript-eslint/await-thenable
         await dispatch(createNewList(validated));
         setInfo({ header: 'Success', message: 'New list created!' });
-        setShow(true);
+        setShow(false);
         setShowMsgModal(true);
         setListValidationMsg({});
       } catch {
@@ -78,16 +78,17 @@ const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
             <label style={{ marginLeft: '25px' }}>Default view</label>
           </OverlayTrigger>
           <DefaultViewMap
-            newList={newList}
-            setNewList={setNewList}
+            list={list}
+            setList={setList}
             validationMsg={listValidationMsg}
           />
           <ListForm
             handleClose={handleClose}
             handleSubmit={handleSubmit}
-            newList={newList}
-            setNewList={setNewList}
+            list={list}
+            setList={setList}
             validationMsg={listValidationMsg}
+            formType="create"
           />
         </Modal.Body>
       </Modal>

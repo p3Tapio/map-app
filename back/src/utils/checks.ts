@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Types } from "mongoose";
-import { NewUser, Category, NewLocation, UpdatedLocation, NewList, Defaultview } from "./types";
+import { NewUser, Category, NewLocation, Location, NewList, Defaultview, List } from "./types";
 
 const isString = (text: any): text is string => typeof text === 'string' || text instanceof String;
 const isNumeric = (no: any): no is number => !isNaN(Number(no));
@@ -69,6 +69,11 @@ const parseInputBoolean = (input: any): boolean => {
   return input;
 };
 
+const parseLocationList = (input: any[]): Location[] => {
+  if (input.length>0) return input.map((x) => checkUpdatedLocationValues(x));
+  return [];
+};
+
 const checkUserValues = (object: any): NewUser => {
   const newUser: NewUser = {
     username: parseInputString(object.username),
@@ -88,7 +93,7 @@ const checkNewLocationValues = (object: any): NewLocation => {
   };
   return newLocation;
 };
-const checkUpdatedValues = (object: any): UpdatedLocation => {
+const checkUpdatedLocationValues = (object: any): Location => {
   const updated = {
     _id: parseId(object._id),
     name: parseInputString(object.name),
@@ -113,5 +118,25 @@ const checkNewListValues = (object: any): NewList => {
   };
   return newList;
 };
+const checkUpdatedListValues = (object: any): List => {
 
-export { checkUserValues, checkNewLocationValues, checkUpdatedValues, checkNewListValues };
+  const updated = {
+    name: parseInputString(object.name),
+    description: parseInputString(object.description),
+    defaultview: parseDefaultview(object.defaultview),
+    country: parseInputString(object.country),
+    place: parseInputString(object.place),
+    public: parseInputBoolean(object.public),
+    createdBy: parseId(object.createdBy),
+    locations: parseLocationList(object.locations),
+  };
+  return updated;
+};
+
+export {
+  checkUserValues,
+  checkNewLocationValues,
+  checkUpdatedLocationValues,
+  checkNewListValues,
+  checkUpdatedListValues,
+};

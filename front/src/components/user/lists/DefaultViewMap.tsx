@@ -1,13 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import { Map, TileLayer } from 'react-leaflet';
-import '../../../../style/mapstyle.css';
+import '../../../style/mapstyle.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
 
 import Leaflet, { LeafletEvent } from 'leaflet';
-import { DefaultViewMapProps } from '../listTypes';
+import { DefaultViewMapProps } from './listTypes';
 
-const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ newList, setNewList, validationMsg }) => {
+const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ list, setList, validationMsg }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>();
   const southWest = Leaflet.latLng(-89.98155760646617, -180);
@@ -22,27 +22,27 @@ const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ newList, setNewList, va
     <div className="mx-4" style={validationMsg.defaultviewErr ? { marginBottom: '18px' } : { marginBottom: '30px' }}>
       <Map
         ref={mapRef}
-        center={[newList.defaultview.lat, newList.defaultview.lng]}
+        center={[list.defaultview.lat, list.defaultview.lng]}
         maxBoundsViscosity={1.0}
         maxBounds={bounds}
         minZoom={2}
-        zoom={newList.defaultview.zoom}
+        zoom={list.defaultview.zoom}
         scrollWheelZoom
         style={{ height: 500 }}
         onZoomEnd={(ev: LeafletEvent): void => {
-          setNewList({
-            ...newList,
+          setList({
+            ...list,
             defaultview: {
-              ...newList.defaultview,
+              ...list.defaultview,
               zoom: ev.target._zoom,
             },
           });
         }}
         onMoveEnd={(ev: LeafletEvent): void => {
-          setNewList({
-            ...newList,
+          setList({
+            ...list,
             defaultview: {
-              ...newList.defaultview,
+              ...list.defaultview,
               lat: ev.target.getCenter().lat,
               lng: ev.target.getCenter().lng,
             },

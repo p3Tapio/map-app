@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import {
-  ListDispatchTypes, GETPUBLICLISTS, NewList, CREATELIST, GETUSERLISTS, DELETELIST,
+  ListDispatchTypes, GETPUBLICLISTS, NewList, CREATELIST, GETUSERLISTS, DELETELIST, List, UPDATELIST,
 } from './listTypes';
 import { createConfig } from '../../localStore';
 
@@ -26,7 +26,6 @@ export const getUserLists = () => async (dispatch: Dispatch<ListDispatchTypes>):
     });
   }
 };
-
 export const createNewList = (list: NewList) => async (dispatch: Dispatch<ListDispatchTypes>): Promise<void> => {
   const config = createConfig();
   if (config.headers.token) {
@@ -34,6 +33,17 @@ export const createNewList = (list: NewList) => async (dispatch: Dispatch<ListDi
     const { data } = res;
     dispatch({
       type: CREATELIST,
+      payload: data,
+    });
+  }
+};
+export const updateList = (list: List) => async (dispatch: Dispatch<ListDispatchTypes>): Promise<void> => {
+  const config = createConfig();
+  if (config.headers.token) {
+    const res = await axios.put(`${baseUrl}/api/list/update/${list._id}`, list, config);
+    const { data } = res;
+    dispatch({
+      type: UPDATELIST,
       payload: data,
     });
   }

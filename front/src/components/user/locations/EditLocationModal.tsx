@@ -39,6 +39,7 @@ const EditLocationModal: React.FC<EditModalProps> = ({
         setLocation(initialLocation);
       } catch {
         setInfo({ header: 'Error', message: 'Woops, something went wrong!' });
+        setShowMsgModal(true);
       }
     } else {
       setLocationValidationMsg(validated);

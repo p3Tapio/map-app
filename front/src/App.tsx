@@ -23,8 +23,11 @@ import { getAllLocations } from './state/reducers/location/locationActions';
 // CRUD valmis niin eka Heroku?
 // ks.Pin.jsx
 // 404 page
-// routeihin sama 401 iffeihin, nyt osassa throw new Error
+// routeihin sama 401 iffeihin, nyt osassa throw new Error (tarvetta muuhunkin perkaamiseen,
+// esim json/send, onko useriin tarvetta tallentaa locationit yms)
+// Type User { Location[] vs ILocation[] vs Types.ObjectId ???? }
 // deletoituuko listan kohteen myös listan deletoinnin yhteydessä?
+// "Add location" oikealle vaikka plus ikoni, edit toiminnot ja poisto tänne? Nyt menee itelläkin nappulat sekaisin, back button
 
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);

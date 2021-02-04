@@ -1,14 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Map, TileLayer, Marker, Popup,
 } from 'react-leaflet';
 import Leaflet, { LeafletMouseEvent } from 'leaflet';
 
 import { ListLocationsMapProps } from './listTypes';
+import { initialLocation } from '../initials';
 
 import '../../../style/mapstyle.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
+import LocationPopUpModal from '../locations/LocationPopUpModal';
 
 const ListLocationsMap: React.FC<ListLocationsMapProps> = ({ locations, defaultview }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,13 +18,15 @@ const ListLocationsMap: React.FC<ListLocationsMapProps> = ({ locations, defaultv
   const southWest = Leaflet.latLng(-89.98155760646617, -180);
   const northEast = Leaflet.latLng(89.99346179538875, 180);
   const bounds = Leaflet.latLngBounds(southWest, northEast);
+  const [location, setLocation] = useState(initialLocation);
+  const [showPopUpModal, setShowPopUpModal] = useState(false);
 
   useEffect(() => {
     mapRef.current.leafletElement.invalidateSize(false);
   });
 
   return (
-    <div>
+    <>
       <Map
         ref={mapRef}
         center={[defaultview.lat, defaultview.lng]}
@@ -49,6 +53,10 @@ const ListLocationsMap: React.FC<ListLocationsMapProps> = ({ locations, defaultv
               onMouseOut={(e: LeafletMouseEvent): void => {
                 e.target.closePopup();
               }}
+              onClick={(): void => {
+                setLocation(l);
+                setShowPopUpModal(true);
+              }}
             >
               <Popup>
                 {l.name}
@@ -57,7 +65,9 @@ const ListLocationsMap: React.FC<ListLocationsMapProps> = ({ locations, defaultv
           ))
           : null}
       </Map>
-    </div>
+      <LocationPopUpModal show={showPopUpModal} setShow={setShowPopUpModal} location={location} />
+    </>
+
   );
 };
 

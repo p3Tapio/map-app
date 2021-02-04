@@ -18,7 +18,7 @@ const ListPage: React.FC = () => {
   const [showMap, setShowMap] = useState(true);
   const [location, setLocation] = useState(initialLocation);
 
-  useEffect(() => { dispatch(getUserLists()); }, [dispatch, showCreate, location]);
+  useEffect(() => { dispatch(getUserLists()); }, [dispatch, showCreate]);
   if (!list) return null;
 
   return (
@@ -40,7 +40,7 @@ const ListPage: React.FC = () => {
           Add location
         </Button>
         <Button size="sm" variant="outline-secondary" style={{ marginLeft: '5px' }} onClick={(): void => setShowMap(!showMap)}>
-          {showMap ? 'View list' : 'View map'}
+          {showMap ? 'View locations' : 'View map'}
         </Button>
         <hr />
         {!showMap && (
@@ -49,6 +49,7 @@ const ListPage: React.FC = () => {
             location={location}
             setLocation={setLocation}
             defaultview={list.defaultview}
+
           />
         )}
         {showMap && (

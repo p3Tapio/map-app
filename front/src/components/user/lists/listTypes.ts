@@ -1,6 +1,6 @@
 import { FormEvent } from 'react';
 import { ModalProps } from '../locations/locationsTypes'; // show, setShow
-import { NewList, List } from '../../../state/reducers/list/listTypes';
+import { List } from '../../../state/reducers/list/listTypes';
 import { Location } from '../../../state/reducers/location/locationTypes';
 
 export interface Defaultview {
@@ -13,23 +13,30 @@ export interface ListValidationMessage {
   nameErr?: string;
   descriptionErr?: string;
   defaultviewErr?: string;
+  countryErr?: string;
+  placeErr?: string;
 }
 
 export interface CreateNewListModalProps extends ModalProps {
-  newList: List;
-  setNewList: React.Dispatch<React.SetStateAction<List>>;
+  list: List;
+  setList: React.Dispatch<React.SetStateAction<List>>;
+}
+export interface EditListModalProps extends ModalProps {
+  list: List;
+  setList: React.Dispatch<React.SetStateAction<List>>;
 }
 export interface DefaultViewMapProps {
-  newList: List;
-  setNewList: React.Dispatch<React.SetStateAction<List>>;
+  list: List;
+  setList: React.Dispatch<React.SetStateAction<List>>;
   validationMsg: ListValidationMessage;
 }
 export interface ListFormProps {
   handleClose: () => void;
   handleSubmit: (ev: FormEvent) => void;
-  newList: List;
-  setNewList: React.Dispatch<React.SetStateAction<List>>;
+  list: List;
+  setList: React.Dispatch<React.SetStateAction<List>>;
   validationMsg: ListValidationMessage;
+  formType: string;
 }
 export interface ListLocationsMapProps {
   defaultview: Defaultview;
@@ -37,4 +44,8 @@ export interface ListLocationsMapProps {
 }
 export interface ListListProps {
   userLists: List[] | undefined;
+  showDelete: boolean;
+  setShowDelete: React.Dispatch<React.SetStateAction<boolean>>;
+  showEdit: boolean;
+  setShowEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }

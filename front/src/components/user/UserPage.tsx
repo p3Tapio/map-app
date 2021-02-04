@@ -5,7 +5,7 @@ import { getUser } from '../../state/localStore';
 import { getUserLists } from '../../state/reducers/list/listActions';
 import { RootStore } from '../../state/store';
 import { initialList } from './initials';
-import CreateNewListModal from './lists/create/CreateNewListModal';
+import CreateNewListModal from './lists/CreateNewListModal';
 import ListList from './lists/ListList';
 
 const UserPage: React.FC = () => {
@@ -14,11 +14,13 @@ const UserPage: React.FC = () => {
   const userLists = useSelector((state: RootStore) => state.lists.userLists);
 
   const [showCreateList, setShowCreateList] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showEdit, setShowEdit] = useState(true);
   const [newList, setNewList] = useState(initialList);
 
   useEffect(() => {
     dispatch(getUserLists());
-  }, [dispatch]);
+  }, [dispatch, showDelete, showEdit]);
 
   const createNewList = (): void => {
     setNewList(initialList);
@@ -41,13 +43,19 @@ const UserPage: React.FC = () => {
         </p>
         <Button onClick={createNewList} size="sm" variant="outline-secondary">Create New</Button>
         <hr />
-        <ListList userLists={userLists} />
+        <ListList
+          userLists={userLists}
+          showDelete={showDelete}
+          setShowDelete={setShowDelete}
+          showEdit={showEdit}
+          setShowEdit={setShowEdit}
+        />
       </Container>
       <CreateNewListModal
         show={showCreateList}
         setShow={setShowCreateList}
-        newList={newList}
-        setNewList={setNewList}
+        list={newList}
+        setList={setNewList}
       />
     </>
   );

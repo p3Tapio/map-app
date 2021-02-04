@@ -3,7 +3,7 @@ import List from '../models/listModel';
 import User from '../models/userModel';
 import Location from '../models/locationModel';
 import { IList, IUser } from '../utils/types';
-import { checkNewListValues } from '../utils/checks';
+import { checkNewListValues, checkUpdatedListValues } from '../utils/checks';
 import { checkToken } from '../utils/tokens';
 
 const router = express.Router();
@@ -53,6 +53,25 @@ router.post('/create', async (req: Request, res: Response) => {
     res.status(400).json({ error: (err as Error).message });
   }
 });
+
+router.put('/update/:id', async (req: Request, res: Response) => {
+  try {
+    if (req.header('token') && checkToken(req.header('token'))) {
+      const userId = checkToken(req.header('token'));
+      const body = checkUpdatedListValues(req.body);
+      const list = await List.findById(req.params.id) as IList;
+
+      if (!list) throw new Error('No list found.');
+      else if (list.createdBy.toString() === userId) {
+        const updated = await List.findByIdAndUpdate({_id: req.params.id}, body, { new: true}) as IList;
+        res.json(updated);
+      } else res.status(401).send({ error: 'unauthorized'});
+    } else res.status(401).send({ error: 'unauthorized'});
+  } catch (err) {
+    res.send(400).json({ error: (err as Error).message });
+  }
+});
+
 router.delete('/delete/:id', async (req: Request, res: Response) => {
   try {
     if (req.header('token') && checkToken(req.header('token'))) {
