@@ -15,7 +15,7 @@ router.get('/allpublic', async (_req: Request, res: Response) => {
 
 router.get('/user', async (req: Request, res: Response) => {
   try {
-    if (req.header('token') && checkToken(req.header('token'))) { // checkToken testaus jotta 401 muuten 400
+    if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
       const lists = await List.find({ createdBy: userId }).populate('locations');
       res.status(200).json(lists);
@@ -60,7 +60,7 @@ router.put('/update/:id', async (req: Request, res: Response) => {
       const userId = checkToken(req.header('token'));
       const body = checkUpdatedListValues(req.body);
       const list = await List.findById(req.params.id) as IList;
-
+      
       if (!list) throw new Error('No list found.');
       else if (list.createdBy.toString() === userId) {
         const updated = await List.findByIdAndUpdate({_id: req.params.id}, body, { new: true}) as IList;
@@ -68,7 +68,7 @@ router.put('/update/:id', async (req: Request, res: Response) => {
       } else res.status(401).send({ error: 'unauthorized'});
     } else res.status(401).send({ error: 'unauthorized'});
   } catch (err) {
-    res.send(400).json({ error: (err as Error).message });
+    res.status(400).json({ error: (err as Error).message });
   }
 });
 
@@ -85,7 +85,6 @@ router.delete('/delete/:id', async (req: Request, res: Response) => {
       } else {
         res.status(401).send({ error: 'unauthorized' });
       }
-
     } else res.status(401).send({ error: 'unauthorized' });
   } catch (err) {
     res.status(400).json({ error: (err as Error).message });

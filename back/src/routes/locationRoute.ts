@@ -9,7 +9,7 @@ import { IUser, ILocation, IList } from '../utils/types';
 
 const router = express.Router();
 
-router.get('/all', async (_req: Request, res: Response) => {  // Käytössä vain testeissä.. siirto testingRouteen?
+router.get('/all', async (_req: Request, res: Response) => {  // Käytössä vain testeissä??? Poista ja hae suoraan mongosta
   // const locations = await Location.find({}).populate('createdBy', {username: 1, _id: 0}); Tyypitys kaatuu palautettavien muttujien spesifiointiin - luo erillinen tyyppi ??? 
   const locations = await Location.find({});
   res.json(locations);

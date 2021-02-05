@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { NewUser, Category, NewLocation, Location, NewList, Defaultview, List } from "./types";
 
 const isString = (text: any): text is string => typeof text === 'string' || text instanceof String;
@@ -36,7 +36,6 @@ const parseImageLink = (input: any): string | undefined => {
   }
   return input;
 };
-
 const parseCoordinates = (input: any): { lat: number; lng: number; } => {
   if (!input) throw new Error('coordinates missing or in wrong format.');
   const coordinates = {
@@ -45,16 +44,15 @@ const parseCoordinates = (input: any): { lat: number; lng: number; } => {
   };
   return coordinates;
 };
-// TODO ... miten tyypin tarkistat? 
-// nyt esim 12341451353 menee läpi ja typeof input = string :(
 const parseId = (input: any): Types.ObjectId => {
-  if (!input) {
-    throw new Error('input missing or in wrong format: id missing.');
+  if (!input || !mongoose.isValidObjectId(input)) {
+    throw new Error('input missing or in wrong format: id expected.');
   }
   return input as Types.ObjectId;
 };
 const parseDefaultview = (input: any): Defaultview => {
-  if (!input || typeof input !=='object') throw new Error('input missing or in wrong format: defaultview missing.');
+  if (!input || typeof input !== 'object') throw new Error('input missing or in wrong format: defaultview missing.');
+  else if (!("lat" in input) || !("lng" in input) || !("zoom" in input)) throw new Error('defaultview missing required properties.')
   const defaultview = {
     lat: parseInputNumber(input.lat),
     lng: parseInputNumber(input.lng),
@@ -68,11 +66,12 @@ const parseInputBoolean = (input: any): boolean => {
   }
   return input;
 };
-
 const parseLocationList = (input: any[]): Location[] => {
-  if (input.length>0) return input.map((x) => checkUpdatedLocationValues(x));
+  if (input.length > 0) return input.map((x) => checkUpdatedLocationValues(x));
   return [];
 };
+
+// ---------------------------------------------------------
 
 const checkUserValues = (object: any): NewUser => {
   const newUser: NewUser = {
@@ -81,6 +80,7 @@ const checkUserValues = (object: any): NewUser => {
   };
   return newUser;
 };
+
 const checkNewLocationValues = (object: any): NewLocation => {
   const newLocation = {
     name: parseInputString(object.name),
@@ -107,30 +107,54 @@ const checkUpdatedLocationValues = (object: any): Location => {
   };
   return updated;
 };
-const checkNewListValues = (object: any): NewList => {
-  const newList = {
-    name: parseInputString(object.name),
-    description: parseInputString(object.description),
-    defaultview: parseDefaultview(object.defaultview),
-    country: parseInputString(object.country),
-    place: parseInputString(object.place),
-    public: parseInputBoolean(object.public),
-  };
-  return newList;
+const checkNewListValues = (object: any): NewList => {  // TODO onko !value määritykset turhia jos ehdot myös locationiin? 
+  if (!object || Object.keys(object).length === 0) throw new Error('No data.');
+  else if (
+    !("name" in object) ||
+    !("description" in object) ||
+    !("defaultview" in object) ||
+    !("country" in object) ||
+    !("place" in object) ||
+    !("public" in object)) {
+    throw new Error('object missing required properties.');
+  }
+  else {
+    const newList = {
+      name: parseInputString(object.name),
+      description: parseInputString(object.description),
+      defaultview: parseDefaultview(object.defaultview),
+      country: parseInputString(object.country),
+      place: parseInputString(object.place),
+      public: parseInputBoolean(object.public),
+    };
+    return newList;
+  }
 };
 const checkUpdatedListValues = (object: any): List => {
-
-  const updated = {
-    name: parseInputString(object.name),
-    description: parseInputString(object.description),
-    defaultview: parseDefaultview(object.defaultview),
-    country: parseInputString(object.country),
-    place: parseInputString(object.place),
-    public: parseInputBoolean(object.public),
-    createdBy: parseId(object.createdBy),
-    locations: parseLocationList(object.locations),
-  };
-  return updated;
+  if (!object || Object.keys(object).length === 0) throw new Error('No data.');
+  else if (
+    !("name" in object) ||
+    !("description" in object) ||
+    !("defaultview" in object) ||
+    !("country" in object) ||
+    !("place" in object) ||
+    !("public" in object) ||
+    !("createdBy" in object) || 
+    !("locations" in object)) { 
+    throw new Error('object missing required properties.');
+  } else {
+    const updated = {
+      name: parseInputString(object.name),
+      description: parseInputString(object.description),
+      defaultview: parseDefaultview(object.defaultview),
+      country: parseInputString(object.country),
+      place: parseInputString(object.place),
+      public: parseInputBoolean(object.public),
+      createdBy: parseId(object.createdBy),
+      locations: parseLocationList(object.locations),
+    };
+    return updated;
+  }
 };
 
 export {
