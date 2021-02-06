@@ -11,16 +11,14 @@ import Register from './components/user/auth/Register';
 import Login from './components/user/auth/Login';
 import UserPage from './components/user/UserPage';
 import ListPage from './components/user/lists/ListPage';
+import PublicLists from './components/public/PublicLists';
 
 import PrivateRoute from './components/PrivateRoute';
 import { getUser } from './state/localStore';
-import { getAllLocations } from './state/reducers/location/locationActions';
+import { getPublicLists } from './state/reducers/list/listActions';
 
 // TODO
-// poista localstore käyttö ?? https://github.com/rt2zz/redux-persist
-// state.user.user ??? sama locationissa
-// tyypitykset yhteen paikkaan tai ainakin pois komponenteista ??? + extendaa niitä, nyt toistuu tyypitykset
-// CRUD valmis niin eka Heroku?
+// tyypitykset yhteen paikkaan tai ainakin pois komponenteista ??? + extendaa niitä, nyt toistoa
 // ks.Pin.jsx
 // 404 page
 // routeihin sama 401 iffeihin, nyt osassa throw new Error (tarvetta muuhunkin perkaamiseen,
@@ -35,7 +33,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     setLogged(!!getUser());
-    dispatch(getAllLocations());
+    dispatch(getPublicLists());
   }, [dispatch]);
 
   return (
@@ -53,6 +51,11 @@ const App: React.FC = () => {
         <Switch>
           <Route path="/login">
             <Login setLogged={setLogged} />
+          </Route>
+        </Switch>
+        <Switch>
+          <Route path="/public">
+            <PublicLists />
           </Route>
         </Switch>
         <Switch>

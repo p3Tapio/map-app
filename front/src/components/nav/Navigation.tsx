@@ -26,10 +26,13 @@ const Navigation: React.FC<NavProps> = ({ logged, setLogged }) => {
           <Link to="/" className="navLink">
             Home
           </Link>
+          <Link to="/public" className="navLink" style={{whiteSpace: 'nowrap'}}>
+            Location lists
+          </Link>
           {logged
             ? (
               <>
-                <Link to="/userpage" className="navLink">
+                <Link to="/userpage" className="navLink" style={{ marginLeft: '45px' }}>
                   Userpage
                 </Link>
                 <button type="button" className="navLink" onClick={handleLogout} style={{ marginLeft: '20px' }}>Logout</button>
@@ -37,7 +40,7 @@ const Navigation: React.FC<NavProps> = ({ logged, setLogged }) => {
             )
             : (
               <>
-                <Link to="/register" className="navLink" style={{ marginRight: '30px' }}>
+                <Link to="/register" className="navLink" style={{ marginLeft: '45px', marginRight: '30px' }}>
                   Register
                 </Link>
                 <Link to="/login" className="navLink">
