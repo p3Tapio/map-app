@@ -12,7 +12,16 @@ const Home: React.FC = () => (
           <h2>MapApp - Work in progress...</h2>
           <hr />
           <h4>Currently implemented</h4>
-          <p>Registered user can create lists of locations, which can be set either as private or public. Accordingly, these lists can be used e.g. as a reminder of places you wish to see in some location or as a guide for others.</p>
+          <p>
+            Registered user can create lists of locations.
+            These lists can be set either as private or public and used e.g. as a reminder of places you wish to see or as a guide for others.
+          </p>
+          <p>
+            Public lists are visibile to all and can be browsed without registration
+            or logging in. Private lists are visibile only to the user who created them.
+          </p>
+          <h4>To do</h4>
+          <p>Commenting/reviews for registered users and a possiblity to favorite/save lists for future reference. </p>
           <hr />
           <Row className="justify-content-between  mt-4">
             <Col className="text-left">

@@ -16,6 +16,7 @@ import PublicLists from './components/public/PublicLists';
 import PrivateRoute from './components/PrivateRoute';
 import { getUser } from './state/localStore';
 import { getPublicLists } from './state/reducers/list/listActions';
+import PublicListDetails from './components/public/PublicListDetails';
 
 // TODO
 // tyypitykset yhteen paikkaan tai ainakin pois komponenteista ??? + extendaa niitä, nyt toistoa
@@ -33,7 +34,6 @@ const App: React.FC = () => {
 
   useEffect(() => {
     setLogged(!!getUser());
-    dispatch(getPublicLists());
   }, [dispatch]);
 
   return (
@@ -54,16 +54,19 @@ const App: React.FC = () => {
           </Route>
         </Switch>
         <Switch>
-          <Route path="/public">
+          <Route exact path="/public">
             <PublicLists />
+          </Route>
+        </Switch>
+        <Switch>
+          <Route exact path="/public/:id">
+            <PublicListDetails />
           </Route>
         </Switch>
         <Switch>
           <PrivateRoute path="/userpage" component={UserPage} />
         </Switch>
         <Switch>
-          {/* private? Jos lista on public, niin sen tulee näkyä. Tee history.push() tjsp jos ei public ja ei oikea käyttäjä.
-          List.createdBy ===  loggedUser.id */}
           <PrivateRoute path="/list/:id" component={ListPage} />
         </Switch>
       </Container>

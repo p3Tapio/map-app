@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Accordion, Card, Col, OverlayTrigger, Row, Tooltip,
+  Accordion, Button, Card, Col, Row,
 } from 'react-bootstrap';
 import { Pen, Trash } from 'react-bootstrap-icons';
 import { useDispatch } from 'react-redux';
@@ -9,11 +9,10 @@ import { deleteList } from '../../../state/reducers/list/listActions';
 import MessageModal from '../../MessageModal';
 import { initialList } from '../initials';
 import DeleteLocationModal from '../locations/locationList/DeleteLocationModal';
-import EditListModal from './EditListModal';
 import { ListListProps } from './listTypes';
 
 const ListList: React.FC<ListListProps> = ({
-  userLists, showDelete, setShowDelete, showEdit, setShowEdit,
+  userLists, showDelete, setShowDelete,
 }) => {
   const dispatch = useDispatch();
   const [list, setList] = useState(initialList);
@@ -61,54 +60,35 @@ const ListList: React.FC<ListListProps> = ({
                     </div>
                     <div className="card-footer">
                       <Row className="justify-content-between">
-                        <Col className="text-left">
-                          <Link to={`/list/${x._id}`} style={{ color: 'inherit', textDecoration: 'inherit', marginLeft: '5px' }}>
-                            <button
+                        <Col className="text-right">
+                          <Button
+                            type="button"
+                            variant="outline-danger"
+                            style={{
+                              padding: '5px', paddingLeft: '10px', paddingRight: '10px', marginRight: '5px',
+                            }}
+                            onClick={(): void => {
+                              setList(x);
+                              setShowDelete(true);
+                            }}
+                          >
+                            Delete
+                            {' '}
+                            <Trash size={20} style={{ marginRight: '10px' }} />
+                          </Button>
+                          <Link to={`/list/${x._id}`}>
+                            <Button
                               type="button"
-                              className="locationCardBtn"
+                              variant="outline-secondary"
+                              style={{ padding: '5px', paddingLeft: '10px', paddingRight: '10px' }}
                             >
-                              Click here to see the locations and add more!
-                            </button>
+                              Edit
+                              {' '}
+                              <Pen size={20} style={{ marginLeft: '10px' }} />
+                            </Button>
                           </Link>
                         </Col>
-                        <Col className="text-right" style={{ marginBottom: '5px' }}>
-                          <OverlayTrigger
-                            placement="auto"
-                            overlay={
-                              <Tooltip id="editTooltip">Delete list</Tooltip>
-                            }
-                          >
-                            <button
-                              type="button"
-                              id="delete"
-                              className="locationCardBtn"
-                              onClick={(): void => {
-                                setList(x);
-                                setShowDelete(true);
-                              }}
-                            >
-                              <Trash size={25} style={{ marginRight: '10px' }} />
-                            </button>
-                          </OverlayTrigger>
-                          <OverlayTrigger
-                            placement="auto"
-                            overlay={
-                              <Tooltip id="editTooltip">Edit list details</Tooltip>
-                            }
-                          >
-                            <button
-                              type="button"
-                              id="edit"
-                              className="locationCardBtn"
-                              onClick={(): void => {
-                                setList(x);
-                                setShowEdit(true);
-                              }}
-                            >
-                              <Pen size={22} />
-                            </button>
-                          </OverlayTrigger>
-                        </Col>
+
                       </Row>
                     </div>
                   </Card.Body>
@@ -128,12 +108,7 @@ const ListList: React.FC<ListListProps> = ({
               setShow={setShowDelete}
               handleDelete={handleDelete}
             />
-            <EditListModal
-              show={showEdit}
-              setShow={setShowEdit}
-              list={list}
-              setList={setList}
-            />
+
           </>
         ) : null}
       <MessageModal setInfo={setInfo} info={info} setShow={setShowMessage} show={showMessage} />

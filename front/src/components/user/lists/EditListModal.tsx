@@ -25,9 +25,10 @@ const EditListModal: React.FC<EditListModalProps> = ({
     const validated: List | ListValidationMessage = validateUpdatedList(list);
     if ('name' in validated) {
       try {
+        // TODO testaa onko arvot muuttuneet?
         // eslint-disable-next-line @typescript-eslint/await-thenable
         await dispatch(updateList(validated));
-        setInfo({ header: 'Success', message: `List ${validated.name} updated!` });
+        setInfo({ header: 'Success', message: `${validated.name} updated!` });
         setShow(false);
         setShowMsgModal(true);
         setListValidationMsg({});

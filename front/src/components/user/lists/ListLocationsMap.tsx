@@ -24,7 +24,7 @@ const ListLocationsMap: React.FC<ListLocationsMapProps> = ({ locations, defaultv
   useEffect(() => {
     mapRef.current.leafletElement.invalidateSize(false);
   });
-
+  if (!locations) return null;
   return (
     <>
       <Map
@@ -42,7 +42,7 @@ const ListLocationsMap: React.FC<ListLocationsMapProps> = ({ locations, defaultv
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {locations
+        {locations && locations[0].coordinates
           ? locations.map((l) => (
             <Marker
               key={l._id}
