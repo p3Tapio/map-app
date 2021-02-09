@@ -24,8 +24,8 @@ import PublicListDetails from './components/public/PublicListDetails';
 // routeihin sama 401 iffeihin, nyt osassa throw new Error (tarvetta muuhunkin perkaamiseen,
 // esim json/send, onko useriin tarvetta tallentaa locationit yms)
 // Type User { Location[] vs ILocation[] vs Types.ObjectId ???? }
-// deletoituuko listan kohteen myös listan deletoinnin yhteydessä? Huom testeihin myös muokkaus locationiin: poist all-route ja vaihda kutsut mongoon? palautuksiin return?
-// "Add location" oikealle vaikka plus ikoni, edit toiminnot ja poisto tänne? Nyt menee itelläkin nappulat sekaisin, back button
+// back button takaisin lista näkymään
+// onko locationReducer kokonaisuudessaan enää käytössä?
 
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);

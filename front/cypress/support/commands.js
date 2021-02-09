@@ -1,25 +1,44 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+Cypress.Commands.add('clearDb', () => {
+  cy.request('POST', 'http://localhost:3001/api/testing/resetUser')
+  cy.request('POST', 'http://localhost:3001/api/testing/resetLocations')
+  cy.request('POST', 'http://localhost:3001/api/testing/resetLists')
+
+})
+Cypress.Commands.add('registerAndLogin', () => {
+  const user = { username: 'tester', password: 'secret' };
+  cy.request('POST', 'http://localhost:3001/api/user/register', user);
+  cy.visit('http://localhost:3000/login');
+  cy.get('#username').type('tester');
+  cy.get('#password').type('secret');
+  cy.get('#submit').click();
+  cy.contains('Ok').click();
+})
+Cypress.Commands.add('registerAndLoginAnother', () => {
+  const another = { username: 'another', password: 'terces' };
+  cy.request('POST', 'http://localhost:3001/api/user/register', another);
+  cy.visit('http://localhost:3000/login');
+  cy.get('#username').type('another');
+  cy.get('#password').type('terces');
+  cy.get('#submit').click();
+  cy.contains('Ok').click();
+})
+
+Cypress.Commands.add('createPublicList', () => {
+  cy.get('#createList').click();
+  cy.contains('+').click().click();
+  cy.get('#name').type('test list');
+  cy.get('#description').type('description for testing');
+  cy.get('#visibility').check({force: true});
+  cy.contains('Save').click();
+  cy.contains('New list created');
+  cy.contains('Ok').click();
+})
+Cypress.Commands.add('createPrivateList', () => {
+  cy.get('#createList').click();
+  cy.contains('+').click().click();
+  cy.get('#name').type('Private list');
+  cy.get('#description').type('description for private list');
+  cy.contains('Save').click();
+  cy.contains('New list created');
+  cy.contains('Ok').click();
+})

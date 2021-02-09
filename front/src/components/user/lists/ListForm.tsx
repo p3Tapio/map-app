@@ -79,7 +79,7 @@ const ListForm: React.FC<ListFormProps> = ({
         </Col>
       </Form.Group>
       <Form.Group className="row">
-        <Form.Label htmlFor="Visibility" className="col-sm-3">Visibility</Form.Label>
+        <Form.Label htmlFor="visibility" className="col-sm-3">Visibility</Form.Label>
         <Col sm={9}>
           <Form.Check
             type="switch"

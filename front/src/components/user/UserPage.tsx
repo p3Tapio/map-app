@@ -36,13 +36,14 @@ const UserPage: React.FC = () => {
           Hi,
           {' '}
           {user.username}
+          !
         </h4>
         <p>
           {!userLists || userLists.length === 0
             ? 'Seems like you have not created any location lists yet. You can start by clicking the create new button!'
             : ' Below you can see the lists you have created. You can create a new one by clicking the create new button!'}
         </p>
-        <Button onClick={createNewList} size="sm" variant="outline-secondary" style={{ paddingRight: '10px' }}>
+        <Button id="createList" onClick={createNewList} size="sm" variant="outline-secondary" style={{ paddingRight: '10px' }}>
           Create new list
           <Plus size={24} style={{ marginLeft: '10px' }} />
         </Button>
