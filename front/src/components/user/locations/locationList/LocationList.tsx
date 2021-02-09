@@ -14,11 +14,9 @@ import { initialLocation } from '../../initials';
 import LocationCard from './LocationCard';
 
 const LocationList: React.FC<LocationListProps> = ({
-  locations, location, setLocation, defaultview,
+  locations, location, setLocation, defaultview, showDelete, setShowDelete, showEdit, setShowEdit,
 }) => {
   const dispatch = useDispatch();
-  const [showDelete, setShowDelete] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [showMap, setShowMap] = useState(false);
 
@@ -28,7 +26,6 @@ const LocationList: React.FC<LocationListProps> = ({
 
   const handleDelete = async (locationId: string, name: string): Promise<void> => {
     try {
-      // error ei putoo catchiin ilman awaittia ...
       // eslint-disable-next-line @typescript-eslint/await-thenable
       await dispatch(deleteLocation(locationId));
       setInfo({ header: 'Success', message: `Location ${name} deleted!` });

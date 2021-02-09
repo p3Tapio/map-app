@@ -42,7 +42,7 @@ const ListLocationsMap: React.FC<ListLocationsMapProps> = ({ locations, defaultv
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {locations && locations[0].coordinates
+        {locations && locations[0] && locations[0].coordinates
           ? locations.map((l) => (
             <Marker
               key={l._id}
@@ -63,7 +63,7 @@ const ListLocationsMap: React.FC<ListLocationsMapProps> = ({ locations, defaultv
               </Popup>
             </Marker>
           ))
-          : null}
+          : <></>}
       </Map>
       <LocationPopUpModal show={showPopUpModal} setShow={setShowPopUpModal} location={location} />
     </>

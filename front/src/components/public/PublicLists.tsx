@@ -14,7 +14,7 @@ const PublicLists: React.FC = () => {
 
   useEffect(() => {
     dispatch(getPublicLists());
-  }, [])
+  }, [dispatch])
 
   if (!publicLists) return null;
   return (

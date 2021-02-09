@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import {
-  LocationDispatchTypes, GETLOCATIONS, NewLocation, CREATELOCATION, GETUSERLOCATIONS, DELETELOCATION, CLEARUSERDATA, Location, UPDATELOCATION,
+  LocationDispatchTypes, GETLOCATIONS, NewLocation, CREATELOCATION, GETUSERLOCATIONS, DELETELOCATION, Location, UPDATELOCATION,
 } from './locationTypes';
 import { createConfig } from '../../localStore';
 
@@ -57,8 +57,4 @@ export const deleteLocation = (id: string) => async (dispatch: Dispatch<Location
       payload: id,
     });
   }
-};
-export const logoutUser = () => (dispatch: Dispatch<LocationDispatchTypes>): void => {
-  window.localStorage.clear();
-  dispatch({ type: CLEARUSERDATA });
 };

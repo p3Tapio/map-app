@@ -2,7 +2,7 @@ import {
   UserDispatchTypes, LoggedUser, REGISTER, LOGIN,
 } from './userTypes';
 
-interface UserState {
+export interface UserState {
   user?: LoggedUser;
 }
 const userState: UserState = { user: undefined };

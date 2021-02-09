@@ -55,6 +55,10 @@ export interface LocationListProps {
   location: Location;
   setLocation: React.Dispatch<React.SetStateAction<Location>>;
   defaultview: Defaultview;
+  showDelete: boolean;
+  setShowDelete: React.Dispatch<React.SetStateAction<boolean>>;
+  showEdit: boolean;
+  setShowEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface LocationCardProps {
   location: Location;

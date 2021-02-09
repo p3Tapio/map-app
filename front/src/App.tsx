@@ -15,7 +15,6 @@ import PublicLists from './components/public/PublicLists';
 
 import PrivateRoute from './components/PrivateRoute';
 import { getUser } from './state/localStore';
-import { getPublicLists } from './state/reducers/list/listActions';
 import PublicListDetails from './components/public/PublicListDetails';
 
 // TODO

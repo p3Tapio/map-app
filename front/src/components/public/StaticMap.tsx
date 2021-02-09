@@ -10,7 +10,6 @@ import { LeafletMouseEvent } from 'leaflet';
 
 
 const StaticMap: React.FC<StaticMapProps> = ({ list }) => {
-  console.log('list', list)
   return (
     <Map
       style={{ height: '100%', width: '100%' }}

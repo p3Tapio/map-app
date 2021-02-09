@@ -3,7 +3,6 @@ export const CREATELOCATION = 'CREATELOCATION';
 export const GETUSERLOCATIONS = 'GETUSERLOCATIONS';
 export const UPDATELOCATION = 'UPDATELOCATION';
 export const DELETELOCATION = 'DELETELOCATION';
-export const CLEARUSERDATA = 'CLEARUSERDATA';
 
 export interface NewLocation {
   name: string;
@@ -38,8 +37,5 @@ export interface DeleteLocation {
   type: typeof DELETELOCATION;
   payload: string;
 }
-export interface ClearUserData {
-  type: typeof CLEARUSERDATA;
-}
 
-export type LocationDispatchTypes = CreateLocation | GetLocations | GetUserLocations | UpdateLocation | DeleteLocation | ClearUserData;
+export type LocationDispatchTypes = CreateLocation | GetLocations | GetUserLocations | UpdateLocation | DeleteLocation;

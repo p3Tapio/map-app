@@ -28,7 +28,7 @@ const PublicListDetails: React.FC = () => {
   }, [publiclist])
 
   if (!publiclist) return null;
-  console.log('countryDetails', countryDetails[0].flag)
+
   return (
     <Container className="mt-5">
       <Row className="mb-4">

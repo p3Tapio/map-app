@@ -1,8 +1,8 @@
 import {
-  LocationDispatchTypes, Location, GETLOCATIONS, CREATELOCATION, GETUSERLOCATIONS, DELETELOCATION, CLEARUSERDATA, UPDATELOCATION,
+  LocationDispatchTypes, Location, GETLOCATIONS, CREATELOCATION, GETUSERLOCATIONS, DELETELOCATION, UPDATELOCATION,
 } from './locationTypes';
 
-interface LocationState {
+export interface LocationState {
   locations?: Location[];
   userLocations?: Location[];
 }
@@ -28,8 +28,6 @@ const locationReducer = (state: LocationState = locationState, action: LocationD
       const locations = state.userLocations?.filter((x) => x._id !== action.payload);
       return { ...state, locations, userLocations };
     }
-    case CLEARUSERDATA:
-      return { ...state, userLocations: undefined };
     default:
       return state;
   }

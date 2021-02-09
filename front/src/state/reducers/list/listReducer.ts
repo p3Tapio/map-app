@@ -2,7 +2,7 @@ import {
   ListDispatchTypes, GETPUBLICLISTS, CREATELIST, List, GETUSERLISTS, DELETELIST, UPDATELIST,
 } from './listTypes';
 
-interface ListState {
+export interface ListState {
   publicLists?: List[];
   userLists?: List[];
 }

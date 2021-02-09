@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { logoutUser } from '../../state/reducers/location/locationActions';
+import { logoutUser } from '../../state/reducers/RootReducer';
 
 interface NavProps {
   logged: boolean | undefined;
