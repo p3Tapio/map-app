@@ -16,6 +16,7 @@ import PublicLists from './components/public/PublicLists';
 import PrivateRoute from './components/PrivateRoute';
 import { getUser } from './state/localStore';
 import PublicListDetails from './components/public/PublicListDetails';
+import NotFound from './NotFound';
 
 // TODO
 // tyypitykset yhteen paikkaan tai ainakin pois komponenteista ??? + extendaa niitä, nyt toistoa
@@ -41,32 +42,21 @@ const App: React.FC = () => {
       <Container>
         <Switch>
           <Route exact path="/" component={Home} />
-        </Switch>
-        <Switch>
           <Route path="/register">
             <Register setLogged={setLogged} />
           </Route>
-        </Switch>
-        <Switch>
           <Route path="/login">
             <Login setLogged={setLogged} />
           </Route>
-        </Switch>
-        <Switch>
           <Route exact path="/public">
             <PublicLists />
           </Route>
-        </Switch>
-        <Switch>
           <Route exact path="/public/:id">
             <PublicListDetails />
           </Route>
-        </Switch>
-        <Switch>
           <PrivateRoute path="/userpage" component={UserPage} />
-        </Switch>
-        <Switch>
           <PrivateRoute path="/list/:id" component={ListPage} />
+          <Route component={NotFound} />
         </Switch>
       </Container>
     </>

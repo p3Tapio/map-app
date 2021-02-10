@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { getUserLists } from '../../../state/reducers/list/listActions';
 import { List } from '../../../state/reducers/list/listTypes';
 import { RootStore } from '../../../state/store';
@@ -51,6 +51,7 @@ const ListPage: React.FC = () => {
             ? 'Seems like you have not added any locations to your list yet. You can start by clicking the add location button!'
             : userlist[0].description}
         </p>
+        <hr />
         <Button
           size="sm"
           variant="outline-secondary"
@@ -67,6 +68,11 @@ const ListPage: React.FC = () => {
         <Button size="sm" variant="outline-secondary" style={{ marginLeft: '5px' }} onClick={(): void => setShowMap(!showMap)}>
           {showMap ? 'View locations' : 'View map'}
         </Button>
+        <Link to="/userpage">
+          <Button size="sm" variant="outline-secondary" style={{ marginLeft: '5px' }}>
+            Back to list
+          </Button>
+        </Link>
         <hr />
         {!showMap && (
           <LocationList

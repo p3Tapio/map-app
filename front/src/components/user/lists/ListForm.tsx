@@ -5,7 +5,7 @@ import {
 import { ListFormProps } from './listTypes';
 
 const ListForm: React.FC<ListFormProps> = ({
-  handleClose, handleSubmit, list, setList, validationMsg, formType
+  handleClose, handleSubmit, list, setList, validationMsg, formType,
 }) => (
   <Container>
     <Form onSubmit={handleSubmit}>

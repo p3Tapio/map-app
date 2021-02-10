@@ -42,3 +42,15 @@ Cypress.Commands.add('createPrivateList', () => {
   cy.contains('New list created');
   cy.contains('Ok').click();
 })
+Cypress.Commands.add('createLocation', () => {
+  cy.contains('test list').click();
+  cy.contains('Edit').click();
+  cy.contains('Add location').click();
+  cy.get('#name').type('test location');
+  cy.get('#address').type('Turbiinitie').blur().wait(500);
+  cy.get('#description').type('this is a location for testing');
+  cy.get('#category').select('Sights');
+  cy.contains('Save').click();
+  cy.contains('New location added!');
+  cy.contains('Ok').click();
+})

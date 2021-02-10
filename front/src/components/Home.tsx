@@ -22,6 +22,12 @@ const Home: React.FC = () => (
           </p>
           <h4>To do</h4>
           <p>Commenting/reviews for registered users and a possiblity to favorite/save lists for future reference. </p>
+          <p>
+            Source code
+            {' '}
+            <a href="https://github.com/p3Tapio/fs_project" target="_blank" rel="noreferrer" style={{ color: 'black' }}>here</a>
+            .
+          </p>
           <hr />
           <Row className="justify-content-between  mt-4">
             <Col className="text-left">

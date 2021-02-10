@@ -98,7 +98,7 @@ describe('Editing a list', function () {
     cy.contains('Country is required.');
     cy.contains('Description is required.');
   })
-  it('Clicking cancel closes modal and no changes are saved', function () {
+  it('Clicking cancel closes modal, no changes are saved and old values are shown in modal', function () {
     cy.contains('test list').click();
     cy.contains('Edit').click();
     cy.contains('Edit list details').click();
@@ -114,6 +114,12 @@ describe('Editing a list', function () {
     cy.contains('Userpage').click();
     cy.contains('test list').click();
     cy.contains('description for testing');
+    cy.contains('Edit').click();
+    cy.contains('Edit list details').click();
+    cy.get('#name').should('have.value', 'test list');
+    cy.get('#place').should('have.value', 'unknown');
+    cy.get('#country').should('have.value', 'Tunisia');
+    cy.get('#description').should('have.value', 'description for testing');
   })
   it('Editing option is not shown in public lists', function() {
     cy.contains('Location lists').click();
@@ -136,7 +142,7 @@ describe('Deleting a list', function () {
     cy.contains('Ok').click();
     cy.contains('test list').should('not.exist');
   })
-  it('If cancel is clicked, list is not deleted', function() {
+  it('If cancel is clicked, list is not deleted and is still listed', function() {
     cy.contains('test list').click();
     cy.contains('Delete').click();
     cy.contains('Are you sure you want to delete test list?');

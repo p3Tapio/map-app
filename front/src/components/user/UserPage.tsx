@@ -41,7 +41,8 @@ const UserPage: React.FC = () => {
         <p>
           {!userLists || userLists.length === 0
             ? 'Seems like you have not created any location lists yet. You can start by clicking the create new button!'
-            : ' Below you can see the lists you have created. You can create a new one by clicking the create new button!'}
+            : ' Below you can see the lists you have created. If you wish to edit them, first click the name of the list and then the edit button.'
+            + 'You can create a new one by clicking the create new button below!'}
         </p>
         <Button id="createList" onClick={createNewList} size="sm" variant="outline-secondary" style={{ paddingRight: '10px' }}>
           Create new list
