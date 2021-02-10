@@ -1,12 +1,11 @@
 import React, { FormEvent, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { useDispatch } from 'react-redux';
+import locationService from '../../../state/locationService/locationService';
 import MapComponent from './map/MapComponent';
 import MessageModal from '../../MessageModal';
 import { EditModalProps, LocationValidationMessage } from './locationsTypes';
-import { Location } from '../../../state/reducers/location/locationTypes';
+import { Location } from '../../../state/locationService/locationTypes';
 import { validateUpdated } from '../validation';
-import { updateLocation } from '../../../state/reducers/location/locationActions';
 import LocationForm from './LocationsForm';
 import { initialLocation } from '../initials';
 
@@ -17,7 +16,6 @@ const EditLocationModal: React.FC<EditModalProps> = ({
   const [showMsgModal, setShowMsgModal] = useState(false);
   const [address, setAddress] = useState('');
   const [locationValidationMsg, setLocationValidationMsg] = useState<LocationValidationMessage>({});
-  const dispatch = useDispatch();
 
   const handleClose = (): void => {
     setShow(false);
@@ -30,8 +28,7 @@ const EditLocationModal: React.FC<EditModalProps> = ({
     const validated: Location | LocationValidationMessage = validateUpdated(editedLocation);
     if ('name' in validated) {
       try {
-        // eslint-disable-next-line @typescript-eslint/await-thenable
-        await dispatch(updateLocation(validated));
+        await locationService.updateLocation(validated);
         setInfo({ header: 'Success', message: `Location ${validated.name} edited!` });
         setShow(false);
         setShowMsgModal(true);

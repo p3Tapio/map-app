@@ -79,7 +79,7 @@ describe('Editing location details', function () {
     cy.get('#name').clear();
     cy.get('#name').type('Edited location');
     cy.get('#address').clear();
-    cy.get('#address').type('Ilmailutie, vantaa').blur().wait(500);;
+    cy.get('#address').type('Ilmailutie, vantaa').blur().wait(500);
     cy.get('#description').clear();
     cy.get('#description').type('this is an edited location');
     cy.get('#category').select('Shopping');
@@ -96,7 +96,7 @@ describe('Editing location details', function () {
     cy.contains('View locations').click();
     cy.get('#edit').click();
     cy.get('#name').clear();
-    cy.get('#address').clear();
+    cy.get('#address').clear().blur().wait(500);
     cy.get('#description').clear();
     cy.contains('Save').click();
     cy.contains('Name is required.');

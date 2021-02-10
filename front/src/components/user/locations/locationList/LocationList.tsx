@@ -2,21 +2,19 @@ import React, { useState } from 'react';
 import {
   Container, Col, Row,
 } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import locationService from '../../../../state/locationService/locationService';
 import SingleLocationMap from './SingleLocationMap';
 
 import { LocationListProps } from '../locationsTypes';
 import DeleteLocationModal from './DeleteLocationModal';
 import EditLocationModal from '../EditLocationModal';
 import MessageModal from '../../../MessageModal';
-import { deleteLocation } from '../../../../state/reducers/location/locationActions';
 import { initialLocation } from '../../initials';
 import LocationCard from './LocationCard';
 
 const LocationList: React.FC<LocationListProps> = ({
   locations, location, setLocation, defaultview, showDelete, setShowDelete, showEdit, setShowEdit,
 }) => {
-  const dispatch = useDispatch();
   const [showMessage, setShowMessage] = useState(false);
   const [showMap, setShowMap] = useState(false);
 
@@ -26,8 +24,7 @@ const LocationList: React.FC<LocationListProps> = ({
 
   const handleDelete = async (locationId: string, name: string): Promise<void> => {
     try {
-      // eslint-disable-next-line @typescript-eslint/await-thenable
-      await dispatch(deleteLocation(locationId));
+      await locationService.deleteLocation(locationId);
       setInfo({ header: 'Success', message: `Location ${name} deleted!` });
       setShowMessage(true);
       setLocation(initialLocation);

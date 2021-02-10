@@ -1,5 +1,4 @@
 import React, { FormEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import Modal from 'react-bootstrap/Modal';
@@ -7,14 +6,13 @@ import LocationForm from './LocationsForm';
 import MapComponent from './map/MapComponent';
 
 import { CreateNewLocationModalProps, LocationValidationMessage } from './locationsTypes';
-import { createNewLocation } from '../../../state/reducers/location/locationActions';
+import locationService from '../../../state/locationService/locationService';
 import { validateNewLocation } from '../validation';
-import { NewLocation } from '../../../state/reducers/location/locationTypes';
+import { NewLocation } from '../../../state/locationService/locationTypes';
 import MessageModal from '../../MessageModal';
 import { initialLocation } from '../initials';
 
 const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({ setShow, show, defaultview }) => {
-  const dispatch = useDispatch();
   const { id } = useParams<{ id?: string }>();
   const [info, setInfo] = useState({ header: '', message: '' });
   const [showMsgModal, setShowMsgModal] = useState(false);
@@ -35,8 +33,7 @@ const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({ setShow
     const validated: NewLocation | LocationValidationMessage = validateNewLocation(newLocation);
     if ('name' in validated) {
       try {
-        // eslint-disable-next-line @typescript-eslint/await-thenable
-        await dispatch(createNewLocation(validated));
+        await locationService.createNewLocation(validated);
         setInfo({ header: 'Success', message: 'New location added!' });
         setShow(false);
         setShowMsgModal(true);

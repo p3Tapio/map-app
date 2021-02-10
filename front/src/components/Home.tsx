@@ -25,7 +25,7 @@ const Home: React.FC = () => (
           <p>
             Source code
             {' '}
-            <a href="https://github.com/p3Tapio/fs_project" target="_blank" rel="noreferrer" style={{ color: 'black' }}>here</a>
+            <a href="https://github.com/p3Tapio/fs_project" target="_blank" rel="noopener noreferrer" style={{ color: 'black' }}>here</a>
             .
           </p>
           <hr />

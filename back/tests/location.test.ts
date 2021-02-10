@@ -9,7 +9,7 @@ const api = supertest(app);
 
 const user = { username: 'tester', password: 'secret' };
 const anotherUser = { username: 'another', password: 'terces' };
-const list = { name: 'Alist', description: 'testing list', defaultview: { lat: 61.23, lng: 24.123, zoom: 11 }, country:'Finland', place: 'Helsinki', public: true };
+const list = { name: 'Alist', description: 'testing list', defaultview: { lat: 61.23, lng: 24.123, zoom: 11 }, country: 'Finland', place: 'Helsinki', public: true };
 
 const createValidLocation = async () => {
   const login = await api.post('/api/user/login/').send(user);
@@ -42,16 +42,15 @@ describe('Location can be created', () => {
     const validLocation = await createValidLocation();
     const response = await api.post('/api/location/create').set({ 'token': login.body.token }).send(validLocation);
     expect(response.body.description).toEqual('this is a valid location');
-    const locations = await api.get('/api/location/all');
-    expect(locations.body).toHaveLength(1);
+    const locationsInDb = await Location.find({});
+    expect(locationsInDb).toHaveLength(1);
   })
-  
   test('...not without logging in', async () => {
     const validLocation = await createValidLocation();
     const response = await api.post('/api/location/create').send(validLocation).expect(401);
     expect(response.body.error).toEqual('unauthorized');
-    const locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(0);
+    const locationsInDb = await Location.find({});
+    expect(locationsInDb).toHaveLength(0);
   })
   test('...not without missing details', async () => {
     const login = await api.post('/api/user/login/').send(user);
@@ -77,8 +76,8 @@ describe('Location can be created', () => {
     response = await api.post('/api/location/create').set({ 'token': login.body.token }).send(withoutCategory).expect(400);
     expect(response.body.error).toEqual('category missing or in wrong format');
 
-    const locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(0);
+    const locationsInDb = await Location.find({});
+    expect(locationsInDb).toHaveLength(0);
   })
   test('...not with wrong type of input', async () => {
     const login = await api.post('/api/user/login/').send(user);
@@ -112,8 +111,8 @@ describe('Location can be created', () => {
     response = await api.post('/api/location/create').set({ 'token': login.body.token }).send(invalidUrl).expect(400);
     expect(response.body.error).toEqual('input in wrong format');
 
-    const locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(0);
+    const locationsInDb = await Location.find({});
+    expect(locationsInDb).toHaveLength(0);
   })
 })
 describe('Location can be deleted', () => {
@@ -126,30 +125,31 @@ describe('Location can be deleted', () => {
   });
   test('...by the same user who created it, if authenticated', async () => {
     const login = await api.post('/api/user/login/').send(user);
-    const validLocation =  await createValidLocation();
+    const validLocation = await createValidLocation();
     const res = await api.post('/api/location/create').set({ 'token': login.body.token }).send(validLocation);
-    let locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(1);
+    let locationsInDb = await Location.find({});
+    expect(locationsInDb).toHaveLength(1);
     await api.delete(`/api/location/delete/${res.body._id}`).set({ 'token': login.body.token }).expect(204);
-    locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(0);
+    locationsInDb = await Location.find({});
+    expect(locationsInDb).toHaveLength(0);
   })
   test('...not without authentication', async () => {
     const login = await api.post('/api/user/login/').send(user);
     const validLocation = await createValidLocation();
     const res = await api.post('/api/location/create').set({ 'token': login.body.token }).send(validLocation);
-    let locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(1);
-    await api.delete(`/api/location/delete/${res.body._id}`).expect(400);
-    locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(1);
+    let locationsInDb = await Location.find({});
+    expect(locationsInDb).toHaveLength(1);
+    await api.delete(`/api/location/delete/${res.body._id}`).expect(401);
+    locationsInDb = await Location.find({});
+    expect(locationsInDb).toHaveLength(1);
+
   })
   test('...not by a different user, even if authenticated', async () => {
     let login = await api.post('/api/user/login/').send(user);
     const validLocation = await createValidLocation();
     const res = await api.post('/api/location/create').set({ 'token': login.body.token }).send(validLocation);
-    let locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(1);
+    let locationsInDb = await Location.find({});
+    expect(locationsInDb).toHaveLength(1);
 
     const hashed = bcrypt.hashSync(anotherUser.password, 10);
     const another = new User({ _id: new mongoose.Types.ObjectId, username: anotherUser.username, password: hashed });
@@ -157,8 +157,8 @@ describe('Location can be deleted', () => {
 
     login = await api.post('/api/user/login/').send(anotherUser);
     await api.delete(`/api/location/delete/${res.body._id}`).set({ 'token': login.body.token }).expect(401);
-    locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(1);
+    locationsInDb = await Location.find({});
+    expect(locationsInDb).toHaveLength(1);
   })
 })
 describe('Location can be updated', () => {
@@ -173,79 +173,86 @@ describe('Location can be updated', () => {
     await api.post('/api/location/create').set({ 'token': login.body.token }).send(location);
   })
   test('...by the user who created it, if authenticated', async () => {
-    let locations = await api.get('/api/location/all')
-    expect(locations.body[0].description).toEqual('this is a valid location');
-    expect(locations.body).toHaveLength(1);
+    let locationsInDb = await Location.find({});
+    expect(locationsInDb[0].description).toEqual('this is a valid location');
+    expect(locationsInDb).toHaveLength(1);
 
-    locations.body[0].description = 'Edited description';
+    const editedLocation = (({ _id, name, address, coordinates, description, category, imageLink, createdBy, list }) => ({ _id, name, address, coordinates, description, category, imageLink, createdBy, list }))(locationsInDb[0])
+    editedLocation.description = 'Edited description';
+
     const login = await api.post('/api/user/login/').send(user);
-    await api.put(`/api/location/update/${locations.body[0]._id}`).set({ 'token': login.body.token }).send(locations.body[0]).expect(200);
+    await api.put(`/api/location/update/${editedLocation._id}`).set({ 'token': login.body.token }).send(editedLocation).expect(200);
 
-    locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(1);
-    expect(locations.body[0].description).toEqual('Edited description');
+    locationsInDb = await Location.find({});
+    expect(locationsInDb[0].description).toEqual('Edited description');
+    expect(locationsInDb).toHaveLength(1);
   })
   test('...but not without authentication', async () => {
-    let locations = await api.get('/api/location/all')
-    expect(locations.body[0].description).toEqual('this is a valid location');
-    expect(locations.body).toHaveLength(1);
+    let locationsInDb = await Location.find({});
+    expect(locationsInDb[0].description).toEqual('this is a valid location');
+    expect(locationsInDb).toHaveLength(1);
 
-    locations.body[0].description = 'Edited description';
-    const res = await api.put(`/api/location/update/${locations.body[0]._id}`).send(locations.body[0]).expect(400);
-    expect(res.body.error).toEqual('Token error');
+    const editedLocation = (({ _id, name, address, coordinates, description, category, imageLink, createdBy, list }) => ({ _id, name, address, coordinates, description, category, imageLink, createdBy, list }))(locationsInDb[0])
+    editedLocation.description = 'Edited description';
 
-    locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(1);
-    expect(locations.body[0].description).toEqual('this is a valid location');
+    const res = await api.put(`/api/location/update/${editedLocation._id}`).set({ 'token': '' }).send(editedLocation).expect(401);
+    expect(res.body.error).toEqual('unauthorized');
+
+    locationsInDb = await Location.find({});
+    expect(locationsInDb[0].description).toEqual('this is a valid location');
+    expect(locationsInDb).toHaveLength(1);
   })
   test('...not by another user', async () => {
-    let locations = await api.get('/api/location/all')
-    expect(locations.body[0].description).toEqual('this is a valid location');
-    expect(locations.body).toHaveLength(1);
+    let locationsInDb = await Location.find({});
+    expect(locationsInDb[0].description).toEqual('this is a valid location');
+    expect(locationsInDb).toHaveLength(1);
 
     const hashed = bcrypt.hashSync(anotherUser.password, 10);
     const another = new User({ _id: new mongoose.Types.ObjectId, username: anotherUser.username, password: hashed });
     await another.save();
 
-    locations.body[0].description = 'Edited description';
+    const editedLocation = (({ _id, name, address, coordinates, description, category, imageLink, createdBy, list }) => ({ _id, name, address, coordinates, description, category, imageLink, createdBy, list }))(locationsInDb[0])
+    editedLocation.description = 'Edited description';
     const login = await api.post('/api/user/login/').send(anotherUser);
-    await api.put(`/api/location/update/${locations.body[0]._id}`).set({ 'token': login.body.token }).send(locations.body[0]).expect(401);
+    const res = await api.put(`/api/location/update/${editedLocation._id}`).set({ 'token': login.body.token }).send(editedLocation).expect(401);
+    expect(res.body.error).toEqual('unauthorized');
 
-    locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(1);
-    expect(locations.body[0].description).toEqual('this is a valid location');
+    locationsInDb = await Location.find({});
+    expect(locationsInDb[0].description).toEqual('this is a valid location');
+    expect(locationsInDb).toHaveLength(1);
   })
   test('...not with missing values, even if authenticated', async () => {
 
     const login = await api.post('/api/user/login/').send(user);
-    let locations = await api.get('/api/location/all')
-    expect(locations.body[0].description).toEqual('this is a valid location');
+    let locationsInDb = await Location.find({});
+    expect(locationsInDb[0].description).toEqual('this is a valid location');
+    expect(locationsInDb).toHaveLength(1);
 
-    const { name, ...withoutName } = locations.body[0];
-    let response = await api.put(`/api/location/update/${locations.body[0]._id}`).set({ 'token': login.body.token }).send(withoutName).expect(400);
+    const withoutName = (({ _id, address, coordinates, description, category, imageLink, createdBy, list }) => ({ _id, address, coordinates, description, category, imageLink, createdBy, list }))(locationsInDb[0])
+    let response = await api.put(`/api/location/update/${withoutName._id}`).set({ 'token': login.body.token }).send(withoutName).expect(400);
     expect(response.body.error).toEqual('input missing or in wrong format: string expected.');
 
-    const { description, ...withoutDescription } = locations.body[0];
-    response = await api.put(`/api/location/update/${locations.body[0]._id}`).set({ 'token': login.body.token }).send(withoutDescription).expect(400);
+    const withoutDescription = (({ _id, name, address, coordinates, category, imageLink, createdBy, list }) => ({ _id, name, address, coordinates, category, imageLink, createdBy, list }))(locationsInDb[0])
+    response = await api.put(`/api/location/update/${withoutDescription._id}`).set({ 'token': login.body.token }).send(withoutDescription).expect(400);
     expect(response.body.error).toEqual('input missing or in wrong format: string expected.');
 
-    locations = await api.get('/api/location/all')
-    expect(locations.body).toHaveLength(1);
-    expect(locations.body[0].description).toEqual('this is a valid location');
+    locationsInDb = await Location.find({});
+    expect(locationsInDb[0].description).toEqual('this is a valid location');
+    expect(locationsInDb).toHaveLength(1);
   })
   test('...and not with wrong type of inputs', async () => {
     const validLocation = await createValidLocation();
     const login = await api.post('/api/user/login/').send(user);
 
-    let locations = await api.get('/api/location/all')
-    expect(locations.body[0].description).toEqual('this is a valid location');
+    let locationsInDb = await Location.find({});
+    expect(locationsInDb[0].description).toEqual('this is a valid location');
 
-    const invalidName = { _id: locations.body[0]._id, name: 12345, address: 'address', coordinates: validLocation.coordinates, description: 'description', category: 'shopping', imageLink: 'www.url.com', createdBy: locations.body[0].createdBy };
-    let response = await api.put(`/api/location/update/${locations.body[0]._id}`).set({ 'token': login.body.token }).send(invalidName).expect(400);
+    const invalidName = { _id: locationsInDb[0]._id, name: 1234, address: 'address', coordinates: validLocation.coordinates, description: 'description', category: 'shopping', imageLink: 'www.url.com', createdBy: locationsInDb[0].createdBy, list: locationsInDb[0].list };
+    let response = await api.put(`/api/location/update/${invalidName._id}`).set({ 'token': login.body.token }).send(invalidName).expect(400);
     expect(response.body.error).toEqual('input missing or in wrong format: string expected.');
 
-    const invalidDesc = { _id: locations.body[0]._id, name: 'valid name', address: 'address', coordinates: validLocation.coordinates, description: 1234, category: 'shopping', imageLink: 'www.url.com', createdBy: locations.body[0].createdBy };
-    response = await api.put(`/api/location/update/${locations.body[0]._id}`).set({ 'token': login.body.token }).send(invalidDesc).expect(400);
+    const invalidDesc = { _id: locationsInDb[0]._id, name: 'valid name', address: 'address', coordinates: validLocation.coordinates, description: 12345, category: 'shopping', imageLink: 'www.url.com', createdBy: locationsInDb[0].createdBy, list: locationsInDb[0].list };
+    response = await await api.put(`/api/location/update/${invalidDesc._id}`).set({ 'token': login.body.token }).send(invalidDesc).expect(400);
     expect(response.body.error).toEqual('input missing or in wrong format: string expected.');
   })
 })

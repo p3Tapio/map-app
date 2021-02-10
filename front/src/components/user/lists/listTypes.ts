@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { ModalProps } from '../locations/locationsTypes'; // show, setShow
 import { List } from '../../../state/reducers/list/listTypes';
-import { Location } from '../../../state/reducers/location/locationTypes';
+import { Location } from '../../../state/locationService/locationTypes';
 
 export interface Defaultview {
   lat: number;

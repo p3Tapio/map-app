@@ -1,5 +1,5 @@
 import { List } from '../../state/reducers/list/listTypes';
-import { Location } from '../../state/reducers/location/locationTypes';
+import { Location } from '../../state/locationService/locationTypes';
 
 export const initialList: List = {
   _id: '',

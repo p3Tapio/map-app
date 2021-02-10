@@ -1,4 +1,4 @@
-import { Location } from '../location/locationTypes';
+import { Location } from '../../locationService/locationTypes';
 
 export const GETPUBLICLISTS = 'GETPUBLICLISTS';
 export const GETUSERLISTS = 'GETUSERLISTS';

@@ -22,6 +22,7 @@ const ListPage: React.FC = () => {
   const [showEditLocation, setShowEditLocation] = useState(false);
   const [location, setLocation] = useState(initialLocation);
   const [list, setList] = useState(initialList);
+
   const userlist = useSelector((state: RootStore) => state.lists.userLists?.filter((x: List) => {
     if (x._id === id) return x;
     return undefined;

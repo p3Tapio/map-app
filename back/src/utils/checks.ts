@@ -52,7 +52,7 @@ const parseId = (input: any): Types.ObjectId => {
 };
 const parseDefaultview = (input: any): Defaultview => {
   if (!input || typeof input !== 'object') throw new Error('input missing or in wrong format: defaultview missing.');
-  else if (!("lat" in input) || !("lng" in input) || !("zoom" in input)) throw new Error('defaultview missing required properties.')
+  else if (!("lat" in input) || !("lng" in input) || !("zoom" in input)) throw new Error('defaultview missing required properties.');
   const defaultview = {
     lat: parseInputNumber(input.lat),
     lng: parseInputNumber(input.lng),
