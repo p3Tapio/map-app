@@ -2,9 +2,10 @@ import React, { FormEvent, useState } from 'react';
 import axios from 'axios';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import DefaultViewMap from './DefaultViewMap';
 import { CreateNewListModalProps, ListValidationMessage } from './listTypes';
-import { NewList } from '../../../state/reducers/list/listTypes';
+import { List, NewList } from '../../../state/reducers/list/listTypes';
 import ListForm from './ListForm';
 import { validateNewList } from '../validation';
 import { createNewList } from '../../../state/reducers/list/listActions';
@@ -17,6 +18,7 @@ const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
   const [info, setInfo] = useState({ header: '', message: '' });
   const [showMsgModal, setShowMsgModal] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
   const mapBoxUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places';
 
   const handleClose = (): void => {
@@ -44,11 +46,14 @@ const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
     if ('name' in validated) {
       try {
         // eslint-disable-next-line @typescript-eslint/await-thenable
-        await dispatch(createNewList(validated));
+        const res: List = await dispatch(createNewList(validated));
         setInfo({ header: 'Success', message: 'New list created!' });
         setShow(false);
-        setShowMsgModal(true);
         setListValidationMsg({});
+        history.push({
+          state: { newList: true },
+          pathname: `/list/${res._id}`,
+        });
       } catch {
         setInfo({ header: 'Error', message: 'Oh no, something went wrong! Try again.' });
         setShowMsgModal(true);

@@ -13,7 +13,6 @@ describe('Adding a location to a list', function () {
   })
   it('If values are missing, correct validation messages are shown', function() {
     cy.contains('test list').click();
-    cy.contains('Edit').click();
     cy.contains('Add location').click();
     cy.contains('Save').click();
     cy.contains('Please add location to map.');
@@ -33,6 +32,7 @@ describe('Adding a location to a list', function () {
     cy.contains('Turbiinitie, 01530, Lentokenttä, FIN');
   })
   it('Clicking cancel closes modal, no changes are saved and the form is empty when reopened', function() {
+    cy.visit('http://localhost:3000/userpage')
     cy.contains('test list').click();
     cy.contains('Edit').click();
     cy.contains('Add location').click();

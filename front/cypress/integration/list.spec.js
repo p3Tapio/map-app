@@ -10,9 +10,9 @@ describe('Creating a new list', function () {
     cy.get('#description').type('description for testing');
     cy.get('#visibility').check({force: true});
     cy.contains('Save').click();
-    cy.contains('New list created');
     cy.contains('Ok').click();
     cy.contains('test list')
+    cy.contains('Seems like you have not added any locations to your list yet. You can start by clicking the add location button!')
   })
   it('List doesnt get created and correct error messages are shown if required values are missing', function () {
     cy.get('#createList').click();
@@ -42,6 +42,7 @@ describe('Creating a new list', function () {
   })
   it('Private list is shown to user who created it, but not listed among public ones', function() {
     cy.createPrivateList();
+    cy.contains('Userpage').click();
     cy.contains('Private list').click();
     cy.contains('description for private list');
     cy.contains('Logout').click();
@@ -50,6 +51,7 @@ describe('Creating a new list', function () {
   })
   it('Private is shown only to user who created it but not to other registered users', function () {
     cy.createPrivateList();
+    cy.contains('Userpage').click();
     cy.contains('Private list').click();
     cy.contains('description for private list');
     cy.contains('Logout').click();
@@ -65,8 +67,6 @@ describe('Editing a list', function () {
     cy.createPublicList();
   })
   it('List can be edited', function() {
-    cy.contains('test list').click();
-    cy.contains('Edit').click();
     cy.contains('Edit list details').click();
     cy.get('#name').clear();
     cy.get('#name').type('Edited list');
@@ -85,8 +85,7 @@ describe('Editing a list', function () {
     cy.contains('Edited description');
   })
   it('When values are missing, validation messages are shown', function () {
-    cy.contains('test list').click();
-    cy.contains('Edit').click();
+
     cy.contains('Edit list details').click();
     cy.get('#name').clear();
     cy.get('#place').clear();
@@ -99,8 +98,7 @@ describe('Editing a list', function () {
     cy.contains('Description is required.');
   })
   it('Clicking cancel closes modal, no changes are saved and old values are shown in modal', function () {
-    cy.contains('test list').click();
-    cy.contains('Edit').click();
+
     cy.contains('Edit list details').click();
     cy.get('#name').clear();
     cy.get('#name').type('Edited list');
@@ -134,6 +132,7 @@ describe('Deleting a list', function () {
     cy.createPublicList();
   })
   it('List can be deleted', function() {
+    cy.visit('http://localhost:3000/userpage')
     cy.contains('test list').click();
     cy.contains('Delete').click();
     cy.contains('Are you sure you want to delete test list?');
@@ -143,6 +142,7 @@ describe('Deleting a list', function () {
     cy.contains('test list').should('not.exist');
   })
   it('If cancel is clicked, list is not deleted and is still listed', function() {
+    cy.visit('http://localhost:3000/userpage')
     cy.contains('test list').click();
     cy.contains('Delete').click();
     cy.contains('Are you sure you want to delete test list?');

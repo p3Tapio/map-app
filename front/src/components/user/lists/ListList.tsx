@@ -108,7 +108,6 @@ const ListList: React.FC<ListListProps> = ({
               setShow={setShowDelete}
               handleDelete={handleDelete}
             />
-
           </>
         ) : null}
       <MessageModal setInfo={setInfo} info={info} setShow={setShowMessage} show={showMessage} />

@@ -2,8 +2,6 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
-import { useSelector } from 'react-redux';
-import { RootStore } from '../state/store';
 
 interface ModalProps {
   info: {
@@ -19,15 +17,11 @@ const MessageModal: React.FC<ModalProps> = ({
   setInfo, info, setShow, show,
 }) => {
   const history = useHistory();
-  const lists = useSelector((state: RootStore) => state.lists.userLists);
+
   const handleClose = (): void => {
     setShow(false);
     setInfo({ message: '', header: '' });
     if (info.header === 'Success' && info.message.includes('Welcome')) history.push('/userpage');
-    if (info.header === 'Success' && info.message === 'New list created!' && lists) {
-      const last = lists.pop();
-      if (last) history.push(`/list/${last._id}`);
-    }
   };
 
   return (
@@ -38,7 +32,7 @@ const MessageModal: React.FC<ModalProps> = ({
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{info.message}</p>
+        <p id="messageModalText">{info.message}</p>
       </Modal.Body>
       <Modal.Footer>
         <Button size="sm" variant="outline-dark" type="button" onClick={handleClose}>Ok</Button>

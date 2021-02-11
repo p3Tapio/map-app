@@ -30,7 +30,6 @@ Cypress.Commands.add('createPublicList', () => {
   cy.get('#description').type('description for testing');
   cy.get('#visibility').check({force: true});
   cy.contains('Save').click();
-  cy.contains('New list created');
   cy.contains('Ok').click();
 })
 Cypress.Commands.add('createPrivateList', () => {
@@ -39,10 +38,10 @@ Cypress.Commands.add('createPrivateList', () => {
   cy.get('#name').type('Private list');
   cy.get('#description').type('description for private list');
   cy.contains('Save').click();
-  cy.contains('New list created');
   cy.contains('Ok').click();
 })
 Cypress.Commands.add('createLocation', () => {
+  cy.visit('http://localhost:3000/userpage');
   cy.contains('test list').click();
   cy.contains('Edit').click();
   cy.contains('Add location').click();

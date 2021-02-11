@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import {
+  Link, useHistory, useParams, useLocation,
+} from 'react-router-dom';
 import { getUserLists } from '../../../state/reducers/list/listActions';
 import { List } from '../../../state/reducers/list/listTypes';
 import { RootStore } from '../../../state/store';
+import MessageModal from '../../MessageModal';
 import { initialList, initialLocation } from '../initials';
 import CreateNewLocationModal from '../locations/CreateNewLocationModal';
 import LocationList from '../locations/locationList/LocationList';
@@ -12,16 +15,19 @@ import EditListModal from './EditListModal';
 import ListLocationsMap from './ListLocationsMap';
 
 const ListPage: React.FC = () => {
+  const loc = useLocation<{ newList: boolean } | undefined>();
   const dispatch = useDispatch();
   const { id } = useParams<{ id?: string }>();
   const history = useHistory();
-  const [showCreate, setShowCreate] = useState(false);
+  const [showCreateLocation, setShowCreateLocation] = useState(false);
   const [showMap, setShowMap] = useState(true);
   const [showEditList, setShowEditList] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [showEditLocation, setShowEditLocation] = useState(false);
   const [location, setLocation] = useState(initialLocation);
   const [list, setList] = useState(initialList);
+  const [showMsgModal, setShowMsgModal] = useState<boolean>(false);
+  const [info, setInfo] = useState({ header: 'Success', message: 'New List created!' });
 
   const userlist = useSelector((state: RootStore) => state.lists.userLists?.filter((x: List) => {
     if (x._id === id) return x;
@@ -30,7 +36,9 @@ const ListPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(getUserLists());
-  }, [dispatch, showCreate, showEditList, showEditLocation, showDelete]);
+  }, [dispatch, showCreateLocation, showEditList, showEditLocation, showDelete]);
+
+  useEffect(() => { if (loc.state) setShowMsgModal(loc.state.newList); }, [loc]);
 
   if (!userlist) return null;
   if (userlist.length === 0) {
@@ -63,7 +71,7 @@ const ListPage: React.FC = () => {
         >
           Edit list details
         </Button>
-        <Button size="sm" variant="outline-secondary" style={{ marginLeft: '5px' }} onClick={(): void => setShowCreate(true)}>
+        <Button size="sm" variant="outline-secondary" style={{ marginLeft: '5px' }} onClick={(): void => setShowCreateLocation(true)}>
           Add location
         </Button>
         <Button size="sm" variant="outline-secondary" style={{ marginLeft: '5px' }} onClick={(): void => setShowMap(!showMap)}>
@@ -98,8 +106,8 @@ const ListPage: React.FC = () => {
         ? (
           <>
             <CreateNewLocationModal
-              setShow={setShowCreate}
-              show={showCreate}
+              setShow={setShowCreateLocation}
+              show={showCreateLocation}
               defaultview={userlist[0].defaultview}
             />
             <EditListModal
@@ -111,6 +119,7 @@ const ListPage: React.FC = () => {
           </>
         )
         : null}
+      <MessageModal info={info} setInfo={setInfo} show={showMsgModal} setShow={setShowMsgModal} />
     </>
   );
 };

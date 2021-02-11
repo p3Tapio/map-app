@@ -26,16 +26,17 @@ export const getUserLists = () => async (dispatch: Dispatch<ListDispatchTypes>):
     });
   }
 };
-export const createNewList = (list: NewList) => async (dispatch: Dispatch<ListDispatchTypes>): Promise<void> => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createNewList = (list: NewList): any => {
   const config = createConfig();
   if (config.headers.token) {
-    const res = await axios.post(`${baseUrl}/api/list/create`, list, config);
-    const { data } = res;
-    dispatch({
-      type: CREATELIST,
-      payload: data,
+    return async (dispatch: Dispatch<ListDispatchTypes>): Promise<List> => axios.post(`${baseUrl}/api/list/create`, list, config).then((res) => {
+      const { data } = res;
+      dispatch({ type: CREATELIST, payload: data });
+      return data;
     });
   }
+  return null;
 };
 export const updateList = (list: List) => async (dispatch: Dispatch<ListDispatchTypes>): Promise<void> => {
   const config = createConfig();

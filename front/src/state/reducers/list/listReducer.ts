@@ -30,7 +30,7 @@ const listReducer = (state: ListState = listState, action: ListDispatchTypes): L
       }
       return { ...state, userLists };
     }
-    case DELETELIST: { // if ??? Jos ei skulaa, tässä potentiaalinen error
+    case DELETELIST: {
       const userLists = state.userLists?.filter((x) => x._id !== action.payload);
       const publicLists = state.publicLists?.filter((x) => x._id !== action.payload);
       return { ...state, userLists, publicLists };
