@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import { checkUserValues } from '../utils/checks';
-import { createToken } from '../utils/tokens';
+import {  createToken } from '../utils/tokens';
 import User from '../models/userModel';
 import { IUser } from '../utils/types';
 
@@ -21,7 +21,7 @@ router.post('/register', (req: Request, res: Response) => {
 
     user.save().then((result) => {
       const token = createToken(result.username, result.id);
-      res.json({ id: result.id as string, username: result.username, token: token });
+      res.json({ id: result.id as string, username: result.username, token: token, favorites: [] });
     }).catch((e) => {
       const errMsg: string = (e as Error).message;
       res.status(400).json({ error: errMsg });
@@ -32,15 +32,15 @@ router.post('/register', (req: Request, res: Response) => {
   }
 });
 
-router.post('/login', async (req: Request, res: Response)  => {
+router.post('/login', async (req: Request, res: Response) => {
   try {
     const body = checkUserValues(req.body);
-    const user = await User.findOne({ username: body.username }) as IUser;
+    const user: IUser | null = await User.findOne({ username: body.username }).populate('favorites'); //tässäkö vai erillinen get-route
     const passCorrect: boolean = user === null ? false : await bcrypt.compare(body.password, user.password);
 
-    if (passCorrect) {
+    if (passCorrect && user) {
       const token = createToken(user.username, user._id.toString());
-      res.json({ id: user.id as string, username: user.username, token: token });
+      res.json({ id: user.id as string, username: user.username, token: token, favorites: user.favorites });
     } else res.status(401).json({ error: 'wrong username or password' });
 
   } catch (err) {

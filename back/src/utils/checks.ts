@@ -70,7 +70,11 @@ const parseLocationList = (input: any[]): Location[] => {
   if (input.length > 0) return input.map((x) => checkUpdatedLocationValues(x));
   return [];
 };
-
+const parseFavoritedBy = (input: any[]): Types.ObjectId[] => {
+  console.log('input.length', input.length)
+  if (input.length > 0) return input.map((x) => parseId(x));
+  return [];
+};
 // ---------------------------------------------------------
 
 const checkUserValues = (object: any): NewUser => {
@@ -80,7 +84,6 @@ const checkUserValues = (object: any): NewUser => {
   };
   return newUser;
 };
-
 const checkNewLocationValues = (object: any): NewLocation => {
   const newLocation = {
     name: parseInputString(object.name),
@@ -130,6 +133,7 @@ const checkNewListValues = (object: any): NewList => {  // TODO onko !value mÃ¤Ã
     return newList;
   }
 };
+
 const checkUpdatedListValues = (object: any): List => {
   if (!object || Object.keys(object).length === 0) throw new Error('No data.');
   else if (
@@ -139,8 +143,9 @@ const checkUpdatedListValues = (object: any): List => {
     !("country" in object) ||
     !("place" in object) ||
     !("public" in object) ||
-    !("createdBy" in object) || 
-    !("locations" in object)) { 
+    !("createdBy" in object) ||
+    !("locations" in object) ||
+    !("favoritedBy" in object)) {
     throw new Error('object missing required properties.');
   } else {
     const updated = {
@@ -152,9 +157,15 @@ const checkUpdatedListValues = (object: any): List => {
       public: parseInputBoolean(object.public),
       createdBy: parseId(object.createdBy._id),
       locations: parseLocationList(object.locations),
+      favoritedBy: parseFavoritedBy(object.favoritedBy)
     };
     return updated;
   }
+};
+const checkFavoritedId = (value: any): Types.ObjectId => {
+  if (!value || value === '') throw new Error('No data.');
+  const listId = parseId(value);
+  return listId;
 };
 
 export {
@@ -163,4 +174,5 @@ export {
   checkUpdatedLocationValues,
   checkNewListValues,
   checkUpdatedListValues,
+  checkFavoritedId,
 };

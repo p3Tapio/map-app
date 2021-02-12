@@ -7,11 +7,8 @@ export interface NewUser {
 export interface IUser extends Document, NewUser {
   _id: Types.ObjectId;
   locations: Location[];
-  lists: List[];
-}
-export interface NewUser {
-  username: string;
-  password: string;
+  lists: List[];  // vai objectIdt ??
+  favorites: Types.ObjectId[]; // ^
 }
 export interface NewLocation {
   name: string;
@@ -55,6 +52,7 @@ export interface NewList {
 export interface List extends NewList {
   createdBy: Types.ObjectId;
   locations: Location[];
+  favoritedBy: Types.ObjectId[];
 }
 export interface IList extends Document, NewList, List {
   _id: Types.ObjectId;

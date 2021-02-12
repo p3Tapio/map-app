@@ -6,10 +6,13 @@ const userSchema: Schema = new Schema({
   username: { type: String, required: true, unique: true, uniqueCaseInsensitive: true, minlength: 5 },
   password: { type: String, required: true },
   locations: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'Location' },
+    { type: Schema.Types.ObjectId, ref: 'Location' },
   ],
   lists: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'List'},
+    { type: Schema.Types.ObjectId, ref: 'List' },
+  ],
+  favorites: [
+    { type: Schema.Types.ObjectId, ref: 'List' }
   ]
 });
 

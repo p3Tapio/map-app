@@ -17,7 +17,8 @@ const listSchemaFields: Record<keyof List, any> = {
   locations: [{
     type: Schema.Types.ObjectId,
     ref: 'Location',
-  }]
+  }],
+  favoritedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 };
 const listSchema = new Schema(listSchemaFields);
 listSchema.set('versionKey', false);
