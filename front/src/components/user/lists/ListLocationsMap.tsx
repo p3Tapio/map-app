@@ -30,7 +30,7 @@ const ListLocationsMap: React.FC<ListLocationsMapProps> = ({ locations, defaultv
       <Map
         ref={mapRef}
         center={[defaultview.lat, defaultview.lng]}
-        zoom={mapRef.current ? mapRef.current.leafletElement._zoom : defaultview.zoom}
+        zoom={mapRef.current ? mapRef.current.leafletElement._zoom : defaultview.zoom} // TODO -- tämä ehkä häikkää listan päivyksen yhteydessä
         maxBoundsViscosity={1.0}
         maxBounds={bounds}
         minZoom={2}

@@ -58,6 +58,7 @@ const EditLocationModal: React.FC<EditModalProps> = ({
             address={address}
             setAddress={setAddress}
             defaultview={defaultview}
+            userListLocations={undefined}
           />
           <LocationForm
             location={location}

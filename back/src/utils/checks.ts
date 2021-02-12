@@ -150,7 +150,7 @@ const checkUpdatedListValues = (object: any): List => {
       country: parseInputString(object.country),
       place: parseInputString(object.place),
       public: parseInputBoolean(object.public),
-      createdBy: parseId(object.createdBy),
+      createdBy: parseId(object.createdBy._id),
       locations: parseLocationList(object.locations),
     };
     return updated;

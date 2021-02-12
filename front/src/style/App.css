@@ -128,3 +128,11 @@ body {
   grid-gap: 1rem;
   margin: 0 auto;
 }
+hr {
+  border: 0;
+  clear:both;
+  display:block;
+  width: 96%;               
+  background-color: #c8cbcf;
+  height: 1px;
+}

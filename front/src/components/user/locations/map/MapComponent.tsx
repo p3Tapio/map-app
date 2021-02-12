@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 
-import { Map, TileLayer } from 'react-leaflet';
+import {
+  Map, Marker, Popup, TileLayer,
+} from 'react-leaflet';
 import Leaflet, { LeafletMouseEvent } from 'leaflet';
 import { MapProps } from '../locationsTypes';
 
@@ -11,7 +13,7 @@ import 'leaflet-defaulticon-compatibility';
 import Pin from './Pin';
 
 const MapComponent: React.FC<MapProps> = ({
-  location, setLocation, validationMsg, setAddress, defaultview,
+  location, setLocation, validationMsg, setAddress, defaultview, userListLocations,
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>();
@@ -47,6 +49,23 @@ const MapComponent: React.FC<MapProps> = ({
         }}
         style={{ height: 500 }}
       >
+        {!userListLocations || userListLocations.length === 0 ? null
+          : userListLocations.map((x) => (
+            <Marker
+              key={x._id}
+              position={[x.coordinates.lat, x.coordinates.lng]}
+              onMouseOver={(e: LeafletMouseEvent): void => {
+                e.target.openPopup();
+              }}
+              onMouseOut={(e: LeafletMouseEvent): void => {
+                e.target.closePopup();
+              }}
+            >
+              <Popup>
+                {x.name}
+              </Popup>
+            </Marker>
+          )) }
         <Pin location={location} setAddress={setAddress} />
         <TileLayer
           noWrap

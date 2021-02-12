@@ -20,7 +20,7 @@ export interface NewList {
 }
 export interface List extends NewList {
   _id: string;
-  createdBy: string;
+  createdBy: { _id: string; username: string };
   locations: Location[];
 }
 export interface GetPublicLists {

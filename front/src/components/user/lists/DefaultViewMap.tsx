@@ -1,10 +1,12 @@
 import React, { useRef, useEffect } from 'react';
-import { Map, TileLayer } from 'react-leaflet';
+import {
+  Map, Marker, Popup, TileLayer,
+} from 'react-leaflet';
 import '../../../style/mapstyle.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
 
-import Leaflet, { LeafletEvent } from 'leaflet';
+import Leaflet, { LeafletEvent, LeafletMouseEvent } from 'leaflet';
 import { DefaultViewMapProps } from './listTypes';
 
 const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ list, setList, validationMsg }) => {
@@ -26,7 +28,7 @@ const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ list, setList, validati
         maxBoundsViscosity={1.0}
         maxBounds={bounds}
         minZoom={2}
-        zoom={list.defaultview.zoom}
+        zoom={list.defaultview.zoom - 0.5}
         scrollWheelZoom
         style={{ height: 500 }}
         onZoomEnd={(ev: LeafletEvent): void => {
@@ -49,13 +51,30 @@ const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ list, setList, validati
           });
         }}
       >
+        {list.locations.length === 0 ? null
+          : list.locations.map((x) => (
+            <Marker
+              key={x._id}
+              position={[x.coordinates.lat, x.coordinates.lng]}
+              onMouseOver={(e: LeafletMouseEvent): void => {
+                e.target.openPopup();
+              }}
+              onMouseOut={(e: LeafletMouseEvent): void => {
+                e.target.closePopup();
+              }}
+            >
+              <Popup>
+                {x.name}
+              </Popup>
+            </Marker>
+          ))}
         <TileLayer
           noWrap
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
       </Map>
-      { (validationMsg.defaultviewErr && <p className="newLocationError">{validationMsg.defaultviewErr}</p>) }
+      { (validationMsg.defaultviewErr && <p className="newLocationError">{validationMsg.defaultviewErr}</p>)}
     </div>
   );
 };

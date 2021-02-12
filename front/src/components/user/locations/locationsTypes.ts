@@ -16,6 +16,7 @@ export interface ModalProps {
 }
 export interface CreateNewLocationModalProps extends ModalProps {
   defaultview: Defaultview;
+  userListLocations: Location[];
 }
 export interface DeleteModalProps extends ModalProps {
   id: string;
@@ -49,6 +50,7 @@ export interface MapProps extends BaseLocationComponentsProps {
   address: string;
   setAddress: React.Dispatch<React.SetStateAction<string>>;
   defaultview: Defaultview;
+  userListLocations: Location[] | undefined;
 }
 export interface LocationListProps {
   locations: Location[] | undefined;

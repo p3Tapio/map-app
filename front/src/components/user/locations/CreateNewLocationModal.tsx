@@ -12,7 +12,9 @@ import { NewLocation } from '../../../state/locationService/locationTypes';
 import MessageModal from '../../MessageModal';
 import { initialLocation } from '../initials';
 
-const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({ setShow, show, defaultview }) => {
+const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({
+  setShow, show, defaultview, userListLocations,
+}) => {
   const { id } = useParams<{ id?: string }>();
   const [info, setInfo] = useState({ header: '', message: '' });
   const [showMsgModal, setShowMsgModal] = useState(false);
@@ -64,6 +66,7 @@ const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({ setShow
             address={address}
             setAddress={setAddress}
             defaultview={defaultview}
+            userListLocations={userListLocations}
           />
           <LocationForm
             onSubmit={onSubmit}

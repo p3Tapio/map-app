@@ -13,7 +13,7 @@ export const initialList: List = {
   public: false,
   country: '',
   place: '',
-  createdBy: '',
+  createdBy: { _id: '', username: '' },
   locations: [],
 };
 export const initialLocation: Location = {

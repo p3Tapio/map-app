@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getPublicLists } from '../../state/reducers/list/listActions';
 import { List } from '../../state/reducers/list/listTypes';
 import { RootStore } from '../../state/store';
@@ -48,9 +48,19 @@ const PublicListDetails: React.FC = () => {
             variant="outline-dark"
             size="sm"
             type="button"
+            style={{ marginRight: '5px' }}
             onClick={(): void => setShowMapComponent(!showMapComponent)}>
             {showMapComponent ? 'View as list' : 'View on map'}
           </Button>
+          <Link to="/public">
+            <Button
+              variant="outline-dark"
+              size="sm"
+              type="button"
+            >
+              Back
+            </Button>
+          </Link>
         </Col>
       </Row>
       <hr />

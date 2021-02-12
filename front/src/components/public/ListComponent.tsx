@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Card, Col, Row } from 'react-bootstrap'
+import { Search } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { ListComponentProps } from './publicListTypes'
 import StaticMap from './StaticMap';
@@ -29,23 +30,26 @@ const ListComponent: React.FC<ListComponentProps> = ({ list }) => {
                 ))}
                 {list.locations.length > 3 ? <li>And more, click below for full list ...</li> : null}
               </div>
-              <div style={{ height: '100%', display: 'flex', alignItems: 'flex-end', marginLeft: '10px' }} >
+              <hr />
+              <div style={{ height: '100%', display: 'flex', alignItems: 'flex-end', marginLeft: '10px', marginTop:'-30px' }} >
                 <Row className="justify-content-between mt-4" style={{ width: '100%', marginRight: 0 }}>
                   <Col className="text-left" >
-                    <Card.Text>
+                    <Card.Text style={{ marginBottom: '0px' }}>
                       {(list.country !== 'unknown' && list.place !== 'unknown' && `${list.place}, ${list.country}`)}
                       {(list.country !== 'unknown' && list.place === 'unknown' && `${list.country}`)}
                       {(list.country === 'unknown' && list.place !== 'unknown' && `${list.place}`)}
                     </Card.Text>
+                    <small>Created by: {list.createdBy.username}</small>
                   </Col>
-                  <Col className="text-right">
-                    <Link to={`/public/${list._id}`}>
+                  <Col className="text-right" >
+                    <Link to={`/public/${list._id}`} >
                       <Button
+                        style={{ marginBottom: '-30px', marginRight: '-20px', padding: '8px' }}
                         variant="outline-dark"
                         size="sm"
                         type="button"
                       >
-                        Details
+                        View <Search size="20" style={{ marginLeft: '10px' }} />
                       </Button>
                     </Link>
                   </Col>

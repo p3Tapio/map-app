@@ -109,6 +109,7 @@ const ListPage: React.FC = () => {
               setShow={setShowCreateLocation}
               show={showCreateLocation}
               defaultview={userlist[0].defaultview}
+              userListLocations={userlist[0].locations}
             />
             <EditListModal
               show={showEditList}
