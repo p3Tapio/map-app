@@ -30,8 +30,8 @@ const ListLocationsMap: React.FC<ListLocationsMapProps> = ({ locations, defaultv
       <Map
         ref={mapRef}
         center={[defaultview.lat, defaultview.lng]}
-        zoom={mapRef.current ? mapRef.current.leafletElement._zoom : defaultview.zoom} // TODO -- tämä ehkä häikkää listan päivyksen yhteydessä
-        maxBoundsViscosity={1.0}
+        zoom={defaultview.zoom} // TODO -- tämä häikkää päivityksessä: {mapRef.current ? mapRef.current.leafletElement._zoom : defaultview.zoom}
+        maxBoundsViscosity={1.0} // asetettu zoomailubugien takia, ilmaantuuko niitä edelleen?
         maxBounds={bounds}
         minZoom={2}
         scrollWheelZoom

@@ -24,6 +24,7 @@ const validLocation = {
   imageLink: 'www.url.com',
   list: ''
 }
+
 const validPrivateList = { name: 'Another list', description: 'Another valid list', defaultview: { lat: 61.12212, lng: 27.212121, zoom: 12 }, country: 'Finland', place: 'Helsinki', public: false };
 
 describe('List can be created', () => {
@@ -192,6 +193,7 @@ describe('List can be updated', () => {
 
     userlists.body[0].description = 'this is an edited description';
     userlists.body[0].name = 'A new name too';
+
     await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(userlists.body[0]).expect(200);
 
     const listsInDb = await List.find({});
@@ -199,7 +201,6 @@ describe('List can be updated', () => {
     expect(listsInDb[0].name).toEqual('A new name too');
     expect(listsInDb).toHaveLength(1);
   })
-
   test('...but not without authentication', async () => {
     const login = await api.post('/api/user/login/').send(user);
     const userlists = await api.get('/api/list/user').set({ 'token': login.body.token }).expect(200);
@@ -209,6 +210,7 @@ describe('List can be updated', () => {
     userlists.body[0].name = 'A new name too';
 
     let res = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': '' }).send(userlists.body[0]).expect(401);
+
     expect(res.body.error).toEqual('unauthorized');
     res = await api.put(`/api/list/update/${userlists.body[0]._id}`).send(userlists.body[0]).expect(401);
     expect(res.body.error).toEqual('unauthorized');
@@ -217,16 +219,21 @@ describe('List can be updated', () => {
     expect(listsInDb[0].description).toEqual('this is a valid list for testing');
     expect(listsInDb[0].name).toEqual('valid list');
   })
-
   test('...not by another user', async () => {
     const login = await api.post('/api/user/login/').send(anotherUser);
     let listsInDb = await List.find({});
+    const updated: any = {
+      name: 'new name',
+      description: listsInDb[0].description,
+      defaultview: listsInDb[0].defaultview,
+      country: 'Latvia', place: listsInDb[0].place,
+      public: false,
+      createdBy: { _id: listsInDb[0].createdBy, username: 'tester' },
+      locations: listsInDb[0].locations,
+      favoritedBy: [],
+    }
 
-    expect(listsInDb[0].description).toEqual('this is a valid list for testing');
-
-    console.log('listsInDb[0]', listsInDb[0])
-    const updated = { name: 'new name', description: listsInDb[0].description, defaultview: listsInDb[0].defaultview, country: 'Latvia', place: listsInDb[0].place, public: false, createdBy: listsInDb[0].createdBy, locations: listsInDb[0].locations, favoritedBy: [] }
-    const res = await api.put(`/api/list/update/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send(updated).expect(400);
+    const res = await api.put(`/api/list/update/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send(updated).expect(401);
     expect(res.body.error).toEqual('unauthorized');
 
     listsInDb = await List.find({});
@@ -238,7 +245,7 @@ describe('List can be updated', () => {
   test('...not with missing values', async () => {
     const login = await api.post('/api/user/login/').send(user);
     const userlists = await api.get('/api/list/user').set({ 'token': login.body.token }).expect(200);
-    console.log('userlists.body[0]', userlists.body[0])
+
     const { name, ...withoutName } = userlists.body[0];
     let response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(withoutName).expect(400);
     expect(response.body.error).toEqual('object missing required properties.');
@@ -252,7 +259,7 @@ describe('List can be updated', () => {
     expect(response.body.error).toEqual('object missing required properties.');
 
     const { lat, ...withoutLat } = validPublicList.defaultview;
-    const withoutLatitude = { ...validPublicList, defaultview: withoutLat, createdBy: userlists.body[0].createdBy._id, locations: [] }
+    const withoutLatitude = { ...validPublicList, defaultview: withoutLat, createdBy: userlists.body[0].createdBy, locations: [], favoritedBy: [] }
     response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(withoutLatitude).expect(400);
     expect(response.body.error).toEqual('defaultview missing required properties.');
 
@@ -264,11 +271,11 @@ describe('List can be updated', () => {
     response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(withoutPlace).expect(400);
     expect(response.body.error).toEqual('object missing required properties.');
 
-    const withoutPublic = { name: 'valid list', description: 'this is a valid list for testing', defaultview: { lat: 65.12212, lng: 21.212121, zoom: 12 }, country: 'Finland', place: 'Helsinki', createdBy: userlists.body[0].createdBy, locations: [] }
+    const withoutPublic = { name: 'valid list', description: 'this is a valid list for testing', defaultview: { lat: 65.12212, lng: 21.212121, zoom: 12 }, country: 'Finland', place: 'Helsinki', createdBy: userlists.body[0].createdBy, locations: [],  favoritedBy: [] }
     response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(withoutPublic).expect(400);
     expect(response.body.error).toEqual('object missing required properties.');
 
-    const withMissingValuesInLocation = { name: 'valid list', description: 'this is a valid list for testing', defaultview: { lat: 65.12212, lng: 21.212121, zoom: 12 }, country: 'Finland', place: 'Helsinki', public: true, createdBy: userlists.body[0].createdBy, locations: [{ _id: new mongoose.Types.ObjectId, name: 'testname' }] }
+    const withMissingValuesInLocation = { name: 'valid list', description: 'this is a valid list for testing', defaultview: { lat: 65.12212, lng: 21.212121, zoom: 12 }, country: 'Finland', place: 'Helsinki', public: true, createdBy: userlists.body[0].createdBy, locations: [{ _id: new mongoose.Types.ObjectId, name: 'testname' }], favoritedBy: [] }
     response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(withMissingValuesInLocation).expect(400);
     expect(response.body.error).toEqual('input missing or in wrong format: string expected.');
 

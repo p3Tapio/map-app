@@ -1,30 +1,60 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Container,
+  Container, Dropdown
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPublicLists } from '../../state/reducers/list/listActions';
+import { List } from '../../state/reducers/list/listTypes';
 import { RootStore } from '../../state/store';
 import ListComponent from './ListComponent';
 
 
 const PublicLists: React.FC = () => {
   const publicLists = useSelector((state: RootStore) => state.lists.publicLists);
+  const [countryFilter, setCountryFilter] = useState<string | undefined>(undefined);
+  const [filteredList, setFilteredList] = useState<List[] | undefined>(undefined);
   const dispatch = useDispatch();
 
+  useEffect(() => { dispatch(getPublicLists()); }, [dispatch])
   useEffect(() => {
-    dispatch(getPublicLists());
-  }, [dispatch])
+    !countryFilter ? setFilteredList(undefined)
+      : setFilteredList(publicLists?.filter((l) => l.country === countryFilter))
+  }, [countryFilter, publicLists])
 
   if (!publicLists) return null;
+
+  const countries = Array.from(new Set(publicLists.map((l: List) => l.country)))
+  countries.sort((a, b) => a.localeCompare(b));
+
   return (
     <Container className="mt-5">
       <h4>Public location lists</h4>
       {/* TODO country dropdown, paginoinnint tms */}
+      <Dropdown>
+        <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
+          Filter by country
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Item onClick={() => setCountryFilter(undefined)}>All</Dropdown.Item>
+          {countries.map((c, i) => (
+            <Dropdown.Item
+              key={i}
+              onClick={() => setCountryFilter(c)}
+            >
+              {c}
+            </Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
       <hr />
-      {publicLists.map((list) => (
-        <ListComponent list={list} key={list._id} />
-      ))}
+      {filteredList
+        ? filteredList.map((list) => (
+          <ListComponent list={list} key={list._id} />
+        ))
+        : publicLists.map((list) => (
+          <ListComponent list={list} key={list._id} />
+        ))
+      }
     </Container>
   )
 };

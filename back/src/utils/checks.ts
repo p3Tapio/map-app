@@ -71,7 +71,6 @@ const parseLocationList = (input: any[]): Location[] => {
   return [];
 };
 const parseFavoritedBy = (input: any[]): Types.ObjectId[] => {
-  console.log('input.length', input.length)
   if (input.length > 0) return input.map((x) => parseId(x));
   return [];
 };

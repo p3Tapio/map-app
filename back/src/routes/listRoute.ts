@@ -38,7 +38,7 @@ router.post('/create', async (req: Request, res: Response) => {
       const list = new List({
         name: newList.name,
         description: newList.description,
-        createdBy: { _id: userId },
+        createdBy: userId,
         defaultview: {
           lat: newList.defaultview.lat,
           lng: newList.defaultview.lng,
@@ -66,7 +66,6 @@ router.put('/update/:id', async (req: Request, res: Response) => {
       const body = checkUpdatedListValues(req.body);
       const list = await List.findById(req.params.id);
       if (!list) throw new Error('No list found.');
-
       else if (list.createdBy.toString() === userId) {
         const updated = await List.findByIdAndUpdate({ _id: req.params.id }, body, { new: true });
         res.json(updated);
