@@ -1,5 +1,5 @@
 import {
-  ListDispatchTypes, GETPUBLICLISTS, CREATELIST, List, GETUSERLISTS, DELETELIST, UPDATELIST,
+  ListDispatchTypes, GETPUBLICLISTS, CREATELIST, List, GETUSERLISTS, DELETELIST, UPDATELIST, TOGGLEFAVORITE,
 } from './listTypes';
 
 export interface ListState {
@@ -34,6 +34,10 @@ const listReducer = (state: ListState = listState, action: ListDispatchTypes): L
       const userLists = state.userLists?.filter((x) => x._id !== action.payload);
       const publicLists = state.publicLists?.filter((x) => x._id !== action.payload);
       return { ...state, userLists, publicLists };
+    }
+    case TOGGLEFAVORITE: { // userlists?
+      const publicLists = state.publicLists?.map((x) => (x._id === action.payload._id ? action.payload : x));
+      return { ...state, publicLists };
     }
     default:
       return state;

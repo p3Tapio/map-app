@@ -1,13 +1,15 @@
 import React from 'react'
-import { Button, Card, Col, Row } from 'react-bootstrap'
-import { Search } from 'react-bootstrap-icons';
+import { Button, Card, Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap'
+import { Search, Heart, HeartFill } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
+import { getUser } from '../../state/localStore';
 import { ListComponentProps } from './publicListTypes'
 import StaticMap from './StaticMap';
 
-const ListComponent: React.FC<ListComponentProps> = ({ list }) => {
+const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite }) => {
 
   const locations = list.locations.slice(0, 3).map(x => x);
+  const user = getUser();
 
   return (
     <>
@@ -18,10 +20,37 @@ const ListComponent: React.FC<ListComponentProps> = ({ list }) => {
           </Col>
           <Col md={8} >
             <Card.Body className="d-flex flex-column" style={{ height: '100%' }}>
-              <div style={{ marginLeft: '10px' }}>
-                <Card.Title>
-                  {list.name}
-                </Card.Title>
+              <Row className="justify-content-between">
+                <Col>
+                  <div style={{ marginLeft: '10px' }}>
+                    <Card.Title>
+                      {list.name}
+                    </Card.Title>
+                  </div>
+                </Col>
+                {user
+                  ? <>
+                    <Col className="text-right mr-2" style={{ height: "10%" }}>
+                      <OverlayTrigger
+                        placement="auto"
+                        overlay={(
+                          <Tooltip id="editTooltip">
+                            {user.favorites.includes(list._id) ? 'Remove from favorites.' : 'Add to your favorites.'}
+                          </Tooltip>
+                        )}
+                      >
+                        <span className="hoverPointer" onClick={() => toggleFavorite(list._id)}>
+                          {user.favorites.includes(list._id)
+                            ? < HeartFill size="30" />
+                            : <Heart size="30" />
+                          }
+                        </span>
+                      </OverlayTrigger>
+                    </Col>
+                  </>
+                  : null}
+              </Row>
+              <Col className="mb-2">
                 <Card.Text>
                   {list.description}
                 </Card.Text>
@@ -29,9 +58,9 @@ const ListComponent: React.FC<ListComponentProps> = ({ list }) => {
                   <li key={x._id}>{x.name}</li>
                 ))}
                 {list.locations.length > 3 ? <li>And more, click below for full list ...</li> : null}
-              </div>
+              </Col>
               <hr />
-              <div style={{ height: '100%', display: 'flex', alignItems: 'flex-end', marginLeft: '10px', marginTop:'-30px' }} >
+              <div style={{ height: '100%', display: 'flex', alignItems: 'flex-end', marginLeft: '10px', marginTop: '-30px' }} >
                 <Row className="justify-content-between mt-4" style={{ width: '100%', marginRight: 0 }}>
                   <Col className="text-left" >
                     <Card.Text style={{ marginBottom: '0px' }}>
@@ -59,7 +88,6 @@ const ListComponent: React.FC<ListComponentProps> = ({ list }) => {
           </Col>
         </Row>
       </Card>
-
     </>
   )
 }

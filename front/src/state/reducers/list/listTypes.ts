@@ -5,6 +5,7 @@ export const GETUSERLISTS = 'GETUSERLISTS';
 export const CREATELIST = 'CREATELIST';
 export const UPDATELIST = 'UPDATELIST';
 export const DELETELIST = 'DELETELIST';
+export const TOGGLEFAVORITE = 'TOGGLEFAVORITE';
 
 export interface NewList {
   name: string;
@@ -22,6 +23,7 @@ export interface List extends NewList {
   _id: string;
   createdBy: { _id: string; username: string };
   locations: Location[];
+  favoritedBy: string[];
 }
 export interface GetPublicLists {
   type: typeof GETPUBLICLISTS;
@@ -43,5 +45,9 @@ export interface DeleteList {
   type: typeof DELETELIST;
   payload: string;
 }
+export interface ToggleFavorite {
+  type: typeof TOGGLEFAVORITE;
+  payload: List;
+}
 
-export type ListDispatchTypes = GetPublicLists | GetUserLists | CreateList | DeleteList | UpdateList
+export type ListDispatchTypes = GetPublicLists | GetUserLists | CreateList | DeleteList | UpdateList | ToggleFavorite

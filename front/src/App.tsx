@@ -24,6 +24,7 @@ import NotFound from './NotFound';
 // routeihin sama 401 iffeihin, nyt osassa throw new Error (tarvetta muuhunkin perkaamiseen,
 // esim json/send, onko useriin tarvetta tallentaa locationit yms)
 // Type User { Location[] vs ILocation[] vs Types.ObjectId ???? }
+// ks UserFavoriteLists.tsx
 
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);

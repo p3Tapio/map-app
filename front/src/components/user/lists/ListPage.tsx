@@ -79,7 +79,7 @@ const ListPage: React.FC = () => {
         </Button>
         <Link to="/userpage">
           <Button size="sm" variant="outline-secondary" style={{ marginLeft: '5px' }}>
-            Back to list
+            Back to lists
           </Button>
         </Link>
         <hr />

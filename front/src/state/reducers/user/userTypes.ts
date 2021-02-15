@@ -8,6 +8,7 @@ export interface SigningUser {
 }
 export interface LoggedUser extends SigningUser {
   id: string;
+  favorites: string[];
 }
 export interface Register {
   type: typeof REGISTER;

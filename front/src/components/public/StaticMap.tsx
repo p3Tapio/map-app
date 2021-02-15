@@ -10,6 +10,7 @@ import { LeafletMouseEvent } from 'leaflet';
 
 
 const StaticMap: React.FC<StaticMapProps> = ({ list }) => {
+  if (!list) return null;
   return (
     <Map
       style={{ height: '100%', width: '100%' }}
@@ -23,7 +24,7 @@ const StaticMap: React.FC<StaticMapProps> = ({ list }) => {
       touchZoom={false}
       zoomControl={false}
     >
-      { list ? list.locations.map((x) => (
+      { list && list.locations ? list.locations.map((x) => (
         <Marker
           key={x._id}
           position={[x.coordinates.lat, x.coordinates.lng]}
@@ -37,7 +38,6 @@ const StaticMap: React.FC<StaticMapProps> = ({ list }) => {
             {x.name}
           </Popup>
         </Marker>
-
       )) : null
       }
       <TileLayer
@@ -46,7 +46,6 @@ const StaticMap: React.FC<StaticMapProps> = ({ list }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
     </Map >
-
   )
 }
 

@@ -3,7 +3,7 @@ import {
   Container, Dropdown
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPublicLists } from '../../state/reducers/list/listActions';
+import { getPublicLists, toggleFavorite } from '../../state/reducers/list/listActions';
 import { List } from '../../state/reducers/list/listTypes';
 import { RootStore } from '../../state/store';
 import ListComponent from './ListComponent';
@@ -12,14 +12,18 @@ import ListComponent from './ListComponent';
 const PublicLists: React.FC = () => {
   const publicLists = useSelector((state: RootStore) => state.lists.publicLists);
   const [countryFilter, setCountryFilter] = useState<string | undefined>(undefined);
-  const [filteredList, setFilteredList] = useState<List[] | undefined>(undefined);
+  const [filteredList, setFilteredList] = useState<List[] | undefined>(publicLists);
   const dispatch = useDispatch();
 
   useEffect(() => { dispatch(getPublicLists()); }, [dispatch])
   useEffect(() => {
-    !countryFilter ? setFilteredList(undefined)
+    !countryFilter ? setFilteredList(publicLists)
       : setFilteredList(publicLists?.filter((l) => l.country === countryFilter))
   }, [countryFilter, publicLists])
+
+  const handleToggleFavorite = (listId: string): void => {
+    dispatch(toggleFavorite(listId));
+  }
 
   if (!publicLists) return null;
 
@@ -29,7 +33,7 @@ const PublicLists: React.FC = () => {
   return (
     <Container className="mt-5">
       <h4>Public location lists</h4>
-      {/* TODO country dropdown, paginoinnint tms */}
+      {/* TODO  paginoinnint */}
       <Dropdown>
         <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
           Filter by country
@@ -47,14 +51,9 @@ const PublicLists: React.FC = () => {
         </Dropdown.Menu>
       </Dropdown>
       <hr />
-      {filteredList
-        ? filteredList.map((list) => (
-          <ListComponent list={list} key={list._id} />
-        ))
-        : publicLists.map((list) => (
-          <ListComponent list={list} key={list._id} />
-        ))
-      }
+      {filteredList && filteredList.map((list) => (
+        <ListComponent list={list} key={list._id} toggleFavorite={handleToggleFavorite} />
+      ))}
     </Container>
   )
 };

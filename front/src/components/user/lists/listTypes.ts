@@ -49,3 +49,6 @@ export interface ListListProps {
   showEdit: boolean;
   setShowEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
+export interface UserFavoriteProps {
+  lists: List[];
+}

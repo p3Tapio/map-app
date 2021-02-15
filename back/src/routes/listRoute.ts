@@ -97,11 +97,12 @@ router.delete('/delete/:id', async (req: Request, res: Response) => {
 
 router.post('/favorite/:id', async (req: Request, res: Response) => {
   try {
-    if (req.header('token')) {
+    if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
       const listId = checkFavoritedId(req.params.id);
       const user = await User.findById(userId);
-      const list = await List.findById(listId);
+      const list = await List.findById(listId)
+        .populate('locations createdBy', 'username name address description coordinates category imageLink list createdBy');
 
       if (user && list && userId && mongoose.isValidObjectId(userId)) {
         if (!list.favoritedBy.some(x => (x.equals(userId)))) {

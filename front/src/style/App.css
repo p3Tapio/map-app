@@ -136,3 +136,6 @@ hr {
   background-color: #c8cbcf;
   height: 1px;
 }
+.hoverPointer:hover {
+  cursor: pointer;
+}

@@ -1,9 +1,9 @@
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import {
-  ListDispatchTypes, GETPUBLICLISTS, NewList, CREATELIST, GETUSERLISTS, DELETELIST, List, UPDATELIST,
+  ListDispatchTypes, GETPUBLICLISTS, NewList, CREATELIST, GETUSERLISTS, DELETELIST, List, UPDATELIST, TOGGLEFAVORITE,
 } from './listTypes';
-import { createConfig } from '../../localStore';
+import { createConfig, getUser, setUser } from '../../localStore';
 
 const baseUrl = process.env.REACT_APP_URL;
 
@@ -56,6 +56,22 @@ export const deleteList = (id: string) => async (dispatch: Dispatch<ListDispatch
     dispatch({
       type: DELETELIST,
       payload: id,
+    });
+  }
+};
+export const toggleFavorite = (id: string) => async (dispatch: Dispatch<ListDispatchTypes>): Promise<void> => {
+  const config = createConfig();
+  if (config.headers.token) {
+    const res = await axios.post(`${baseUrl}/api/list/favorite/${id}`, {}, config);
+    const { data } = res;
+    const user = getUser();
+    user.favorites = user.favorites.includes(data._id)
+      ? user.favorites.filter((y) => y !== data._id)
+      : user.favorites.concat(data._id);
+    setUser(user);
+    dispatch({
+      type: TOGGLEFAVORITE,
+      payload: data,
     });
   }
 };

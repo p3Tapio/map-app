@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container } from 'react-bootstrap';
-import { Plus } from 'react-bootstrap-icons';
+import { Heart, List as ListIcon, Plus } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../state/localStore';
 import { getUserLists } from '../../state/reducers/list/listActions';
@@ -8,6 +8,7 @@ import { RootStore } from '../../state/store';
 import { initialList } from './initials';
 import CreateNewListModal from './lists/CreateNewListModal';
 import ListList from './lists/ListList';
+import UserFavoriteLists from './lists/UserFavoriteLists';
 
 const UserPage: React.FC = () => {
   const user = getUser();
@@ -18,6 +19,7 @@ const UserPage: React.FC = () => {
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [newList, setNewList] = useState(initialList);
+  const [showFavorites, setShowFavorites] = useState(false);
 
   useEffect(() => {
     dispatch(getUserLists());
@@ -48,14 +50,41 @@ const UserPage: React.FC = () => {
           Create new list
           <Plus size={24} style={{ marginLeft: '10px' }} />
         </Button>
+        {showFavorites
+          ? (
+            <Button
+              size="sm"
+              variant="outline-secondary"
+              style={{ paddingRight: '10px', marginLeft: '5px' }}
+              onClick={(): void => setShowFavorites(!showFavorites)}
+            >
+              See lists you have created
+              <ListIcon size={24} style={{ marginLeft: '10px' }} />
+            </Button>
+          )
+          : (
+            <Button
+              size="sm"
+              variant="outline-secondary"
+              style={{ paddingRight: '10px', marginLeft: '5px' }}
+              onClick={(): void => setShowFavorites(!showFavorites)}
+            >
+              See your favorites
+              <Heart size={24} style={{ marginLeft: '10px' }} />
+            </Button>
+          )}
         <hr />
-        <ListList
-          userLists={userLists}
-          showDelete={showDelete}
-          setShowDelete={setShowDelete}
-          showEdit={showEdit}
-          setShowEdit={setShowEdit}
-        />
+        {showFavorites
+          ? <UserFavoriteLists />
+          : (
+            <ListList
+              userLists={userLists}
+              showDelete={showDelete}
+              setShowDelete={setShowDelete}
+              showEdit={showEdit}
+              setShowEdit={setShowEdit}
+            />
+          )}
       </Container>
       <CreateNewListModal
         show={showCreateList}
