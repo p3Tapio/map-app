@@ -3,7 +3,7 @@ import { Button, Container } from 'react-bootstrap';
 import { Heart, List as ListIcon, Plus } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../state/localStore';
-import { getUserLists } from '../../state/reducers/list/listActions';
+import { getPublicLists, getUserLists } from '../../state/reducers/list/listActions';
 import { RootStore } from '../../state/store';
 import { initialList } from './initials';
 import CreateNewListModal from './lists/CreateNewListModal';
@@ -23,6 +23,7 @@ const UserPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(getUserLists());
+    dispatch(getPublicLists());
   }, [dispatch, showDelete, showEdit]);
 
   const createNewList = (): void => {

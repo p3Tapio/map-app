@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { getPublicLists } from '../../state/reducers/list/listActions';
 import { List } from '../../state/reducers/list/listTypes';
 import { RootStore } from '../../state/store';
@@ -13,13 +13,14 @@ import SingleLocationMap from '../user/locations/locationList/SingleLocationMap'
 
 const PublicListDetails: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
+  const loc = useLocation<{ from: string | undefined }>();
   const publiclist = useSelector((state: RootStore) => state.lists.publicLists?.find((x: List) => x._id === id));
   const dispatch = useDispatch();
   const [countryDetails, setCountryDetails] = useState([{ name: '', flag: '' }]);
   const [showMapComponent, setShowMapComponent] = useState(true);
   const [showLittleMap, setShowLittleMap] = useState(false);
   const [location, setLocation] = useState(initialLocation);
-
+  if(loc.state) console.log('loc', loc.state.from)  // huom, sivulle voi tulla ilman linkkiä, jolloin undefined
   useEffect(() => { dispatch(getPublicLists()); }, [dispatch])
   useEffect(() => {
     if (publiclist && publiclist.country !== 'unknown') axios.get(`https://restcountries.eu/rest/v2/name/${publiclist.country}`).then(res => {

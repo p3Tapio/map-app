@@ -6,7 +6,7 @@ import { getUser } from '../../state/localStore';
 import { ListComponentProps } from './publicListTypes'
 import StaticMap from './StaticMap';
 
-const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite }) => {
+const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fromWhere }) => {
 
   const locations = list.locations.slice(0, 3).map(x => x);
   const user = getUser();
@@ -71,7 +71,7 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite }) =
                     <small>Created by: {list.createdBy.username}</small>
                   </Col>
                   <Col className="text-right" >
-                    <Link to={`/public/${list._id}`} >
+                    <Link to={{pathname: `/public/${list._id}`, state: { from: fromWhere }}} >
                       <Button
                         style={{ marginBottom: '-30px', marginRight: '-20px', padding: '8px' }}
                         variant="outline-dark"

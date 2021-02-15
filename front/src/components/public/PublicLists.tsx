@@ -21,7 +21,7 @@ const PublicLists: React.FC = () => {
       : setFilteredList(publicLists?.filter((l) => l.country === countryFilter))
   }, [countryFilter, publicLists])
 
-  const handleToggleFavorite = (listId: string): void => {
+  const handleToggleFavorite = (listId: string): void => { // TODO try-catch?
     dispatch(toggleFavorite(listId));
   }
 
@@ -52,7 +52,7 @@ const PublicLists: React.FC = () => {
       </Dropdown>
       <hr />
       {filteredList && filteredList.map((list) => (
-        <ListComponent list={list} key={list._id} toggleFavorite={handleToggleFavorite} />
+        <ListComponent list={list} key={list._id} toggleFavorite={handleToggleFavorite} fromWhere="public" />
       ))}
     </Container>
   )
