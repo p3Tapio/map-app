@@ -41,8 +41,8 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                       >
                         <span className="hoverPointer" onClick={() => toggleFavorite(list._id)}>
                           {user.favorites.includes(list._id)
-                            ? < HeartFill size="30" />
-                            : <Heart size="30" />
+                            ? < HeartFill id="heartFill" size="30" />
+                            : <Heart id="heartUnfill" size="30" />
                           }
                         </span>
                       </OverlayTrigger>
@@ -68,7 +68,7 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                       {(list.country !== 'unknown' && list.place === 'unknown' && `${list.country}`)}
                       {(list.country === 'unknown' && list.place !== 'unknown' && `${list.place}`)}
                     </Card.Text>
-                    <small>Created by: {list.createdBy.username}</small>
+                    {list.createdBy && <small>Created by: {list.createdBy.username}</small>}
                   </Col>
                   <Col className="text-right" >
                     <Link to={{pathname: `/public/${list._id}`, state: { from: fromWhere }}} >

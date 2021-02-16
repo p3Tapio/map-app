@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
+import { ArrowLeftShort, List as ListIcon, Map } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { getPublicLists } from '../../state/reducers/list/listActions';
@@ -20,7 +21,7 @@ const PublicListDetails: React.FC = () => {
   const [showMapComponent, setShowMapComponent] = useState(true);
   const [showLittleMap, setShowLittleMap] = useState(false);
   const [location, setLocation] = useState(initialLocation);
-  if(loc.state) console.log('loc', loc.state.from)  // huom, sivulle voi tulla ilman linkkiä, jolloin undefined
+
   useEffect(() => { dispatch(getPublicLists()); }, [dispatch])
   useEffect(() => {
     if (publiclist && publiclist.country !== 'unknown') axios.get(`https://restcountries.eu/rest/v2/name/${publiclist.country}`).then(res => {
@@ -45,23 +46,34 @@ const PublicListDetails: React.FC = () => {
         <Col md={10} xs={8}>
           <h4>{publiclist.name}</h4>
           <p>{publiclist.description}</p>
-          <Button
-            variant="outline-dark"
-            size="sm"
-            type="button"
-            style={{ marginRight: '5px' }}
-            onClick={(): void => setShowMapComponent(!showMapComponent)}>
-            {showMapComponent ? 'View as list' : 'View on map'}
-          </Button>
-          <Link to="/public">
+          <Link to={!loc.state || loc.state.from === 'public' ? "/public" : "/userpage"}>
             <Button
               variant="outline-dark"
               size="sm"
               type="button"
+              style={{ marginRight: '5px', paddingRight: '15px' }}
             >
+              <ArrowLeftShort size={20} />
               Back
             </Button>
           </Link>
+          <Button
+            variant="outline-dark"
+            size="sm"
+            type="button"
+            style={{ marginRight: '5px', paddingRight: '15px' }}
+            onClick={(): void => setShowMapComponent(!showMapComponent)}
+          >
+            {showMapComponent
+              ? <>
+                <ListIcon size={20} style={{ marginRight: '5px' }} />
+                View as list
+              </>
+              : <>
+                <Map size={18} style={{ marginRight: '5px', marginBottom: '2px' }} />
+                View on map
+              </>}
+          </Button>
         </Col>
       </Row>
       <hr />

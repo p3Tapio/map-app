@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Container } from 'react-bootstrap';
+
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Link, useHistory, useParams, useLocation,
 } from 'react-router-dom';
+import { Button, Container, Row } from 'react-bootstrap';
+import {
+  ArrowLeftShort, Pen, Plus, List as ListIcon, Map,
+} from 'react-bootstrap-icons';
 import { getUserLists } from '../../../state/reducers/list/listActions';
 import { List } from '../../../state/reducers/list/listTypes';
 import { RootStore } from '../../../state/store';
@@ -61,27 +65,45 @@ const ListPage: React.FC = () => {
             : userlist[0].description}
         </p>
         <hr />
-        <Button
-          size="sm"
-          variant="outline-secondary"
-          onClick={(): void => {
-            setList(userlist[0]);
-            setShowEditList(true);
-          }}
-        >
-          Edit list details
-        </Button>
-        <Button size="sm" variant="outline-secondary" style={{ marginLeft: '5px' }} onClick={(): void => setShowCreateLocation(true)}>
-          Add location
-        </Button>
-        <Button size="sm" variant="outline-secondary" style={{ marginLeft: '5px' }} onClick={(): void => setShowMap(!showMap)}>
-          {showMap ? 'View locations' : 'View map'}
-        </Button>
-        <Link to="/userpage">
-          <Button size="sm" variant="outline-secondary" style={{ marginLeft: '5px' }}>
-            Back to lists
+        <Row className="d-flex justify-content-center ">
+          <Link to="/userpage" className="m-1">
+            <Button size="sm" variant="outline-secondary">
+              <ArrowLeftShort size={20} />
+              Back to lists
+            </Button>
+          </Link>
+          <Button
+            size="sm"
+            variant="outline-secondary"
+            className="m-1"
+            onClick={(): void => {
+              setList(userlist[0]);
+              setShowEditList(true);
+            }}
+          >
+            <Pen size={18} style={{ marginRight: '5px', marginBottom: '2px' }} />
+            Edit list details
           </Button>
-        </Link>
+          <Button size="sm" variant="outline-secondary" className="m-1" onClick={(): void => setShowCreateLocation(true)}>
+            <Plus size={20} />
+            Add location
+          </Button>
+          <Button size="sm" variant="outline-secondary" className="m-1" onClick={(): void => setShowMap(!showMap)}>
+            {showMap
+              ? (
+                <>
+                  <ListIcon size={18} style={{ marginRight: '5px', marginBottom: '2px' }} />
+                  View locations
+                </>
+              )
+              : (
+                <>
+                  <Map size={18} style={{ marginRight: '5px', marginBottom: '2px' }} />
+                  View map
+                </>
+              )}
+          </Button>
+        </Row>
         <hr />
         {!showMap && (
           <LocationList

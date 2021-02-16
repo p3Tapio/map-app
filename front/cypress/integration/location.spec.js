@@ -25,7 +25,7 @@ describe('Adding a location to a list', function () {
     cy.createLocation();
     cy.contains('Location lists').click();
     cy.contains('test location');
-    cy.contains('Details').click();
+    cy.contains('View').click();
     cy.contains('View as list').click();
     cy.contains('test location');
     cy.contains('this is a location for testing');

@@ -59,7 +59,7 @@ const UserPage: React.FC = () => {
               style={{ paddingRight: '10px', marginLeft: '5px' }}
               onClick={(): void => setShowFavorites(!showFavorites)}
             >
-              See lists you have created
+              See your lists
               <ListIcon size={24} style={{ marginLeft: '10px' }} />
             </Button>
           )

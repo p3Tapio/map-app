@@ -271,7 +271,7 @@ describe('List can be updated', () => {
     response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(withoutPlace).expect(400);
     expect(response.body.error).toEqual('object missing required properties.');
 
-    const withoutPublic = { name: 'valid list', description: 'this is a valid list for testing', defaultview: { lat: 65.12212, lng: 21.212121, zoom: 12 }, country: 'Finland', place: 'Helsinki', createdBy: userlists.body[0].createdBy, locations: [],  favoritedBy: [] }
+    const withoutPublic = { name: 'valid list', description: 'this is a valid list for testing', defaultview: { lat: 65.12212, lng: 21.212121, zoom: 12 }, country: 'Finland', place: 'Helsinki', createdBy: userlists.body[0].createdBy, locations: [], favoritedBy: [] }
     response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(withoutPublic).expect(400);
     expect(response.body.error).toEqual('object missing required properties.');
 
@@ -348,7 +348,7 @@ describe('List can be updated', () => {
     expect(response.body.error).toEqual('input missing or in wrong format: string expected.')
   })
 })
-describe('List can be deletd', () => {
+describe('List can be deleted', () => {
   beforeEach(async () => {
     await List.deleteMany({});
     await User.deleteMany({});
@@ -389,6 +389,65 @@ describe('List can be deletd', () => {
 
     userlists = await api.get('/api/list/user').set({ 'token': login1.body.token }).expect(200);
     expect(userlists.body).toHaveLength(1);
+  })
+})
+describe('List can be favorited and unfavorited', () => {
+  beforeEach(async () => {
+    await List.deleteMany({});
+    await User.deleteMany({});
+
+    const hashed = bcrypt.hashSync(user.password, 10);
+    const createUser = new User({ _id: new mongoose.Types.ObjectId, username: user.username, password: hashed });
+    await createUser.save();
+    const hashed2 = bcrypt.hashSync(anotherUser.password, 10);
+    const another = new User({ _id: new mongoose.Types.ObjectId, username: anotherUser.username, password: hashed2 });
+    await another.save();
+
+    const login = await api.post('/api/user/login/').send(user);
+    await api.post('/api/list/create').set({ 'token': login.body.token }).send(validPublicList);
+  })
+  test('...users can favorite a list if signed in', async () => {
+    const login = await api.post('/api/user/login/').send(user);
+    const login2 = await api.post('/api/user/login/').send(anotherUser);
+    let lists = await List.find({});
+    const users = await User.find({});
+
+    expect(lists[0].favoritedBy).toHaveLength(0);
+
+    await api.post(`/api/list/favorite/${lists[0]._id}`).set({ 'token': login.body.token }).expect(200);
+    lists = await List.find({});
+    expect(lists[0].favoritedBy).toHaveLength(1);
+
+    await api.post(`/api/list/favorite/${lists[0]._id}`).set({ 'token': login2.body.token }).expect(200);
+    lists = await List.find({});
+    expect(lists[0].favoritedBy).toHaveLength(2);
+    expect(lists[0].favoritedBy[0]).toEqual(users[0]._id);
+    expect(lists[0].favoritedBy[1]).toEqual(users[1]._id);
+  })
+  test('...favoriting fails without token', async() => {
+    let lists = await List.find({});
+    expect(lists[0].favoritedBy).toHaveLength(0);
+    const res = await api.post(`/api/list/favorite/${lists[0]._id}`).set({ 'token': '' }).expect(401);
+    expect(res.body.error).toEqual('unauthorized');
+    lists = await List.find({});
+    expect(lists[0].favoritedBy).toHaveLength(0);
+  })
+  test('...user can toggle a list from favorite to unfavorited', async () => {
+    const login = await api.post('/api/user/login/').send(user);
+    let lists = await List.find({});
+    expect(lists[0].favoritedBy).toHaveLength(0);
+
+    await api.post(`/api/list/favorite/${lists[0]._id}`).set({ 'token': login.body.token }).expect(200);
+    lists = await List.find({});
+    expect(lists[0].favoritedBy).toHaveLength(1);
+
+    await api.post(`/api/list/favorite/${lists[0]._id}`).set({ 'token': login.body.token }).expect(200);
+    lists = await List.find({});
+    expect(lists[0].favoritedBy).toHaveLength(0);
+
+    await api.post(`/api/list/favorite/${lists[0]._id}`).set({ 'token': login.body.token }).expect(200);
+    lists = await List.find({});
+    expect(lists[0].favoritedBy).toHaveLength(1);
   })
 })
 
