@@ -26,7 +26,7 @@ const Navigation: React.FC<NavProps> = ({ logged, setLogged }) => {
           <Link to="/" className="navLink">
             Home
           </Link>
-          <Link to="/public" className="navLink" style={{whiteSpace: 'nowrap'}}>
+          <Link to="/public" className="navLink" style={{ whiteSpace: 'nowrap' }}>
             Location lists
           </Link>
           {logged

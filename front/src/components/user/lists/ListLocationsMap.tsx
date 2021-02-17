@@ -58,7 +58,7 @@ const ListLocationsMap: React.FC<ListLocationsMapProps> = ({ locations, defaultv
                 setShowPopUpModal(true);
               }}
             >
-              <Popup>
+              <Popup closeButton={false}>
                 {l.name}
               </Popup>
             </Marker>

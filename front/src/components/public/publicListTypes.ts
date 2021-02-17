@@ -8,3 +8,6 @@ export interface ListComponentProps {
 export interface StaticMapProps {
   list: List;
 }
+export interface PublicListMapProps {
+  lists: List[] | undefined;
+}

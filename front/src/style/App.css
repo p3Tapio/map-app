@@ -139,3 +139,30 @@ hr {
 .hoverPointer:hover {
   cursor: pointer;
 }
+
+.pagination > li > button
+{
+    background-color: white;
+    color: #5A4181;
+    outline: none !important;
+    box-shadow: none;
+}
+.pagination > li > button:focus,
+.pagination > li > button:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
+    outline: none !important;
+    box-shadow: none;
+}
+.paginationArrowBtn {
+  background-color: white;
+  border: 1px solid #dee2e6;
+  height:37px;
+  box-shadow: none;
+  outline: none !important;
+  box-shadow: none;
+}

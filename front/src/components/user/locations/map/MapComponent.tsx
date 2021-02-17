@@ -61,7 +61,7 @@ const MapComponent: React.FC<MapProps> = ({
                 e.target.closePopup();
               }}
             >
-              <Popup>
+              <Popup closeButton={false}>
                 {x.name}
               </Popup>
             </Marker>

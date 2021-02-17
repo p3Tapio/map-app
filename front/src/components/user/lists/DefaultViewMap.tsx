@@ -63,7 +63,7 @@ const DefaultViewMap: React.FC<DefaultViewMapProps> = ({ list, setList, validati
                 e.target.closePopup();
               }}
             >
-              <Popup>
+              <Popup closeButton={false}>
                 {x.name}
               </Popup>
             </Marker>

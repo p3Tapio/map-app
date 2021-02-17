@@ -193,6 +193,4 @@ describe('Favoriting a list', function () {
     cy.contains('See your favorites').click();
     cy.contains('test list').should('not.exist');
   })
-
-
 })

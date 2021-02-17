@@ -19,6 +19,7 @@ const EditListModal: React.FC<EditListModalProps> = ({
 
   const handleClose = (): void => {
     setShow(false);
+    setListValidationMsg({});
   };
   const handleEdit = async (ev: FormEvent): Promise<void> => {
     ev.preventDefault();
@@ -26,6 +27,7 @@ const EditListModal: React.FC<EditListModalProps> = ({
     if ('name' in validated) {
       try {
         // TODO testaa onko arvot muuttuneet?
+        if (validated.place === '') validated.place = 'unknown';
         // eslint-disable-next-line @typescript-eslint/await-thenable
         await dispatch(updateList(validated));
         setInfo({ header: 'Success', message: `${validated.name} updated!` });

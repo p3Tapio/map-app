@@ -49,7 +49,7 @@ export const validateUpdatedList = (list: List): List | ListValidationMessage =>
   if (list.defaultview.lat === 34.88593094075317 && list.defaultview.lng === 9.843750000000002 && list.defaultview.zoom === 2) {
     listValidationMsg = { ...listValidationMsg, defaultviewErr: 'Please set a default view for your location list.' };
   }
-  if (list.place === '') listValidationMsg = { ...listValidationMsg, placeErr: 'Place is required.' };
+  // if (list.place === '') listValidationMsg = { ...listValidationMsg, placeErr: 'Place is required.' };
   if (list.country === '') listValidationMsg = { ...listValidationMsg, countryErr: 'Country is required.' };
   if (Object.keys(listValidationMsg).length !== 0) {
     return listValidationMsg;

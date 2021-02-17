@@ -34,7 +34,7 @@ const StaticMap: React.FC<StaticMapProps> = ({ list }) => {
           onMouseOut={(e: LeafletMouseEvent): void => {
             e.target.closePopup();
           }}>
-          <Popup>
+          <Popup closeButton={false}>
             {x.name}
           </Popup>
         </Marker>

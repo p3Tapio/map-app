@@ -1,9 +1,12 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react';
+import {
+  Button, Col, Container, Dropdown, Row,
+} from 'react-bootstrap';
 import { ArrowLeftShort, List as ListIcon, Map } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
+import { Location } from '../../state/locationService/locationTypes';
 import { getPublicLists } from '../../state/reducers/list/listActions';
 import { List } from '../../state/reducers/list/listTypes';
 import { RootStore } from '../../state/store';
@@ -20,82 +23,125 @@ const PublicListDetails: React.FC = () => {
   const [countryDetails, setCountryDetails] = useState([{ name: '', flag: '' }]);
   const [showMapComponent, setShowMapComponent] = useState(true);
   const [showLittleMap, setShowLittleMap] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState<string | undefined>(undefined);
+  const [filteredLocations, setFilteredLocations] = useState<Location[] | undefined>(undefined);
   const [location, setLocation] = useState(initialLocation);
 
-  useEffect(() => { dispatch(getPublicLists()); }, [dispatch])
+  useEffect(() => { dispatch(getPublicLists()); }, [dispatch]);
   useEffect(() => {
-    if (publiclist && publiclist.country !== 'unknown') axios.get(`https://restcountries.eu/rest/v2/name/${publiclist.country}`).then(res => {
-      setCountryDetails(res.data);
-    })
-  }, [publiclist])
+    if (publiclist && publiclist.country !== 'unknown') {
+      axios.get(`https://restcountries.eu/rest/v2/name/${publiclist.country}`).then((res) => {
+        setCountryDetails(res.data);
+      });
+    }
+  }, [publiclist]);
+  useEffect(() => {
+    if (publiclist) {
+      if (!categoryFilter) setFilteredLocations(publiclist.locations);
+      else setFilteredLocations(publiclist.locations.filter((l) => l.category === categoryFilter));
+    }
+  }, [categoryFilter, publiclist]);
 
-  if (!publiclist) return null;
+  if (!publiclist || !filteredLocations) return null;
+
+  const categories = Array.from(new Set(publiclist.locations.map((x) => x.category)));
+  categories.sort((a, b) => a.localeCompare(b));
 
   return (
     <Container className="mt-5">
       <Row className="mb-4">
         <Col md={2} xs={4} className="mt-2">
           {countryDetails[0].flag !== ''
-            ? <img src={countryDetails[0].flag} alt="Flag" height="50" style={{ border: "1px solid black" }} />
+            ? <img src={countryDetails[0].flag} alt="Flag" height="50" style={{ border: '1px solid black' }} />
             : null}
           <br />
-          {(publiclist.country !== 'unknown' && publiclist.place !== 'unknown' && <small className="mt-1">{publiclist.place},{' '}{publiclist.country}</small>)}
+          {(publiclist.country !== 'unknown' && publiclist.place !== 'unknown' && (
+            <small className="mt-1">
+              {publiclist.place}
+              ,
+              {' '}
+              {publiclist.country}
+            </small>
+          ))}
           {(publiclist.country !== 'unknown' && publiclist.place === 'unknown' && <small className="mt-1">{publiclist.country}</small>)}
           {(publiclist.country === 'unknown' && publiclist.place !== 'unknown' && <small className="mt-1">{publiclist.place}</small>)}
         </Col>
         <Col md={10} xs={8}>
           <h4>{publiclist.name}</h4>
           <p>{publiclist.description}</p>
-          <Link to={!loc.state || loc.state.from === 'public' ? "/public" : "/userpage"}>
+          <Row>
+            <Link to={!loc.state || loc.state.from === 'public' ? '/public' : '/userpage'}>
+              <Button
+                className="m-1 pr-3"
+                variant="outline-dark"
+                size="sm"
+                type="button"
+              >
+                <ArrowLeftShort size={20} />
+                Back
+              </Button>
+            </Link>
             <Button
               variant="outline-dark"
               size="sm"
               type="button"
-              style={{ marginRight: '5px', paddingRight: '15px' }}
+              className="m-1 pr-3"
+              onClick={(): void => setShowMapComponent(!showMapComponent)}
             >
-              <ArrowLeftShort size={20} />
-              Back
+              {showMapComponent
+                ? (
+                  <>
+                    <ListIcon size={20} style={{ marginRight: '5px' }} />
+                    View as list
+                  </>
+                )
+                : (
+                  <>
+                    <Map size={18} style={{ marginRight: '5px', marginBottom: '2px' }} />
+                    View on map
+                  </>
+                )}
             </Button>
-          </Link>
-          <Button
-            variant="outline-dark"
-            size="sm"
-            type="button"
-            style={{ marginRight: '5px', paddingRight: '15px' }}
-            onClick={(): void => setShowMapComponent(!showMapComponent)}
-          >
-            {showMapComponent
-              ? <>
-                <ListIcon size={20} style={{ marginRight: '5px' }} />
-                View as list
-              </>
-              : <>
-                <Map size={18} style={{ marginRight: '5px', marginBottom: '2px' }} />
-                View on map
-              </>}
-          </Button>
+            <Dropdown className="m-1">
+              <Dropdown.Toggle size="sm" variant="outline-dark" style={{ fontSize: '14px' }}>
+                Filter by category
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={(): void => setCategoryFilter(undefined)}>All</Dropdown.Item>
+                {categories.map((c) => (
+                  <Dropdown.Item key={c} onClick={(): void => setCategoryFilter(c)}>
+                    {c === 'museumArt' && 'Museums & Art'}
+                    {c === 'shopping' && 'Shopping'}
+                    {c === 'sights' && 'Sights'}
+                    {c === 'foodDrink' && 'Food & Drink'}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </Row>
         </Col>
       </Row>
       <hr />
       {showMapComponent
-        ? <ListLocationsMap locations={publiclist.locations} defaultview={publiclist.defaultview} />
-        : <>
-          <Col className="row justify-content-center locationCardGrid">
-            {publiclist.locations.map((x) => (
-              <LocationCard
-                key={x._id}
-                type="public"
-                location={x}
-                setShowMap={setShowLittleMap}
-                setLocation={setLocation}
-              />
-            ))}
-          </Col>
-          <SingleLocationMap location={location} show={showLittleMap} setShow={setShowLittleMap} />
-        </>
-      }
+        ? <ListLocationsMap locations={filteredLocations} defaultview={publiclist.defaultview} />
+        : (
+          <>
+            <Col className="row justify-content-center locationCardGrid">
+              {filteredLocations.map((x) => (
+                <LocationCard
+                  key={x._id}
+                  type="public"
+                  location={x}
+                  setShowMap={setShowLittleMap}
+                  setLocation={setLocation}
+                />
+              ))}
+            </Col>
+            <SingleLocationMap location={location} show={showLittleMap} setShow={setShowLittleMap} />
+          </>
+        )}
     </Container>
-  )
-}
+  );
+};
 
-export default PublicListDetails
+export default PublicListDetails;

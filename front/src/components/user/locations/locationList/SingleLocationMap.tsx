@@ -48,7 +48,7 @@ const SingleLocationModal: React.FC<SingleLocationMapProps> = ({ location, show,
               e.target.closePopup();
             }}
           >
-            <Popup>
+            <Popup closeButton={false}>
               You can find the
               {' '}
               {location.name}

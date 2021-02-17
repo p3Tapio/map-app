@@ -29,17 +29,16 @@ const ListForm: React.FC<ListFormProps> = ({
           <>
             <Form.Group className="row">
               <Form.Label htmlFor="place" className="col-sm-3">Place</Form.Label>
-              <Col sm={9} className={validationMsg.placeErr ? 'newLocationErrorField' : 'newLocationOkField'}>
+              <Col sm={9} className="newLocationOkField">
                 <Form.Control
                   id="place"
                   name="place"
                   type="text"
-                  value={list.place}
+                  value={list.place === 'unknown' ? '' : list.place}
                   onChange={(e: FormEvent): void => {
                     setList({ ...list, place: (e.target as HTMLTextAreaElement).value });
                   }}
                 />
-                {(validationMsg.placeErr && <p className="newLocationError">{validationMsg.placeErr}</p>)}
               </Col>
             </Form.Group>
             <Form.Group className="row">
