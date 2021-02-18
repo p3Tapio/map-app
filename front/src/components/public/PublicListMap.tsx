@@ -9,10 +9,12 @@ import Leaflet, { LeafletMouseEvent } from 'leaflet';
 import { Link } from 'react-router-dom';
 import { clearTimeout, setTimeout } from 'timers';
 import { PublicListMapProps } from './publicListTypes';
+import useContainerWidth from '../../hooks/useContainerWidth';
 
 const PublicListMap: React.FC<PublicListMapProps> = ({ lists }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>();
+  const containerWidth = useContainerWidth();
   const southWest = Leaflet.latLng(-89.98155760646617, -180);
   const northEast = Leaflet.latLng(89.99346179538875, 180);
   const bounds = Leaflet.latLngBounds(southWest, northEast);
@@ -30,13 +32,15 @@ const PublicListMap: React.FC<PublicListMapProps> = ({ lists }) => {
   return (
     <Map
       ref={mapRef}
-      center={[35, 10]}
+      center={[40, 10]}
       maxBoundsViscosity={1.0}
       maxBounds={bounds}
       minZoom={1.5}
       zoom={1.5}
       scrollWheelZoom
-      style={{ height: 500 }}
+      style={containerWidth && containerWidth.width < 960
+        ? { height: containerWidth.width / 1.5, width: containerWidth.width }
+        : { height: 640, width: 960 }}
     >
       {lists && lists.length !== 0
         && lists.map((x) => (

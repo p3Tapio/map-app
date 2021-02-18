@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Col,
-  Container, Dropdown, Row,
+  Button, Col, Container, Dropdown, Row,
 } from 'react-bootstrap';
 import {
   List as ListIcon, Map, ChevronUp, ChevronDown,
@@ -48,7 +46,7 @@ const PublicLists: React.FC = () => {
 
   const countries = Array.from(new Set(publicLists.map((l: List) => l.country)));
   countries.sort((a, b) => a.localeCompare(b));
-  const sortingCriteria = ['Country', 'Date', 'Favorited', 'Name'];
+  const sortingOptions = ['Country', 'Date', 'Favorited', 'Name'];
 
   const indexOfLast = currentPage * listsPerPage;
   const indexOfFirst = indexOfLast - listsPerPage;
@@ -111,67 +109,26 @@ const PublicLists: React.FC = () => {
           </Button>
           {!showMap
             && (
-              <>
-                <Dropdown>
-                  <Dropdown.Toggle
-                    variant="outline-secondary"
-                    size="sm"
-                    className="m-1"
-                  >
-                    Filter by country
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={(): void => setCountryFilter(undefined)}>All</Dropdown.Item>
-                    {countries.map((c) => (
-                      <Dropdown.Item
-                        key={c}
-                        onClick={(): void => setCountryFilter(c)}
-                      >
-                        {c}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown>
-
-                <Dropdown>
-                  <Dropdown.Toggle
-                    variant="outline-secondary"
-                    size="sm"
-                    className="m-1"
-                  >
-                    Sort criteria
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    {sortingCriteria.map((s) => (
-                      <Dropdown.Item
-                        key={s}
-                        onClick={(): void => setSortCriteria(s)}
-                      >
-                        {s}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Button
-                  variant="outline-secondary"
-                  size="sm"
-                  className="m-1"
-                  onClick={(): void => {
-                    setSortDirection(sortDirection === 'desc' ? 'asc' : 'desc');
-                  }}
-                >
-                  {sortDirection === 'asc'
-                    ? <ChevronUp />
-                    : <ChevronDown />}
-                </Button>
-              </>
+              <SortAndFilter
+                countries={countries}
+                setCountryFilter={setCountryFilter}
+                sortCriteria={sortCriteria}
+                setSortCriteria={setSortCriteria}
+                sortingOptions={sortingOptions}
+                setSortDirection={setSortDirection}
+                sortDirection={sortDirection}
+              />
             )}
         </Row>
       </Col>
       <hr />
       {
         showMap
-          ? <PublicListMap lists={filteredList} />
+          ? (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <PublicListMap lists={filteredList} />
+            </div>
+          )
           : (
             <>
               {currentList && currentList.map((list) => (
@@ -194,5 +151,74 @@ const PublicLists: React.FC = () => {
     </Container>
   );
 };
+
+const SortAndFilter: React.FC<{
+  countries: string[];
+  setCountryFilter: React.Dispatch<React.SetStateAction<string | undefined>>;
+  sortCriteria: string;
+  setSortCriteria: React.Dispatch<React.SetStateAction<string>>;
+  sortingOptions: string[];
+  sortDirection: string;
+  setSortDirection: React.Dispatch<React.SetStateAction<string>>;
+}> = ({
+  countries, setCountryFilter, sortCriteria, setSortCriteria, sortingOptions, sortDirection, setSortDirection,
+}) => (
+  <>
+    <Dropdown>
+      <Dropdown.Toggle
+        variant="outline-secondary"
+        size="sm"
+        className="m-1"
+      >
+        Filter by country
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        <Dropdown.Item onClick={(): void => setCountryFilter(undefined)}>All</Dropdown.Item>
+        {countries.map((c) => (
+          <Dropdown.Item
+            key={c}
+            onClick={(): void => setCountryFilter(c)}
+          >
+            {c}
+          </Dropdown.Item>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
+
+    <Dropdown>
+      <Dropdown.Toggle
+        variant="outline-secondary"
+        size="sm"
+        className="m-1"
+      >
+        Sorted by
+        {' '}
+        {sortCriteria.charAt(0).toLowerCase() + sortCriteria.slice(1)}
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        {sortingOptions.map((s) => (
+          <Dropdown.Item
+            key={s}
+            onClick={(): void => setSortCriteria(s)}
+          >
+            {s}
+          </Dropdown.Item>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
+    <Button
+      variant="outline-secondary"
+      size="sm"
+      className="m-1"
+      onClick={(): void => {
+        setSortDirection(sortDirection === 'desc' ? 'asc' : 'desc');
+      }}
+    >
+      {sortDirection === 'asc'
+        ? <ChevronUp />
+        : <ChevronDown />}
+    </Button>
+  </>
+);
 
 export default PublicLists;

@@ -23,7 +23,7 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
             <Card.Body className="d-flex flex-column" style={{ height: '100%' }}>
               <Row className="justify-content-between">
                 <Col>
-                  <div style={{ marginLeft: '10px' }}>
+                  <div style={{ marginLeft: '10px', marginTop: '5px' }}>
                     <Card.Title>
                       {list.name}
                     </Card.Title>
@@ -32,7 +32,7 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                 {user
                   ? (
                     <>
-                      <Col className="text-right mr-2" style={{ height: '10%' }}>
+                      <Col className="text-right mr-2" style={{ height: '10%', marginTop: '5px' }}>
                         <OverlayTrigger
                           placement="auto"
                           overlay={(
@@ -77,14 +77,19 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                   )
                   : null}
               </Row>
-              <Col className="mb-2">
+              <hr />
+              <Col>
                 <Card.Text>
                   {list.description}
                 </Card.Text>
-                {locations.map((x) => (
-                  <li key={x._id}>{x.name}</li>
-                ))}
-                {list.locations.length > 3 ? <li>And more, click below for full list ...</li> : null}
+                <ul>
+                  {' '}
+                  {locations.map((x) => (
+                    <li key={x._id}>{x.name}</li>
+                  ))}
+                  {list.locations.length > 3 ? <li>And more, click below for full list </li> : null}
+                </ul>
+
               </Col>
               <hr />
               <div style={{
@@ -99,14 +104,20 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                       {(list.country === 'unknown' && list.place !== 'unknown' && `${list.place}`)}
                     </Card.Text>
                     {list.createdBy && (
-                      <>
+                      <div style={{
+                        whiteSpace: 'pre-wrap', display: 'block', lineHeight: 1, marginTop: '5px',
+                      }}
+                      >
                         <small>
                           Created by:
-                          {list.createdBy.username}
                           <br />
-                          {`${new Date(list.date).getDate()}.${new Date(list.date).getMonth() + 1}.${new Date(list.date).getFullYear()}`}
+                          {list.createdBy.username}
+                          {' '}
+                          (
+                          {new Date(list.date).toLocaleString('default', { year: 'numeric', month: 'short' })}
+                          )
                         </small>
-                      </>
+                      </div>
                     )}
                   </Col>
                   <Col className="text-right">

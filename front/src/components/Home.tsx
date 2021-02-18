@@ -14,14 +14,17 @@ const Home: React.FC = () => (
           <h4>Currently implemented</h4>
           <p>
             Registered user can create lists of locations.
-            These lists can be set either as private or public and used e.g. as a reminder of places you wish to see or as a guide for others.
+            These lists can be set either as private or public, and used e.g. as a reminder of places you wish to see or as a guide for others.
           </p>
           <p>
             Public lists are visibile to all and can be browsed without registration
-            or logging in. Private lists are visibile only to the user who created them.
+            or logging in. They can be sorted e.g. according to creation date and filtered by country. Private lists are visibile only to the user who created them.
+          </p>
+          <p>
+            Registered users can also favorite/save public lists created by other users for future reference.
           </p>
           <h4>To do</h4>
-          <p>Commenting/reviews for registered users and a possiblity to favorite/save lists for future reference. </p>
+          <p>Commenting for registered users. Style.</p>
           <p>
             Source code
             {' '}

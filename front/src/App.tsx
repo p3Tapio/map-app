@@ -37,7 +37,7 @@ const App: React.FC = () => {
   return (
     <>
       <Navigation logged={logged} setLogged={setLogged} />
-      <Container>
+      <Container id="mainContainer">
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/register">

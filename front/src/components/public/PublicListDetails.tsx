@@ -86,7 +86,10 @@ const PublicListDetails: React.FC = () => {
               size="sm"
               type="button"
               className="m-1 pr-3"
-              onClick={(): void => setShowMapComponent(!showMapComponent)}
+              onClick={(): void => {
+                setShowMapComponent(!showMapComponent);
+                setCategoryFilter(undefined);
+              }}
             >
               {showMapComponent
                 ? (
@@ -126,7 +129,7 @@ const PublicListDetails: React.FC = () => {
         ? <ListLocationsMap locations={filteredLocations} defaultview={publiclist.defaultview} />
         : (
           <>
-            <Col className="row justify-content-center locationCardGrid">
+            <Col className="justify-content-center locationCardGrid">
               {filteredLocations.map((x) => (
                 <LocationCard
                   key={x._id}

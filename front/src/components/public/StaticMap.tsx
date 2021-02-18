@@ -1,13 +1,14 @@
-import React from 'react'
+import React from 'react';
 
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import {
+  Map, TileLayer, Marker, Popup,
+} from 'react-leaflet';
 
 import '../../style/mapstyle.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
-import { StaticMapProps } from './publicListTypes';
 import { LeafletMouseEvent } from 'leaflet';
-
+import { StaticMapProps } from './publicListTypes';
 
 const StaticMap: React.FC<StaticMapProps> = ({ list }) => {
   if (!list) return null;
@@ -27,27 +28,26 @@ const StaticMap: React.FC<StaticMapProps> = ({ list }) => {
       { list && list.locations ? list.locations.map((x) => (
         <Marker
           key={x._id}
-          position={[x.coordinates.lat, x.coordinates.lng]}
+          position={x.coordinates ? [x.coordinates.lat, x.coordinates.lng] : [0, 0]}
           onMouseOver={(e: LeafletMouseEvent): void => {
             e.target.openPopup();
           }}
           onMouseOut={(e: LeafletMouseEvent): void => {
             e.target.closePopup();
-          }}>
+          }}
+        >
           <Popup closeButton={false}>
             {x.name}
           </Popup>
         </Marker>
-      )) : null
-      }
+      )) : null}
       <TileLayer
         noWrap
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-    </Map >
-  )
-}
+    </Map>
+  );
+};
 
 export default StaticMap;
-
