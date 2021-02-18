@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
-import { IList, List } from '../utils/types';
+import { IList } from '../utils/types';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const listSchemaFields: Record<keyof List, any> = {
+
+const listSchema: Schema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
@@ -19,7 +19,8 @@ const listSchemaFields: Record<keyof List, any> = {
     ref: 'Location',
   }],
   favoritedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-};
-const listSchema = new Schema(listSchemaFields);
+  date: { type: Date, default: Date.now },
+});
+
 listSchema.set('versionKey', false);
 export default model<IList>('List', listSchema);

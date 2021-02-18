@@ -1,4 +1,4 @@
-import { List } from "../../state/reducers/list/listTypes";
+import { List } from '../../state/reducers/list/listTypes';
 
 export interface ListComponentProps {
   fromWhere: string;
@@ -10,4 +10,12 @@ export interface StaticMapProps {
 }
 export interface PublicListMapProps {
   lists: List[] | undefined;
+}
+export interface PaginatePublicListProps {
+  listsPerPage: number;
+  totalLists: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  currentPage: number;
+  setActive: React.Dispatch<React.SetStateAction<number>>;
+  active: number;
 }

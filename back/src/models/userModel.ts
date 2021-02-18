@@ -13,7 +13,8 @@ const userSchema: Schema = new Schema({
   ],
   favorites: [
     { type: Schema.Types.ObjectId, ref: 'List' }
-  ]
+  ],
+  date: { type: Date, default: Date.now },
 });
 
 userSchema.plugin(uniqueValidator);

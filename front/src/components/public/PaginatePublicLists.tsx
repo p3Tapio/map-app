@@ -1,14 +1,8 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'react-bootstrap-icons';
+import { PaginatePublicListProps } from './publicListTypes';
 
-const PaginatePublicLists: React.FC<{
-  listsPerPage: number;
-  totalLists: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  currentPage: number;
-  setActive: React.Dispatch<React.SetStateAction<number>>;
-  active: number;
-}> = ({
+const PaginatePublicLists: React.FC<PaginatePublicListProps> = ({
   listsPerPage, totalLists, setCurrentPage, currentPage, setActive, active,
 }) => {
   const pageNumbers = [];
@@ -67,5 +61,3 @@ const PaginatePublicLists: React.FC<{
 };
 
 export default PaginatePublicLists;
-
-// style={active === no ? { backgroundColor: 'darkgray' } : { backgroundColor: 'white' }}

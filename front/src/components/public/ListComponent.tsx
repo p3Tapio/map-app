@@ -99,10 +99,14 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                       {(list.country === 'unknown' && list.place !== 'unknown' && `${list.place}`)}
                     </Card.Text>
                     {list.createdBy && (
-                      <small>
-                        Created by:
-                        {list.createdBy.username}
-                      </small>
+                      <>
+                        <small>
+                          Created by:
+                          {list.createdBy.username}
+                          <br />
+                          {`${new Date(list.date).getDate()}.${new Date(list.date).getMonth() + 1}.${new Date(list.date).getFullYear()}`}
+                        </small>
+                      </>
                     )}
                   </Col>
                   <Col className="text-right">

@@ -8,7 +8,8 @@ export interface IUser extends Document, NewUser {
   _id: Types.ObjectId;
   locations: Location[];
   lists: List[];  // vai objectIdt ??
-  favorites: Types.ObjectId[]; // ^
+  favorites: Types.ObjectId[];
+  date: Date;
 }
 export interface NewLocation {
   name: string;
@@ -22,13 +23,14 @@ export interface NewLocation {
   imageLink?: string;
   list: Types.ObjectId;
 }
-export interface ILocation extends Document, NewLocation {
-  _id: Types.ObjectId;
-  createdBy: Types.ObjectId;
-}
 export interface Location extends NewLocation {
   _id: Types.ObjectId;
   createdBy: Types.ObjectId;
+}
+export interface ILocation extends Document, NewLocation {
+  _id: Types.ObjectId;
+  createdBy: Types.ObjectId;
+  date: Date;
 }
 export enum Category {
   Sights = "sights",
@@ -56,4 +58,5 @@ export interface List extends NewList {
 }
 export interface IList extends Document, NewList, List {
   _id: Types.ObjectId;
+  date: Date;
 }

@@ -47,6 +47,7 @@ router.post('/create', async (req: Request, res: Response) => {
         country: newList.country,
         place: newList.place,
         public: newList.public,
+        date: Date.now(),
       });
       const savedList = await list.save();
       user.lists = user.lists.concat(savedList);

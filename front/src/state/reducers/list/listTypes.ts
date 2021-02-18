@@ -24,6 +24,7 @@ export interface List extends NewList {
   createdBy: { _id: string; username: string };
   locations: Location[];
   favoritedBy: string[];
+  date: Date;
 }
 export interface GetPublicLists {
   type: typeof GETPUBLICLISTS;

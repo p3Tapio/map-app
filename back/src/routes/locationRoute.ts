@@ -33,6 +33,7 @@ router.post('/create', async (req: Request, res: Response) => {
         imageLink: newLocation.imageLink ? newLocation.imageLink : '-',
         createdBy: userId,
         list: newLocation.list,
+        date: Date.now(),
       });
 
       const savedLocation = await location.save();

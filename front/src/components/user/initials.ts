@@ -16,6 +16,7 @@ export const initialList: List = {
   createdBy: { _id: '', username: '' },
   locations: [],
   favoritedBy: [],
+  date: new Date(),
 };
 export const initialLocation: Location = {
   _id: '',

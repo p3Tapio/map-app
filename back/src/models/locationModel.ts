@@ -13,6 +13,7 @@ const locationSchema: Schema = new Schema({
   imageLink: String,
   createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   list: { type: Schema.Types.ObjectId, ref: 'List', required: true},
+  date: { type: Date, default: Date.now },
 });
 locationSchema.set('versionKey', false);
 
