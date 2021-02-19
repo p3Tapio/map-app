@@ -59,4 +59,6 @@ export interface List extends NewList {
 export interface IList extends Document, NewList, List {
   _id: Types.ObjectId;
   date: Date;
+  region?: string;
+  subregion?: string;
 }

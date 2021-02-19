@@ -14,6 +14,8 @@ const listSchema: Schema = new Schema({
   country: { type: String, required: true },
   place: { type: String, required: true },
   public: { type: Boolean, required: true },
+  region: { type: String },
+  subregion: { type: String },
   locations: [{
     type: Schema.Types.ObjectId,
     ref: 'Location',

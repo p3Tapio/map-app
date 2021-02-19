@@ -13,6 +13,8 @@ export const initialList: List = {
   public: false,
   country: '',
   place: '',
+  region: '',
+  subregion: '',
   createdBy: { _id: '', username: '' },
   locations: [],
   favoritedBy: [],

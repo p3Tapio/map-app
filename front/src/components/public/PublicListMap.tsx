@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   Map, Marker, Popup, TileLayer,
 } from 'react-leaflet';
@@ -11,18 +11,43 @@ import { clearTimeout, setTimeout } from 'timers';
 import { PublicListMapProps } from './publicListTypes';
 import useContainerWidth from '../../hooks/useContainerWidth';
 
-const PublicListMap: React.FC<PublicListMapProps> = ({ lists }) => {
+const PublicListMap: React.FC<PublicListMapProps> = ({ lists, mapView }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>();
   const containerWidth = useContainerWidth();
   const southWest = Leaflet.latLng(-89.98155760646617, -180);
   const northEast = Leaflet.latLng(89.99346179538875, 180);
   const bounds = Leaflet.latLngBounds(southWest, northEast);
+  const [center, setCenter] = useState([40, 10]);
+  const [zoom, setZoom] = useState(1.5);
   let timer: ReturnType<typeof setTimeout>;
 
+  useEffect(() => { mapRef.current.leafletElement.invalidateSize(false); });
+
   useEffect(() => {
-    mapRef.current.leafletElement.invalidateSize(false);
-  });
+    if (mapView === 'World') {
+      setCenter([40, 10]);
+      setZoom(1.5);
+    } else if (mapView === 'Africa') {
+      setCenter([1, 18]);
+      setZoom(3.4);
+    } else if (mapView === 'Australia') {
+      setCenter([-30, 145]);
+      setZoom(3.5);
+    } else if (mapView === 'Asia') {
+      setCenter([30, 110]);
+      setZoom(3.3);
+    } else if (mapView === 'Europe') {
+      setCenter([55, 18]);
+      setZoom(3.49);
+    } else if (mapView === 'North and Central America') {
+      setCenter([50, -95]);
+      setZoom(3.49);
+    } else if (mapView === 'South America') {
+      setCenter([-25, -65]);
+      setZoom(3.49);
+    }
+  }, [mapView]);
 
   const timeout = (e: LeafletMouseEvent): void => {
     timer = setTimeout(() => { e.target.closePopup(); }, 1000);
@@ -32,11 +57,11 @@ const PublicListMap: React.FC<PublicListMapProps> = ({ lists }) => {
   return (
     <Map
       ref={mapRef}
-      center={[40, 10]}
+      center={[center[0], center[1]]}
       maxBoundsViscosity={1.0}
       maxBounds={bounds}
       minZoom={1.5}
-      zoom={1.5}
+      zoom={zoom}
       scrollWheelZoom
       style={containerWidth && containerWidth.width < 960
         ? { height: containerWidth.width / 1.5, width: containerWidth.width }

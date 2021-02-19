@@ -35,7 +35,7 @@ router.post('/register', (req: Request, res: Response) => {
 router.post('/login', async (req: Request, res: Response) => {
   try {
     const body = checkUserValues(req.body);
-    const user: IUser | null = await User.findOne({ username: body.username });
+    const user: IUser | null = await User.findOne({ username: body.username }) as IUser;
     const passCorrect: boolean = user === null ? false : await bcrypt.compare(body.password, user.password);
 
     if (passCorrect && user) {

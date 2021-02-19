@@ -25,6 +25,8 @@ export interface List extends NewList {
   locations: Location[];
   favoritedBy: string[];
   date: Date;
+  region: string;
+  subregion: string;
 }
 export interface GetPublicLists {
   type: typeof GETPUBLICLISTS;

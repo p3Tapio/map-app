@@ -10,6 +10,7 @@ export interface StaticMapProps {
 }
 export interface PublicListMapProps {
   lists: List[] | undefined;
+  mapView: string;
 }
 export interface PaginatePublicListProps {
   listsPerPage: number;

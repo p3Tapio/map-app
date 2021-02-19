@@ -5,7 +5,7 @@ import User from '../models/userModel';
 import List from '../models/listModel';
 import { checkNewLocationValues, checkUpdatedLocationValues } from '../utils/checks';
 import { checkToken } from '../utils/tokens';
-import { ILocation } from '../utils/types';
+import { IList, ILocation, IUser } from '../utils/types';
 
 const router = express.Router();
 
@@ -15,8 +15,8 @@ router.post('/create', async (req: Request, res: Response) => {
       const userId = checkToken(req.header('token'));
       const newLocation = checkNewLocationValues(req.body);
 
-      const user = await User.findById(userId);
-      const list = await List.findById(newLocation.list);
+      const user = await User.findById(userId) as IUser;
+      const list = await List.findById(newLocation.list) as IList;
 
       if (!list || !user) throw new Error('List or user not found');
 
@@ -54,7 +54,7 @@ router.put('/update/:id', async (req: Request, res: Response) => {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
       const body = checkUpdatedLocationValues(req.body);
-      const location = await Location.findById(req.params.id);
+      const location = await Location.findById(req.params.id) as ILocation;
 
       if (!location) throw new Error('No location found');
 
@@ -73,7 +73,7 @@ router.delete('/delete/:id', async (req: Request, res: Response) => {
   try {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
-      const location = await Location.findById(req.params.id);
+      const location = await Location.findById(req.params.id) as ILocation;
 
       if (!location) throw new Error('No location found');
 
