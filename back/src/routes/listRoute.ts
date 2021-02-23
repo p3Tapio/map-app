@@ -4,15 +4,19 @@ import mongoose from 'mongoose';
 import List from '../models/listModel';
 import User from '../models/userModel';
 import Location from '../models/locationModel';
-import { checkFavoritedId, checkNewListValues, checkUpdatedListValues } from '../utils/checks';
+import { checkId, checkNewListValues, checkUpdatedListValues } from '../utils/checks';
 import { checkToken } from '../utils/tokens';
 import { IList, IUser } from '../utils/types';
 import { apiRequest } from '../utils/fetchFunction';
 
 const router = express.Router();
+const populate = [
+  { path: 'createdBy', select: 'username' },
+  { path: 'locations' }
+];
 
 router.get('/allpublic', async (_req: Request, res: Response) => {
-  const lists = await List.find({ public: true }).populate('locations createdBy', 'username name address description coordinates category imageLink list createdBy') as IList;
+  const lists = await List.find({ public: true }).populate(populate) as IList[];
   res.status(200).json(lists);
 });
 
@@ -20,7 +24,7 @@ router.get('/user', async (req: Request, res: Response) => {
   try {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
-      const lists = await List.find({ createdBy: userId }).populate('locations createdBy', 'username name address description coordinates category imageLink list createdBy') as IList;
+      const lists = await List.find({ createdBy: userId }).populate(populate) as IList[];
       res.status(200).json(lists);
     } else res.status(401).json({ error: 'unauthorized' });
   } catch (err) {
@@ -35,14 +39,14 @@ router.post('/create', async (req: Request, res: Response) => {
       const userId = checkToken(req.header('token'));
       const newList = checkNewListValues(req.body);
       const user = await User.findById(userId) as IUser;
-      
+
       if (!user) throw new Error('No user');
 
       let result: [{ region: string, subregion: string }] = [{ region: '', subregion: '' }];
       if (newList.country) {
         result = await apiRequest<[{ region: string, subregion: string }]>(`https://restcountries.eu/rest/v2/name/${newList.country}`);
       }
-  
+
       const list = new List({
         name: newList.name,
         description: newList.description,
@@ -111,9 +115,9 @@ router.post('/favorite/:id', async (req: Request, res: Response) => {
   try {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
-      const listId = checkFavoritedId(req.params.id);
+      const listId = checkId(req.params.id);
       const user = await User.findById(userId) as IUser;
-      const list = await List.findById(listId).populate('locations createdBy', 'username name address description coordinates category imageLink list createdBy') as IList;
+      const list = await List.findById(listId).populate(populate) as IList;
 
       if (user && list && userId && mongoose.isValidObjectId(userId)) {
         if (!list.favoritedBy.some(x => (x.equals(userId)))) {

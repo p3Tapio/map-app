@@ -12,7 +12,7 @@ const SortAndFilterList: React.FC<{
 }> = ({
   countries, setCountryFilter, sortCriteria, setSortCriteria, sortDirection, setSortDirection,
 }) => {
-  const sortingOptions = ['Country', 'Date', 'Favorited', 'Name'];
+  const sortingOptions = ['Comments', 'Country', 'Date', 'Favorited', 'Name'];
   return (
     <>
       <Dropdown>

@@ -5,15 +5,10 @@ import { IUser } from '../utils/types';
 const userSchema: Schema = new Schema({
   username: { type: String, required: true, unique: true, uniqueCaseInsensitive: true, minlength: 5 },
   password: { type: String, required: true },
-  locations: [
-    { type: Schema.Types.ObjectId, ref: 'Location' },
-  ],
-  lists: [
-    { type: Schema.Types.ObjectId, ref: 'List' },
-  ],
-  favorites: [
-    { type: Schema.Types.ObjectId, ref: 'List' }
-  ],
+  locations: [{ type: Schema.Types.ObjectId, ref: 'Location' }],
+  lists: [{ type: Schema.Types.ObjectId, ref: 'List' }],
+  favorites: [ { type: Schema.Types.ObjectId, ref: 'List' } ],
+  comments: [{type:Schema.Types.ObjectId, ref: 'Comment'}],
   date: { type: Date, default: Date.now },
 });
 

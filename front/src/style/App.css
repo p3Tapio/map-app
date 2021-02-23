@@ -166,3 +166,8 @@ hr {
   outline: none !important;
   box-shadow: none;
 }
+.commentCard {
+  background-color: white;
+  border: 3px solid rgba(159,164,158,0.11);
+  border-radius: 8px;
+}

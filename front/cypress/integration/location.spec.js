@@ -24,8 +24,8 @@ describe('Adding a location to a list', function () {
   it('Location is shown on the list in public view', function() {
     cy.createLocation();
     cy.contains('Location lists').click();
-    cy.contains('test location');
-    cy.contains('View').click();
+    cy.contains('test location'); 
+    cy.get('#viewListDetails').click();
     cy.contains('View as list').click();
     cy.contains('test location');
     cy.contains('this is a location for testing');

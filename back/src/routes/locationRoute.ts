@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import mongoose from 'mongoose';
 import Location from '../models/locationModel';
 import User from '../models/userModel';
 import List from '../models/listModel';
@@ -21,7 +20,6 @@ router.post('/create', async (req: Request, res: Response) => {
       if (!list || !user) throw new Error('List or user not found');
 
       const location = new Location({
-        _id: new mongoose.Types.ObjectId,
         name: newLocation.name,
         address: newLocation.address,
         coordinates: {

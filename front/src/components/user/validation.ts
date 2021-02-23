@@ -1,4 +1,4 @@
-import { Location, NewLocation } from '../../state/locationService/locationTypes';
+import { Location, NewLocation } from '../../state/services/locationTypes';
 import { List, NewList } from '../../state/reducers/list/listTypes';
 import { ListValidationMessage } from './lists/listTypes';
 import { LocationValidationMessage } from './locations/locationsTypes';

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Container, Col, Row,
 } from 'react-bootstrap';
-import locationService from '../../../../state/locationService/locationService';
+import locationService from '../../../../state/services/locationService';
 import SingleLocationMap from './SingleLocationMap';
 
 import { LocationListProps } from '../locationsTypes';

@@ -1,5 +1,5 @@
 import { FormEvent } from 'react';
-import { Location } from '../../../state/locationService/locationTypes';
+import { Location } from '../../../state/services/locationTypes';
 import { Defaultview } from '../lists/listTypes';
 
 export interface LocationValidationMessage {

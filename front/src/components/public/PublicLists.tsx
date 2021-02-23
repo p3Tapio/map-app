@@ -21,7 +21,7 @@ const PublicLists: React.FC = () => {
   const [sortCriteria, setSortCriteria] = useState<string>('Date');
   const [sortDirection, setSortDirection] = useState<string>('desc');
   const [filteredList, setFilteredList] = useState<List[] | undefined>(publicLists);
-  const [showMap, setShowMap] = useState(true);
+  const [showMap, setShowMap] = useState(false);
   const [mapView, setMapView] = useState('World');
   const [listsPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,6 +59,12 @@ const PublicLists: React.FC = () => {
       currentList = filteredList.sort((a, b) => a.country.localeCompare(b.country)).slice(indexOfFirst, indexOfLast);
     } else if (sortDirection === 'desc') {
       currentList = filteredList.sort((a, b) => b.country.localeCompare(a.country)).slice(indexOfFirst, indexOfLast);
+    }
+  } else if (sortCriteria === 'Comments') {
+    if (sortDirection === 'asc') {
+      currentList = filteredList.sort((a, b) => a.comments.length - b.comments.length).slice(indexOfFirst, indexOfLast);
+    } else if (sortDirection === 'desc') {
+      currentList = filteredList.sort((a, b) => b.comments.length - a.comments.length).slice(indexOfFirst, indexOfLast);
     }
   } else if (sortCriteria === 'Date') {
     if (sortDirection === 'asc') {

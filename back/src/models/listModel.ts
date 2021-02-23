@@ -21,6 +21,7 @@ const listSchema: Schema = new Schema({
     ref: 'Location',
   }],
   favoritedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  comments: [{type:Schema.Types.ObjectId, ref: 'Comment'}],
   date: { type: Date, default: Date.now },
 });
 

@@ -1,4 +1,4 @@
-import { Location } from '../../locationService/locationTypes';
+import { Location } from '../../services/locationTypes';
 
 export const GETPUBLICLISTS = 'GETPUBLICLISTS';
 export const GETUSERLISTS = 'GETUSERLISTS';
@@ -19,11 +19,22 @@ export interface NewList {
   country: string;
   place: string;
 }
+export interface ListComment {
+  _id: string;
+  user: {
+    _id: string;
+    username: string;
+  };
+  list: string;
+  comment: string;
+  date: Date;
+}
 export interface List extends NewList {
   _id: string;
   createdBy: { _id: string; username: string };
   locations: Location[];
   favoritedBy: string[];
+  comments: ListComment[];
   date: Date;
   region: string;
   subregion: string;

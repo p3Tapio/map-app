@@ -1,10 +1,10 @@
 import React, { FormEvent, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import locationService from '../../../state/locationService/locationService';
+import locationService from '../../../state/services/locationService';
 import MapComponent from './map/MapComponent';
 import MessageModal from '../../MessageModal';
 import { EditModalProps, LocationValidationMessage } from './locationsTypes';
-import { Location } from '../../../state/locationService/locationTypes';
+import { Location } from '../../../state/services/locationTypes';
 import { validateUpdated } from '../validation';
 import LocationForm from './LocationsForm';
 import { initialLocation } from '../initials';

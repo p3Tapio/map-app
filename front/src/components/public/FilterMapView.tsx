@@ -15,8 +15,8 @@ const FilterMapView: React.FC<{
     return r.subregion;
   });
 
-  regionsInUse = Array.from(new Set(regionsInUse.map((r) => r))).filter((r) => r !== 'unknown').concat('World');
-  const regionOptions = ['World', 'Africa', 'Australia', 'Asia', 'Europe', 'North and Central America', 'South America'];
+  regionsInUse = Array.from(new Set(regionsInUse.map((r) => r))).filter((r) => r !== 'unknown');
+  const regionOptions = ['Africa', 'Australia', 'Asia', 'Europe', 'North and Central America', 'South America'];
   return (
     <>
       <Dropdown>

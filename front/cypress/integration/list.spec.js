@@ -92,7 +92,6 @@ describe('Editing a list', function () {
     cy.get('#description').clear();
     cy.contains('Save').click();
     cy.contains('Name is required.');
-    cy.contains('Place is required.');
     cy.contains('Country is required.');
     cy.contains('Description is required.');
   })
@@ -113,7 +112,7 @@ describe('Editing a list', function () {
     cy.contains('Edit').click();
     cy.contains('Edit list details').click();
     cy.get('#name').should('have.value', 'test list');
-    cy.get('#place').should('have.value', 'unknown');
+    cy.get('#place').should('have.value', '');
     cy.get('#country').should('have.value', 'Tunisia');
     cy.get('#description').should('have.value', 'description for testing');
   })
@@ -160,10 +159,11 @@ describe('Favoriting a list', function () {
     cy.get('#heartUnfill').should('not.exist');
     cy.get('#heartFill').should('exist');
   })
-  it('If not logged in, the option to favorite a list doesnt exist', function () {
+  it('If not logged in, list cant be favorited', function () {
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/public');
-    cy.get('#heartUnfill').should('not.exist');
+    cy.get('#heartUnfill').click({force: true});
+    cy.contains('Login or register to favorite');
     cy.get('#heartFill').should('not.exist');
   })
   it('When list is favorited, it will appear in the list for favorites', function () {
@@ -178,7 +178,7 @@ describe('Favoriting a list', function () {
     cy.get('#heartUnfill').click().wait(200);
     cy.visit('http://localhost:3000/userpage').wait(200);
     cy.contains('See your favorites').click();
-    cy.get('#heartFill').click().wait(200);
+    cy.get('#heartFill').click({force: true}).wait(200);
     cy.contains('test list').should('not.exist');
   })
   it('List can be unfavorited from the page for all public lists as well', function () {
@@ -188,7 +188,7 @@ describe('Favoriting a list', function () {
     cy.contains('See your favorites').click();
     cy.contains('test list');
     cy.visit('http://localhost:3000/public');
-    cy.get('#heartFill').click().wait(200);
+    cy.get('#heartFill').click({force: true}).wait(200);
     cy.visit('http://localhost:3000/userpage').wait(200);
     cy.contains('See your favorites').click();
     cy.contains('test list').should('not.exist');

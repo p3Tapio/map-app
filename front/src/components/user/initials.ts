@@ -1,5 +1,5 @@
 import { List } from '../../state/reducers/list/listTypes';
-import { Location } from '../../state/locationService/locationTypes';
+import { Location } from '../../state/services/locationTypes';
 
 export const initialList: List = {
   _id: '',
@@ -18,6 +18,7 @@ export const initialList: List = {
   createdBy: { _id: '', username: '' },
   locations: [],
   favoritedBy: [],
+  comments: [],
   date: new Date(),
 };
 export const initialLocation: Location = {

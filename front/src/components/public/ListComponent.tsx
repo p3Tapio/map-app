@@ -75,7 +75,31 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                       </Col>
                     </>
                   )
-                  : null}
+                  : (
+                    <Col className="text-right mr-2" style={{ height: '10%', marginTop: '5px' }}>
+                      <OverlayTrigger
+                        placement="auto"
+                        overlay={(
+                          <Tooltip id="editTooltip">
+                            Login or register to favorite
+                          </Tooltip>
+                        )}
+                      >
+                        <button
+                          type="button"
+                          style={{ all: 'unset', cursor: 'pointer' }}
+                        >
+                          <p style={{
+                            color: 'black', marginBottom: '-27px', marginRight: '13px', zIndex: 100,
+                          }}
+                          >
+                            {list.favoritedBy.length}
+                          </p>
+                          <Heart id="heartUnfill" size="35" />
+                        </button>
+                      </OverlayTrigger>
+                    </Col>
+                  )}
               </Row>
               <hr />
               <Col>
@@ -121,18 +145,26 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                     )}
                   </Col>
                   <Col className="text-right">
-                    <Link to={{ pathname: `/public/${list._id}`, state: { from: fromWhere } }}>
-                      <Button
-                        style={{ marginBottom: '-30px', marginRight: '-20px', padding: '8px' }}
-                        variant="outline-dark"
-                        size="sm"
-                        type="button"
-                      >
-                        View
+                    <Col className="d-flex flex-column" style={{ marginLeft: '35px' }}>
+                      <Link to={{ pathname: `/public/${list._id}`, state: { from: fromWhere } }}>
+                        <Button
+                          variant="outline-dark"
+                          size="sm"
+                          type="button"
+                          id="viewListDetails"
+                        >
+                          View
+                          {' '}
+                          <Search size="20" style={{ marginLeft: '10px' }} />
+                        </Button>
+                      </Link>
+                      <br />
+                      <small style={{ marginTop: '-10px' }}>
+                        {list.comments.length}
                         {' '}
-                        <Search size="20" style={{ marginLeft: '10px' }} />
-                      </Button>
-                    </Link>
+                        comments
+                      </small>
+                    </Col>
                   </Col>
                 </Row>
               </div>
