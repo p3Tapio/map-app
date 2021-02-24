@@ -171,3 +171,20 @@ hr {
   border: 3px solid rgba(159,164,158,0.11);
   border-radius: 8px;
 }
+.editDeleteCommentBtn {
+  all: unset;
+}
+.editDeleteCommentBtn:hover,
+.editDeleteCommentBtn:focus {
+    background:inherit;
+}
+
+.editDeleteCommentBtn:focus {
+    color:rgb(51, 51, 51);
+    outline: 0px solid #fff;
+    outline-offset: -4px;
+}
+
+.editDeleteCommentBtn:active {
+    transform: scale(0.95);
+}

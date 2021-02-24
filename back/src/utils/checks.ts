@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import mongoose, { Types } from "mongoose";
-import { NewUser, Category, NewLocation, Location, NewList, Defaultview, List,  NewComment } from "./types";
+import { NewUser, Category, NewLocation, Location, NewList, Defaultview, List, NewComment } from "./types";
 
 const isString = (text: any): text is string => typeof text === 'string' || text instanceof String;
 const isNumeric = (no: any): no is number => !isNaN(Number(no));
@@ -166,12 +166,17 @@ const checkId = (value: any): Types.ObjectId => {
   const listId = parseId(value);
   return listId;
 };
+const checkIdObj = (object: any): Types.ObjectId => {
+  if (!object.id || object.id === '') throw new Error('No data.');
+  const id = parseId(object.id);
+  return id;
+};
 
 const checkNewComment = (object: any): NewComment => {
   if (!object || Object.keys(object).length === 0) throw new Error('No data.');
   else if (!("comment" in object)) throw new Error('object missing required properties.');
   else {
-    const newComment = { 
+    const newComment = {
       comment: parseInputString(object.comment),
     };
     return newComment;
@@ -186,4 +191,5 @@ export {
   checkUpdatedListValues,
   checkId,
   checkNewComment,
+  checkIdObj
 };

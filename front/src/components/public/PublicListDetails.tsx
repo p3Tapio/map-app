@@ -14,7 +14,7 @@ import { initialLocation } from '../user/initials';
 import ListLocationsMap from '../user/lists/ListLocationsMap';
 import LocationCard from '../user/locations/locationList/LocationCard';
 import SingleLocationMap from '../user/locations/locationList/SingleLocationMap';
-import ListComments from './ListComments';
+import ListComments from './Comments/CommentsContainer';
 
 const PublicListDetails: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
