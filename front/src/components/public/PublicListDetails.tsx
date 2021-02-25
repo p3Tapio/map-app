@@ -10,11 +10,11 @@ import { Location } from '../../state/services/locationTypes';
 import { getPublicLists } from '../../state/reducers/list/listActions';
 import { List } from '../../state/reducers/list/listTypes';
 import { RootStore } from '../../state/store';
-import { initialLocation } from '../user/initials';
-import ListLocationsMap from '../user/lists/ListLocationsMap';
-import LocationCard from '../user/locations/locationList/LocationCard';
-import SingleLocationMap from '../user/locations/locationList/SingleLocationMap';
-import ListComments from './Comments/CommentsContainer';
+import { initialLocation } from '../initials';
+import ListLocationsMap from '../lists/ListLocationsMap';
+import LocationCard from '../locations/locationList/LocationCard';
+import SingleLocationMap from '../locations/locationList/SingleLocationMap';
+import ListComments from '../Comments/CommentsContainer';
 
 const PublicListDetails: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -79,7 +79,7 @@ const PublicListDetails: React.FC = () => {
           </>
         )}
       <hr />
-      <ListComments listId={id} />
+      <ListComments listId={id} createdBy={publiclist.createdBy._id}/>
     </Container>
   );
 };

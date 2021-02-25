@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { ListComment } from '../../../state/reducers/list/listTypes';
+import { ListComment } from '../../state/reducers/list/listTypes';
 
 const DeleteCommentModal: React.FC<{
   commentToEdit: ListComment | undefined;
@@ -17,7 +17,7 @@ const DeleteCommentModal: React.FC<{
       </Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      Are you sure you want to delete your comment?
+      Are you sure you want to delete the comment?
     </Modal.Body>
     <Modal.Footer>
       <Button

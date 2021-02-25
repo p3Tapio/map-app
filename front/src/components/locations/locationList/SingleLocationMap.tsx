@@ -5,7 +5,7 @@ import {
 } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
 import { SingleLocationMapProps } from '../locationsTypes';
-import '../../../../style/mapstyle.css';
+import '../../../style/mapstyle.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
 

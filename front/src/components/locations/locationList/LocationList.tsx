@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import {
   Container, Col, Row,
 } from 'react-bootstrap';
-import locationService from '../../../../state/services/locationService';
+import locationService from '../../../state/services/locationService';
 import SingleLocationMap from './SingleLocationMap';
 
 import { LocationListProps } from '../locationsTypes';
 import DeleteLocationModal from './DeleteLocationModal';
 import EditLocationModal from '../EditLocationModal';
-import MessageModal from '../../../MessageModal';
+import MessageModal from '../../MessageModal';
 import { initialLocation } from '../../initials';
 import LocationCard from './LocationCard';
 

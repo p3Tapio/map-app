@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../state/localStore';
 import { getPublicLists, getUserLists } from '../../state/reducers/list/listActions';
 import { RootStore } from '../../state/store';
-import { initialList } from './initials';
-import CreateNewListModal from './lists/CreateNewListModal';
-import ListList from './lists/ListList';
-import UserFavoriteLists from './lists/UserFavoriteLists';
+import { initialList } from '../initials';
+import CreateNewListModal from '../lists/CreateNewListModal';
+import ListList from '../lists/ListList';
+import UserFavoriteLists from '../lists/UserFavoriteLists';
 
 const UserPage: React.FC = () => {
   const user = getUser();

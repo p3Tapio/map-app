@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import {
   Map, Marker, Popup, TileLayer,
 } from 'react-leaflet';
-import '../../../style/mapstyle.css';
+import '../../style/mapstyle.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
 

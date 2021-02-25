@@ -1,15 +1,17 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { ListComment } from '../../../state/reducers/list/listTypes';
-import { LoggedUser } from '../../../state/reducers/user/userTypes';
+import { ListComment } from '../../state/reducers/list/listTypes';
+import { LoggedUser } from '../../state/reducers/user/userTypes';
 
 const CommentElement: React.FC<{
   comment: ListComment;
   user: LoggedUser;
+  createdBy: string;
   setCommentToEdit: React.Dispatch<React.SetStateAction<ListComment | undefined>>;
   setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowEditModal: React.Dispatch<React.SetStateAction<boolean>> | undefined;
 }> = ({
-  comment, user, setCommentToEdit, setShowDeleteModal,
+  comment, user, setCommentToEdit, setShowDeleteModal, setShowEditModal, createdBy,
 }) => (
   <Container className="mb-2">
     <div className="commentCard">
@@ -37,16 +39,29 @@ const CommentElement: React.FC<{
           </p>
         </Col>
       </Row>
-
-      {user.username === comment.user.username
-        ? (
-          <Row style={{ marginTop: '-30px' }}>
-            <Col className="text-right align-self-end mr-3">
-              <p>
-                <button className="editDeleteCommentBtn" type="button">Edit</button>
-                {' '}
-                /
-                {' '}
+      <Row style={{ marginTop: '-30px' }}>
+        <Col className="text-right align-self-end mr-3">
+          <p>
+            {setShowEditModal && user.id === comment.user._id
+                && (
+                  <>
+                    <button
+                      className="editDeleteCommentBtn"
+                      type="button"
+                      onClick={(): void => {
+                        setCommentToEdit(comment);
+                        setShowEditModal(true);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    {' '}
+                    /
+                    {' '}
+                  </>
+                )}
+            {(user.username === comment.user.username || user.id === createdBy)
+              ? (
                 <button
                   type="button"
                   className="editDeleteCommentBtn"
@@ -57,10 +72,11 @@ const CommentElement: React.FC<{
                 >
                   Delete
                 </button>
-              </p>
-            </Col>
-          </Row>
-        ) : <Row className="mb-2" />}
+              )
+              : <br />}
+          </p>
+        </Col>
+      </Row>
     </div>
   </Container>
 );

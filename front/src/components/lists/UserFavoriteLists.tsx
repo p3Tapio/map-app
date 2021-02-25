@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getUser } from '../../../state/localStore';
-import { toggleFavorite } from '../../../state/reducers/list/listActions';
-import { List } from '../../../state/reducers/list/listTypes';
-import { RootStore } from '../../../state/store';
-import ListComponent from '../../public/ListComponent';
+import { getUser } from '../../state/localStore';
+import { toggleFavorite } from '../../state/reducers/list/listActions';
+import { List } from '../../state/reducers/list/listTypes';
+import { RootStore } from '../../state/store';
+import ListComponent from '../public/ListComponent';
 
 const UserFavoriteLists: React.FC = () => {
   const user = getUser();

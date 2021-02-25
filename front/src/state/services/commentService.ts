@@ -4,13 +4,21 @@ import { ListComment } from '../reducers/list/listTypes';
 
 const baseUrl = process.env.REACT_APP_URL;
 
-const getComments = async (id: string): Promise<{ data: ListComment[] }> => axios.get(`${baseUrl}/api/comment/comments/${id}`);
-
 const addComment = async (values: { comment: string; id: string }): Promise<{ data: ListComment } | undefined> => {
   const config = createConfig();
   if (config.headers.token) {
     const { id, ...comment } = values;
     return axios.post(`${baseUrl}/api/comment/newcomment/${id}`, comment, config);
+  }
+  return undefined;
+};
+
+const getComments = async (id: string): Promise<{ data: ListComment[] }> => axios.get(`${baseUrl}/api/comment/comments/${id}`);
+
+const updateComment = async (commentId: string, values: { comment: string; list: string }): Promise<{ data: ListComment } | undefined> => {
+  const config = createConfig();
+  if (config.headers.token) {
+    return axios.put(`${baseUrl}/api/comment/update/${commentId}`, values, config);
   }
   return undefined;
 };
@@ -23,4 +31,6 @@ const deleteComment = async (listId: string, values: { id: string }): Promise<{ 
   return undefined;
 };
 
-export default { getComments, addComment, deleteComment };
+export default {
+  addComment, getComments, updateComment, deleteComment,
+};

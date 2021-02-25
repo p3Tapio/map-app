@@ -5,8 +5,8 @@ import {
 import { Pen, Trash } from 'react-bootstrap-icons';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { deleteList } from '../../../state/reducers/list/listActions';
-import MessageModal from '../../MessageModal';
+import { deleteList } from '../../state/reducers/list/listActions';
+import MessageModal from '../MessageModal';
 import { initialList } from '../initials';
 import DeleteLocationModal from '../locations/locationList/DeleteLocationModal';
 import { ListListProps } from './listTypes';

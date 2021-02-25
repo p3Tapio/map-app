@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import DefaultViewMap from './DefaultViewMap';
 import { CreateNewListModalProps, ListValidationMessage } from './listTypes';
-import { List, NewList } from '../../../state/reducers/list/listTypes';
+import { List, NewList } from '../../state/reducers/list/listTypes';
 import ListForm from './ListForm';
 import { validateNewList } from '../validation';
-import { createNewList } from '../../../state/reducers/list/listActions';
-import MessageModal from '../../MessageModal';
+import { createNewList } from '../../state/reducers/list/listActions';
+import MessageModal from '../MessageModal';
 
 const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
   show, setShow, list, setList,

@@ -2,9 +2,11 @@ import React, { useRef, useEffect, useState } from 'react';
 import {
   Map, Marker, Popup, TileLayer,
 } from 'react-leaflet';
+
 import '../../style/mapstyle.css';
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
-import 'leaflet-defaulticon-compatibility';
+import '../../../node_modules/leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
+import '../../../node_modules/leaflet-defaulticon-compatibility';
+
 import Leaflet, { LeafletMouseEvent } from 'leaflet';
 import { Link } from 'react-router-dom';
 import { clearTimeout, setTimeout } from 'timers';

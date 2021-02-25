@@ -5,8 +5,8 @@ import {
 } from 'react-leaflet';
 
 import '../../style/mapstyle.css';
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
-import 'leaflet-defaulticon-compatibility';
+import '../../../node_modules/leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
+import '../../../node_modules/leaflet-defaulticon-compatibility';
 import { LeafletMouseEvent } from 'leaflet';
 import { StaticMapProps } from './publicListTypes';
 

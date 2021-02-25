@@ -6,7 +6,7 @@ import {
 import Leaflet, { LeafletMouseEvent } from 'leaflet';
 import { MapProps } from '../locationsTypes';
 
-import '../../../../style/mapstyle.css';
+import '../../../style/mapstyle.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
 

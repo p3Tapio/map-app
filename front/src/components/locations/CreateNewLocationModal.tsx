@@ -6,10 +6,10 @@ import LocationForm from './LocationsForm';
 import MapComponent from './map/MapComponent';
 
 import { CreateNewLocationModalProps, LocationValidationMessage } from './locationsTypes';
-import locationService from '../../../state/services/locationService';
+import locationService from '../../state/services/locationService';
 import { validateNewLocation } from '../validation';
-import { NewLocation } from '../../../state/services/locationTypes';
-import MessageModal from '../../MessageModal';
+import { NewLocation } from '../../state/services/locationTypes';
+import MessageModal from '../MessageModal';
 import { initialLocation } from '../initials';
 
 const CreateNewLocationModal: React.FC<CreateNewLocationModalProps> = ({

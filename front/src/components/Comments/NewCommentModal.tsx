@@ -1,17 +1,16 @@
 import React from 'react';
 import {
-  Button,
-  Col,
-  Container, Form as BootstrapForm, Modal, Row,
+  Modal, Container, Row, Col, Form as BootstrapForm, Button,
 } from 'react-bootstrap';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import ErrorMessage from '../../user/auth/ErrorMessage';
+import ErrorMessage from '../user/auth/ErrorMessage';
+import { ListComment } from '../../state/reducers/list/listTypes';
 
 const NewCommentModal: React.FC<{
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  onSubmit: (values: {comment: string}) => void;
+  onSubmit: (values: { comment: string }) => void;
 }> = ({ showModal, setShowModal, onSubmit }) => (
   <Modal show={showModal} onHide={(): void => setShowModal(false)} centered>
     <Modal.Header closeButton>
@@ -20,23 +19,22 @@ const NewCommentModal: React.FC<{
       </Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      <CommentForm setShowModal={setShowModal} onSubmit={onSubmit} />
+      <CommentForm setShowModal={setShowModal} onSubmit={onSubmit} commentToEdit={undefined} />
     </Modal.Body>
   </Modal>
 );
-
 const CommentForm: React.FC<{
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  onSubmit: (values: {comment: string}) => void;
-}> = ({ setShowModal, onSubmit }) => {
+  onSubmit: (values: { comment: string }) => void;
+  commentToEdit: ListComment | undefined;
+}> = ({ setShowModal, onSubmit, commentToEdit }) => {
   const validationSchema = Yup.object({
     comment: Yup.string()
       .min(8, 'Comment must be at least 8 characters')
       .max(250, 'Comment must be under 250 characters')
       .required('Comment is required'),
   });
-  const initialValues = { comment: '' };
-
+  const initialValues = { comment: commentToEdit ? commentToEdit.comment : '' };
   return (
     <Container>
       <Row className="justify-content-center">

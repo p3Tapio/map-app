@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import { LocationPopUpModalProps } from './locationsTypes';
-import altImg from '../../../style/images/bluepin.png';
+import altImg from '../../style/images/bluepin.png';
 
 const LocationPopUpModal: React.FC<LocationPopUpModalProps> = ({ setShow, show, location }) => {
   const handleClose = (): void => {

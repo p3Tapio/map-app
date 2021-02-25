@@ -3,7 +3,7 @@ import {
   Card, Col, OverlayTrigger, Row, Tooltip,
 } from 'react-bootstrap';
 import { Trash, Pen } from 'react-bootstrap-icons';
-import altImg from '../../../../style/images/bluepin.png';
+import altImg from '../../../style/images/bluepin.png';
 import { LocationCardProps } from '../locationsTypes';
 
 const LocationCard: React.FC<LocationCardProps> = ({

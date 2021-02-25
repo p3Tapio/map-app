@@ -7,7 +7,7 @@ import Leaflet, { LeafletMouseEvent } from 'leaflet';
 import { ListLocationsMapProps } from './listTypes';
 import { initialLocation } from '../initials';
 
-import '../../../style/mapstyle.css';
+import '../../style/mapstyle.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
 import LocationPopUpModal from '../locations/LocationPopUpModal';

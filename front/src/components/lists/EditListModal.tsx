@@ -1,13 +1,13 @@
 import React, { FormEvent, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useDispatch } from 'react-redux';
-import MessageModal from '../../MessageModal';
+import MessageModal from '../MessageModal';
 import DefaultViewMap from './DefaultViewMap';
 import ListForm from './ListForm';
 import { EditListModalProps, ListValidationMessage } from './listTypes';
 import { validateUpdatedList } from '../validation';
-import { List } from '../../../state/reducers/list/listTypes';
-import { updateList } from '../../../state/reducers/list/listActions';
+import { List } from '../../state/reducers/list/listTypes';
+import { updateList } from '../../state/reducers/list/listActions';
 
 const EditListModal: React.FC<EditListModalProps> = ({
   show, setShow, list, setList,
