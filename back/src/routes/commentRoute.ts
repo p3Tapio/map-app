@@ -54,12 +54,12 @@ router.delete('/delete/:id', async (req, res) => {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
       const listId = checkId(req.params.id);
-      const commentId = checkIdObj(req.body);  // TODO
+      const commentId = checkIdObj(req.body);
 
       const comment = await Comment.findById(commentId) as IComment;
       if (!comment) throw new Error('No comment found');
 
-      if (comment.user.toString() === userId) { // tekijätesti
+      if (comment.user.toString() === userId) { // tekijätesti, TODO listan luojalle mahdollisuus deletoida? 
         const list = await List.findById(listId);
         const user = await User.findById(userId);
         if (list && user) {

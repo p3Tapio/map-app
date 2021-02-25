@@ -8,13 +8,19 @@ const getComments = async (id: string): Promise<{ data: ListComment[] }> => axio
 
 const addComment = async (values: { comment: string; id: string }): Promise<{ data: ListComment } | undefined> => {
   const config = createConfig();
-  // TODO keksi joku toinen restrukturointi tolle objektille
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id, ...comment } = values;
   if (config.headers.token) {
-    return axios.post(`${baseUrl}/api/comment/newcomment/${values.id}`, comment, config);
+    const { id, ...comment } = values;
+    return axios.post(`${baseUrl}/api/comment/newcomment/${id}`, comment, config);
+  }
+  return undefined;
+};
+const deleteComment = async (listId: string, values: { id: string }): Promise<{ data: { success: string; id: string } } | undefined> => {
+  const config = createConfig();
+  if (config.headers.token) {
+    const x = { headers: config.headers, data: { id: values.id } };
+    return axios.delete(`${baseUrl}/api/comment/delete/${listId}`, x);
   }
   return undefined;
 };
 
-export default { getComments, addComment };
+export default { getComments, addComment, deleteComment };

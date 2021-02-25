@@ -7,8 +7,10 @@ const CommentElement: React.FC<{
   comment: ListComment;
   user: LoggedUser;
   setCommentToEdit: React.Dispatch<React.SetStateAction<ListComment | undefined>>;
-}> = ({ comment, user, setCommentToEdit }) => (
-
+  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({
+  comment, user, setCommentToEdit, setShowDeleteModal,
+}) => (
   <Container className="mb-2">
     <div className="commentCard">
       <Row>
@@ -48,7 +50,10 @@ const CommentElement: React.FC<{
                 <button
                   type="button"
                   className="editDeleteCommentBtn"
-                  onClick={(): void => setCommentToEdit(comment)}
+                  onClick={(): void => {
+                    setCommentToEdit(comment);
+                    setShowDeleteModal(true);
+                  }}
                 >
                   Delete
                 </button>
@@ -56,7 +61,6 @@ const CommentElement: React.FC<{
             </Col>
           </Row>
         ) : <Row className="mb-2" />}
-
     </div>
   </Container>
 );

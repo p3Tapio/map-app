@@ -16,6 +16,7 @@ const ListComments: React.FC<{ listId: string | undefined }> = ({ listId }) => {
   const [comments, setComments] = useState<ListComment[] | undefined>(undefined);
   const [latestFirst, setLatestFirst] = useState(true);
   const [showNewCommentModal, setShowNewCommentModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<ListComment | undefined>(undefined);
   const [info, setInfo] = useState({ header: '', message: '' });
@@ -50,8 +51,20 @@ const ListComments: React.FC<{ listId: string | undefined }> = ({ listId }) => {
       });
     }
   };
-  const handleDeleteComment = (id: string): void => {
-    console.log('id', id);
+  const handleDeleteComment = (commentId: string): void => {
+    if (listId) {
+      const values = { id: commentId };
+      commentService.deleteComment(listId, values).then((res) => {
+        if (res) {
+          setComments(comments.filter((x) => x._id !== res.data.id));
+          setShowDeleteModal(false);
+        }
+      }).catch(() => {
+        setShowDeleteModal(false);
+        setInfo({ header: 'Error', message: 'Woops, something went wrong :(((' });
+        setShowMessageModal(true);
+      });
+    }
     setCommentToEdit(undefined);
   };
 
@@ -135,6 +148,7 @@ const ListComments: React.FC<{ listId: string | undefined }> = ({ listId }) => {
             comment={c}
             key={c._id}
             setCommentToEdit={setCommentToEdit}
+            setShowDeleteModal={setShowDeleteModal}
           />
         ))}
       </div>
@@ -151,8 +165,9 @@ const ListComments: React.FC<{ listId: string | undefined }> = ({ listId }) => {
       />
       <DeleteCommentModal
         commentToEdit={commentToEdit}
-        setCommentToEdit={setCommentToEdit}
         handleDeleteComment={handleDeleteComment}
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
       />
     </>
   );

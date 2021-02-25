@@ -4,10 +4,13 @@ import { ListComment } from '../../../state/reducers/list/listTypes';
 
 const DeleteCommentModal: React.FC<{
   commentToEdit: ListComment | undefined;
-  setCommentToEdit: React.Dispatch<React.SetStateAction<ListComment | undefined>>;
   handleDeleteComment: (id: string) => void;
-}> = ({ commentToEdit, setCommentToEdit, handleDeleteComment }) => (
-  <Modal show={!!commentToEdit}>
+  showDeleteModal: boolean;
+  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({
+  commentToEdit, handleDeleteComment, showDeleteModal, setShowDeleteModal,
+}) => (
+  <Modal show={showDeleteModal} onHide={(): void => setShowDeleteModal(false)}>
     <Modal.Header closeButton>
       <Modal.Title>
         Delete
@@ -20,7 +23,7 @@ const DeleteCommentModal: React.FC<{
       <Button
         variant="outline-secondary"
         type="button"
-        onClick={(): void => setCommentToEdit(undefined)}
+        onClick={(): void => setShowDeleteModal(false)}
       >
         Cancel
       </Button>
