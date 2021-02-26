@@ -10,8 +10,9 @@ const CommentElement: React.FC<{
   setCommentToEdit: React.Dispatch<React.SetStateAction<ListComment | undefined>>;
   setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   setShowEditModal: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  publicListView: boolean;
 }> = ({
-  comment, user, setCommentToEdit, setShowDeleteModal, setShowEditModal, createdBy,
+  comment, user, setCommentToEdit, setShowDeleteModal, setShowEditModal, createdBy, publicListView,
 }) => (
   <Container className="mb-2">
     <div className="commentCard">
@@ -42,43 +43,83 @@ const CommentElement: React.FC<{
       <Row style={{ marginTop: '-30px' }}>
         <Col className="text-right align-self-end mr-3">
           <p>
-            {setShowEditModal && user.id === comment.user._id
-                && (
-                  <>
-                    <button
-                      className="editDeleteCommentBtn"
-                      type="button"
-                      onClick={(): void => {
-                        setCommentToEdit(comment);
-                        setShowEditModal(true);
-                      }}
-                    >
-                      Edit
-                    </button>
-                    {' '}
-                    /
-                    {' '}
-                  </>
-                )}
-            {(user.username === comment.user.username || user.id === createdBy)
+            {setCommentToEdit && user && user.id === comment.user._id
               ? (
-                <button
-                  type="button"
-                  className="editDeleteCommentBtn"
-                  onClick={(): void => {
-                    setCommentToEdit(comment);
-                    setShowDeleteModal(true);
-                  }}
-                >
-                  Delete
-                </button>
-              )
-              : <br />}
+                <EditAndDelete
+                  comment={comment}
+                  setCommentToEdit={setCommentToEdit}
+                  setShowEditModal={setShowEditModal}
+                  setShowDeleteModal={setShowDeleteModal}
+                />
+              ) : <br />}
+            {user && user.id === createdBy && !publicListView
+                && (
+                  <OnlyDelete
+                    comment={comment}
+                    setCommentToEdit={setCommentToEdit}
+                    setShowDeleteModal={setShowDeleteModal}
+                  />
+                )}
           </p>
         </Col>
       </Row>
     </div>
   </Container>
+);
+const EditAndDelete: React.FC<{
+  comment: ListComment;
+  setCommentToEdit: React.Dispatch<React.SetStateAction<ListComment | undefined>>;
+  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowEditModal: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+}> = ({
+  comment, setCommentToEdit, setShowDeleteModal, setShowEditModal,
+}) => (
+  <>
+    {setShowEditModal
+        && (
+          <>
+            <button
+              className="editDeleteCommentBtn"
+              type="button"
+              onClick={(): void => {
+                setCommentToEdit(comment);
+                setShowEditModal(true);
+              }}
+            >
+              Edit
+            </button>
+            {' '}
+            /
+            {' '}
+            <OnlyDelete
+              comment={comment}
+              setCommentToEdit={setCommentToEdit}
+              setShowDeleteModal={setShowDeleteModal}
+            />
+          </>
+        )}
+  </>
+);
+const OnlyDelete: React.FC<{
+  comment: ListComment;
+  setCommentToEdit: React.Dispatch<React.SetStateAction<ListComment | undefined>>;
+  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setCommentToEdit, setShowDeleteModal, comment }) => (
+  <>
+    { setCommentToEdit
+      && (
+        <button
+          type="button"
+          className="editDeleteCommentBtn"
+          onClick={(): void => {
+            setCommentToEdit(comment);
+            setShowDeleteModal(true);
+          }}
+        >
+          Delete
+        </button>
+      )}
+  </>
 );
 
 export default CommentElement;

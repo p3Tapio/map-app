@@ -12,7 +12,9 @@ import MessageModal from '../MessageModal';
 import DeleteCommentModal from './DeleteCommentModal';
 import EditCommentModal from './EditCommentModal';
 
-const ListComments: React.FC<{ listId: string | undefined; createdBy: string; }> = ({ listId, createdBy }) => {
+const ListComments: React.FC<{
+  listId: string | undefined; createdBy: string; publicListView: boolean;
+}> = ({ listId, createdBy, publicListView }) => {
   const [comments, setComments] = useState<ListComment[] | undefined>(undefined);
   const [latestFirst, setLatestFirst] = useState(true);
   const [showNewCommentModal, setShowNewCommentModal] = useState(false);
@@ -100,45 +102,50 @@ const ListComments: React.FC<{ listId: string | undefined; createdBy: string; }>
             <h5>{comments.length !== 0 ? 'Comments' : 'No comments yet!'}</h5>
           </Col>
           <Col className="text-right">
-            {user
-              ? (
-                <Button
-                  style={{ padding: '5px', paddingRight: '15px' }}
-                  className="m-1"
-                  variant="outline-secondary"
-                  size="sm"
-                  onClick={(): void => setShowNewCommentModal(true)}
-                >
-                  <Pen size={20} style={{ marginRight: '5px', marginBottom: '2px' }} />
-                  Add comment
-                </Button>
-              )
-              : (
-                <OverlayTrigger
-                  placement="auto"
-                  rootClose
-                  overlay={(
-                    <Tooltip id="editTooltip">
-                      Login or register to comment!
-                    </Tooltip>
-                  )}
-                >
-                  <div style={{ display: 'inline-block' }}>
-                    <Button
-                      style={{ padding: '5px', paddingRight: '15px' }}
-                      className="m-1"
-                      variant="outline-secondary"
-                      size="sm"
-                      disabled
-                    >
-                      <>
+            {publicListView
+              && (
+                <>
+                  {user
+                    ? (
+                      <Button
+                        style={{ padding: '5px', paddingRight: '15px' }}
+                        className="m-1"
+                        variant="outline-secondary"
+                        size="sm"
+                        onClick={(): void => setShowNewCommentModal(true)}
+                      >
                         <Pen size={20} style={{ marginRight: '5px', marginBottom: '2px' }} />
                         Add comment
-                      </>
-                    </Button>
-                  </div>
-                </OverlayTrigger>
+                      </Button>
+                    )
+                    : (
+                      <OverlayTrigger
+                        placement="auto"
+                        rootClose
+                        overlay={(
+                          <Tooltip id="editTooltip">
+                            Login or register to comment!
+                          </Tooltip>
+                        )}
+                      >
+                        <div style={{ display: 'inline-block' }}>
+                          <Button
+                            style={{ padding: '5px', paddingRight: '15px' }}
+                            className="m-1"
+                            variant="outline-secondary"
+                            size="sm"
+                            disabled
+                          >
+                            <>
+                              <Pen size={20} style={{ marginRight: '5px', marginBottom: '2px' }} />
+                              Add comment
+                            </>
+                          </Button>
+                        </div>
+                      </OverlayTrigger>
 
+                    )}
+                </>
               )}
             {comments.length !== 0
               && <ToggleRecentComment latestFirst={latestFirst} setLatestFirst={setLatestFirst} />}
@@ -153,6 +160,7 @@ const ListComments: React.FC<{ listId: string | undefined; createdBy: string; }>
             setShowDeleteModal={setShowDeleteModal}
             setShowEditModal={setShowEditModal}
             createdBy={createdBy}
+            publicListView={publicListView}
           />
         ))}
       </div>
