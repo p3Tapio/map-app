@@ -32,7 +32,7 @@ describe('List can be created', () => {
     await List.deleteMany({});
     await User.deleteMany({});
     const hashed = bcrypt.hashSync(user.password, 10);
-    const createUser = new User({ _id: new mongoose.Types.ObjectId, username: user.username, password: hashed });
+    const createUser = new User({ _id: new mongoose.Types.ObjectId, username: user.username, password: hashed }); //miksi id?
     await createUser.save();
   })
   test('...when authenticated and with valid details', async () => {
