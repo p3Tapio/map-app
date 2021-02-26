@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import mongoose, { Types } from "mongoose";
-import { NewUser, Category, NewLocation, Location, NewList, Defaultview, List, NewComment } from "./types";
+import { NewUser, Category, NewLocation, Location, NewList, Defaultview, List, NewListComment, ListComment } from "./types";
 
 const isString = (text: any): text is string => typeof text === 'string' || text instanceof String;
 const isNumeric = (no: any): no is number => !isNaN(Number(no));
@@ -172,7 +172,7 @@ const checkIdObj = (object: any): Types.ObjectId => {
   return id;
 };
 
-const checkNewComment = (object: any): NewComment => {
+const checkNewComment = (object: any): NewListComment => {
   if (!object || Object.keys(object).length === 0) throw new Error('No data.');
   else if (!("comment" in object)) throw new Error('object missing required properties.');
   else {
@@ -183,6 +183,19 @@ const checkNewComment = (object: any): NewComment => {
   }
 };
 
+const checkUpdatedComment = (object: any): ListComment => {
+  if (!object || Object.keys(object).length === 0) throw new Error('No data.');
+  else if (!("comment" in object) || !("list" in object)) {
+    throw new Error('object missing required properties.');
+  } else {
+    const updated = {
+      comment: parseInputString(object.comment),
+      list: parseId(object.list),
+    };
+    return updated;
+  }
+};
+
 export {
   checkUserValues,
   checkNewLocationValues,
@@ -190,6 +203,7 @@ export {
   checkNewListValues,
   checkUpdatedListValues,
   checkId,
+  checkIdObj,
   checkNewComment,
-  checkIdObj
+  checkUpdatedComment
 };

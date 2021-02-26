@@ -2,7 +2,7 @@ import express from 'express';
 import Comment from '../models/commentModel';
 import List from '../models/listModel';
 import User from '../models/userModel';
-import { checkId, checkIdObj, checkNewComment } from '../utils/checks';
+import { checkId, checkIdObj, checkNewComment, checkUpdatedComment } from '../utils/checks';
 import { checkToken } from '../utils/tokens';
 import { IComment, IList, IUser } from '../utils/types';
 
@@ -49,7 +49,23 @@ router.get('/comments/:id', async (req, res) => {
     res.status(400).json({ error: (err as Error).message });
   }
 });
-router.delete('/delete/:id', async (req, res) => { 
+router.put('/update/:id', async (req, res) => {
+  try {
+    if (req.header('token') && checkToken(req.header('token'))) {
+      const userId = checkToken(req.header('token'));
+      const body = checkUpdatedComment(req.body);
+      const comment = await Comment.findById(req.params.id);
+      if (!comment) throw new Error('No comment found.');
+      else if (comment.user.toString() === userId) {
+        const updated = await Comment.findByIdAndUpdate({ _id: req.params.id }, body, { new: true });
+        res.json(updated);
+      } else res.status(401).json({ error: 'unauthorized' });
+    } else res.status(401).json({ error: 'unauthorized' });
+  } catch (err) {
+    res.status(400).json({ error: (err as Error).message });
+  }
+});
+router.delete('/delete/:id', async (req, res) => {
   try {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
@@ -57,17 +73,17 @@ router.delete('/delete/:id', async (req, res) => {
       const commentId = checkIdObj(req.body);
 
       const comment = await Comment.findById(commentId) as IComment;
-      if (!comment) throw new Error('No comment found');
+      const list = await List.findById(listId);
+      if (!comment || !list) throw new Error('No comment or list found');
 
-      if (comment.user.toString() === userId) { // tekijätesti, TODO listan luojalle mahdollisuus deletoida? 
-        const list = await List.findById(listId);
+      if (comment.user.toString() === userId || list.createdBy.toString() === userId) {
         const user = await User.findById(userId);
-        if (list && user) {
+        if (user) {
           user.comments = user.comments.filter(x => !x.equals(commentId));
           list.comments = list.comments.filter(x => !x.equals(commentId));
           await user.save();
           await list.save();
-          await Comment.findOneAndRemove({ _id: commentId});
+          await Comment.findOneAndRemove({ _id: commentId });
           res.status(200).json({ success: `comment deleted`, id: commentId });
         }
       } else {
@@ -78,6 +94,5 @@ router.delete('/delete/:id', async (req, res) => {
     res.status(400).json({ error: (err as Error).message });
   }
 });
-
 
 export default router; 

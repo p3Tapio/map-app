@@ -66,16 +66,17 @@ export interface IList extends Document, NewList, List {
   date: Date;
 }
 // ----------------------------------------------------
-export interface NewComment {
+export interface NewListComment {
   comment: string;
 }
-export interface Comment extends NewComment {
+export interface ListComment extends NewListComment {
   list: Types.ObjectId;
-  user: Types.ObjectId;
-  replies: Comment[];
-  date: Date;
+  // replies: Comment[];
+
 }
 
-export interface IComment extends Document, Comment {
+export interface IComment extends Document, ListComment {
   _id: Types.ObjectId;
+  user: Types.ObjectId;
+  date: Date;
 }
