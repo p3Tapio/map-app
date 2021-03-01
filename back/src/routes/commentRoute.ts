@@ -84,7 +84,7 @@ router.delete('/delete/:id', async (req, res) => {
           await user.save();
           await list.save();
           await Comment.findOneAndRemove({ _id: commentId });
-          res.status(204).json({ success: `comment deleted`, id: commentId });
+          res.status(200).json({ success: `comment deleted`, id: commentId });
         }
       } else {
         res.status(401).json({ error: 'unauthorized' });

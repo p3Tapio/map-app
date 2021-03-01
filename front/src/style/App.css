@@ -134,7 +134,7 @@ hr {
   display:block;
   width: 96%;               
   background-color: #c8cbcf;
-  height: 1px;
+  height: 0.5px;
 }
 .hoverPointer:hover {
   cursor: pointer;

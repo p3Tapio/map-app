@@ -1,7 +1,8 @@
 Cypress.Commands.add('clearDb', () => {
-  cy.request('POST', 'http://localhost:3001/api/testing/resetUser')
-  cy.request('POST', 'http://localhost:3001/api/testing/resetLocations')
-  cy.request('POST', 'http://localhost:3001/api/testing/resetLists')
+  cy.request('POST', 'http://localhost:3001/api/testing/resetUser');
+  cy.request('POST', 'http://localhost:3001/api/testing/resetLocations');
+  cy.request('POST', 'http://localhost:3001/api/testing/resetLists');
+  cy.request('POST', 'http://localhost:3001/api/testing/resetComments');
 
 })
 Cypress.Commands.add('registerAndLogin', () => {
@@ -28,7 +29,7 @@ Cypress.Commands.add('createPublicList', () => {
   cy.contains('+').click().click();
   cy.get('#name').type('test list');
   cy.get('#description').type('description for testing');
-  cy.get('#visibility').check({force: true});
+  cy.get('#visibility').check({ force: true });
   cy.contains('Save').click();
   cy.contains('Ok').click();
 })
@@ -51,5 +52,13 @@ Cypress.Commands.add('createLocation', () => {
   cy.get('#category').select('Sights');
   cy.contains('Save').click();
   cy.contains('New location added!');
+  cy.contains('Ok').click();
+})
+Cypress.Commands.add('AddNewComment', () => {
+  cy.visit('http://localhost:3000/public');
+  cy.get('#viewListDetails').click();
+  cy.get('#addComment').click();
+  cy.get('#commentField').type('this is a comment for testing');
+  cy.get('#submitComment').click();
   cy.contains('Ok').click();
 })

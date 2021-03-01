@@ -79,7 +79,7 @@ const PublicListDetails: React.FC = () => {
           </>
         )}
       <hr />
-      <ListComments listId={id} createdBy={publiclist.createdBy._id} publicListView />
+      {publiclist.createdBy && <ListComments listId={id} createdBy={publiclist.createdBy._id} publicListView />}
     </Container>
   );
 };

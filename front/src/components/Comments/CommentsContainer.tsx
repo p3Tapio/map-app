@@ -76,7 +76,7 @@ const ListComments: React.FC<{
     if (listId) {
       const values = { id: commentId };
       commentService.deleteComment(listId, values).then((res) => {
-        if (res) {
+        if (res && res.data.id) {
           setComments(comments.filter((x) => x._id !== res.data.id));
           setShowDeleteModal(false);
           setInfo({ header: 'Success', message: 'Comment deleted!' });
@@ -108,6 +108,7 @@ const ListComments: React.FC<{
                   {user
                     ? (
                       <Button
+                        id="addComment"
                         style={{ padding: '5px', paddingRight: '15px' }}
                         className="m-1"
                         variant="outline-secondary"
@@ -130,6 +131,7 @@ const ListComments: React.FC<{
                       >
                         <div style={{ display: 'inline-block' }}>
                           <Button
+                            id="addComment"
                             style={{ padding: '5px', paddingRight: '15px' }}
                             className="m-1"
                             variant="outline-secondary"

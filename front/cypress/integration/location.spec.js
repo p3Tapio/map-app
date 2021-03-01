@@ -118,7 +118,7 @@ describe('Deleting location', function () {
     cy.get('#confirmDelete').click();
     cy.contains('Location test location deleted!');
     cy.contains('Ok').click();
-    cy.contains('Seems like you have not added any locations to your list yet. You can start by clicking the add location button!');
+    cy.contains('Seems like you have not added any locations to your list yet.');
   })
   it('User can click cancel and the location is not deleted', function() {
     cy.contains('View locations').click();

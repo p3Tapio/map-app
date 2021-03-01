@@ -169,11 +169,11 @@ describe('Comment can be deleted', () => {
     await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'test comment' }).expect(200);
     listsInDb = await List.find({});
     expect(listsInDb[0].comments).toHaveLength(1);
-    await api.delete(`/api/comment/delete/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ id: listsInDb[0].comments[0] }).expect(204);
+    await api.delete(`/api/comment/delete/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ id: listsInDb[0].comments[0] }).expect(200);
     listsInDb = await List.find({});
     expect(listsInDb[0].comments).toHaveLength(0);
   })
-  test('...comment can also be deleted by the user who create the list', async () => {
+  test('...comment can also be deleted by the user who created the list', async () => {
     const login_1 = await api.post('/api/user/login/').send(anotherUser);
     let listsInDb = await List.find({});
     await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login_1.body.token }).send({ comment: 'test comment' }).expect(200);
@@ -181,7 +181,7 @@ describe('Comment can be deleted', () => {
     expect(listsInDb[0].comments).toHaveLength(1);
 
     const login_2 = await api.post('/api/user/login/').send(user);
-    await api.delete(`/api/comment/delete/${listsInDb[0]._id}`).set({ 'token': login_2.body.token }).send({ id: listsInDb[0].comments[0] }).expect(204);
+    await api.delete(`/api/comment/delete/${listsInDb[0]._id}`).set({ 'token': login_2.body.token }).send({ id: listsInDb[0].comments[0] }).expect(200);
     listsInDb = await List.find({});
     expect(listsInDb[0].comments).toHaveLength(0);
   })

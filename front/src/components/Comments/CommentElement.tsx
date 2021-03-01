@@ -79,6 +79,7 @@ const EditAndDelete: React.FC<{
         && (
           <>
             <button
+              id="#editComment"
               className="editDeleteCommentBtn"
               type="button"
               onClick={(): void => {
@@ -110,6 +111,7 @@ const OnlyDelete: React.FC<{
       && (
         <button
           type="button"
+          id="deleteComment"
           className="editDeleteCommentBtn"
           onClick={(): void => {
             setCommentToEdit(comment);

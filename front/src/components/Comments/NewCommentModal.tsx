@@ -53,7 +53,7 @@ const CommentForm: React.FC<{
                       className="form-control"
                       rows={4}
                       as="textarea"
-                      id="comment"
+                      id="commentField"
                       name="comment"
                       type="text"
                     />
