@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import mongoose, { Types } from "mongoose";
-import { NewUser, Category, NewLocation, Location, NewList, Defaultview, List, NewListComment, ListComment } from "./types";
+import { NewUser, Category, NewLocation, Location, NewList, Defaultview, List, NewListComment, ListComment, NewCommentReply } from "./types";
 
 const isString = (text: any): text is string => typeof text === 'string' || text instanceof String;
 const isNumeric = (no: any): no is number => !isNaN(Number(no));
@@ -75,7 +75,17 @@ const parseFavoritedBy = (input: any[]): Types.ObjectId[] => {
   return [];
 };
 // ---------------------------------------------------------
-
+const checkId = (value: any): Types.ObjectId => {
+  if (!value || value === '') throw new Error('No data.');
+  const listId = parseId(value);
+  return listId;
+};
+const checkIdObj = (object: any): Types.ObjectId => {
+  if (!object.id || object.id === '') throw new Error('No data.');
+  const id = parseId(object.id);
+  return id;
+};
+// ----------------------------------------------------------
 const checkUserValues = (object: any): NewUser => {
   const newUser: NewUser = {
     username: parseInputString(object.username),
@@ -83,6 +93,7 @@ const checkUserValues = (object: any): NewUser => {
   };
   return newUser;
 };
+// ---------------------------------------------------------
 const checkNewLocationValues = (object: any): NewLocation => {
   const newLocation = {
     name: parseInputString(object.name),
@@ -109,6 +120,7 @@ const checkUpdatedLocationValues = (object: any): Location => {
   };
   return updated;
 };
+// -----------------------------------------------------
 const checkNewListValues = (object: any): NewList => {  // TODO onko !value määritykset turhia jos ehdot myös locationiin? 
   if (!object || Object.keys(object).length === 0) throw new Error('No data.');
   else if (
@@ -132,7 +144,6 @@ const checkNewListValues = (object: any): NewList => {  // TODO onko !value mä�
     return newList;
   }
 };
-
 const checkUpdatedListValues = (object: any): List => {
   if (!object || Object.keys(object).length === 0) throw new Error('No data.');
   else if (
@@ -161,17 +172,7 @@ const checkUpdatedListValues = (object: any): List => {
     return updated;
   }
 };
-const checkId = (value: any): Types.ObjectId => {
-  if (!value || value === '') throw new Error('No data.');
-  const listId = parseId(value);
-  return listId;
-};
-const checkIdObj = (object: any): Types.ObjectId => {
-  if (!object.id || object.id === '') throw new Error('No data.');
-  const id = parseId(object.id);
-  return id;
-};
-
+// -----------------------------------------------------
 const checkNewComment = (object: any): NewListComment => {
   if (!object || Object.keys(object).length === 0) throw new Error('No data.');
   else if (!("comment" in object)) throw new Error('object missing required properties.');
@@ -182,6 +183,10 @@ const checkNewComment = (object: any): NewListComment => {
     return newComment;
   }
 };
+const parseCommentReplies = (object:any[]): Types.ObjectId[] => {
+  if(object.length>0) return object.map((c) => parseId(c));
+  return [];
+};
 
 const checkUpdatedComment = (object: any): ListComment => {
   if (!object || Object.keys(object).length === 0) throw new Error('No data.');
@@ -191,8 +196,21 @@ const checkUpdatedComment = (object: any): ListComment => {
     const updated = {
       comment: parseInputString(object.comment),
       list: parseId(object.list),
+      replies: parseCommentReplies(object.replies),
     };
     return updated;
+  }
+};
+// -----------------------------------------------------
+const checkNewReply = (object: any): NewCommentReply => {
+  if (!object || Object.keys(object).length === 0) throw new Error('No data.');
+  else if (!("reply" in object)) throw new Error('object missing required properties.');
+  else {
+    const reply = {
+      reply: parseInputString(object.reply),
+      listId: parseId(object.listId),
+    };
+    return reply;
   }
 };
 
@@ -205,5 +223,6 @@ export {
   checkId,
   checkIdObj,
   checkNewComment,
-  checkUpdatedComment
+  checkUpdatedComment,
+  checkNewReply,
 };

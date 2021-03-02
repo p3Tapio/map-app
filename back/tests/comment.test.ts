@@ -99,14 +99,14 @@ describe('Comments can be updated', () => {
   test('...by the user who created it when authenticated', async () => {
     const login = await api.post('/api/user/login/').send(user);
     let listsInDb = await List.find({});
-    let res = await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'test comment' });
+    let res = await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'test comment', replies: [] });
     let commentsInDb = await Comment.find({});
     listsInDb = await List.find({});
     expect(listsInDb[0].comments).toHaveLength(1);
     expect(commentsInDb[0].comment).toEqual('test comment');
     expect(commentsInDb[0].list).toEqual(listsInDb[0]._id);
 
-    const updatedComment = { comment: 'this is an updated comment', list: listsInDb[0]._id };
+    const updatedComment = { comment: 'this is an updated comment', list: listsInDb[0]._id, replies: [] };
     await api.put(`/api/comment/update/${res.body._id}`).set({ 'token': login.body.token }).send(updatedComment).expect(200);
 
     listsInDb = await List.find({});
@@ -118,11 +118,11 @@ describe('Comments can be updated', () => {
   test('...not without authentication', async () => {
     const login = await api.post('/api/user/login/').send(user);
     let listsInDb = await List.find({});
-    let res = await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'test comment' });
+    let res = await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'test comment', replies: [] });
     let commentsInDb = await Comment.find({});
     expect(commentsInDb[0].comment).toEqual('test comment');
 
-    const updatedComment = { comment: 'this is an updated comment', list: listsInDb[0]._id };
+    const updatedComment = { comment: 'this is an updated comment', list: listsInDb[0]._id, replies: [] };
     await api.put(`/api/comment/update/${res.body._id}`).set({ 'token': '' }).send(updatedComment).expect(401);
 
     listsInDb = await List.find({});
@@ -137,9 +137,9 @@ describe('Comments can be updated', () => {
 
     let listsInDb = await List.find({});
     const login = await api.post('/api/user/login/').send(user);
-    const res = await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'test comment' });
+    const res = await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'test comment', replies: [] });
 
-    const updatedComment = { comment: 'this is an updated comment', list: listsInDb[0]._id };
+    const updatedComment = { comment: 'this is an updated comment', list: listsInDb[0]._id, replies: [] };
     const anotherLogin = await api.post('/api/user/login/').send(anotherUser);
 
     await api.put(`/api/comment/update/${res.body._id}`).set({ 'token': anotherLogin.body.token }).send(updatedComment).expect(401);

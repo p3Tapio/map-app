@@ -1,6 +1,7 @@
 import express from 'express';
 import Comment from '../models/commentModel';
 import List from '../models/listModel';
+import Reply from '../models/replyModel';
 import User from '../models/userModel';
 import { checkId, checkIdObj, checkNewComment, checkUpdatedComment } from '../utils/checks';
 import { checkToken } from '../utils/tokens';
@@ -42,7 +43,11 @@ router.post('/newcomment/:id', async (req, res) => {
 router.get('/comments/:id', async (req, res) => {
   try {
     if (checkId(req.params.id)) {
-      const comments = await Comment.find({ list: req.params.id }).populate({ path: 'user', select: 'username' }) as IComment[];
+      const comments = await Comment.find({ list: req.params.id })
+        .populate([
+          { path: 'user', select: 'username' },
+          { path: 'replies', populate: { path: 'user', select: 'username' } }
+        ]) ;
       res.json(comments);
     }
   } catch (err) {
@@ -84,6 +89,7 @@ router.delete('/delete/:id', async (req, res) => {
           await user.save();
           await list.save();
           await Comment.findOneAndRemove({ _id: commentId });
+          await Reply.deleteMany({listId: listId});
           res.status(200).json({ success: `comment deleted`, id: commentId });
         }
       } else {

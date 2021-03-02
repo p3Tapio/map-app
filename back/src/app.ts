@@ -9,6 +9,7 @@ import userRouter from './routes/userRoute';
 import locationRouter from './routes/locationRoute';
 import listRouter from './routes/listRoute';
 import commentRouter from './routes/commentRoute';
+import replyRouter from './routes/replyRoute';
 
 const app = express();
 app.use(cors());
@@ -23,6 +24,7 @@ app.use('/api/user', userRouter);
 app.use('/api/location', locationRouter);
 app.use('/api/list', listRouter);
 app.use('/api/comment', commentRouter);
+app.use('/api/reply', replyRouter);
 
 if (process.env.NODE_ENV === 'production') {  // TODO cross-env ei skulaa herokussa, kommentoi tämä pois toistaiseksi
   app.get('*', (_req, res) => {

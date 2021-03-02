@@ -4,10 +4,13 @@ import mongoose from 'mongoose';
 import List from '../models/listModel';
 import User from '../models/userModel';
 import Location from '../models/locationModel';
+import Comment from '../models/commentModel';
+import Reply from '../models/replyModel';
 import { checkId, checkNewListValues, checkUpdatedListValues } from '../utils/checks';
 import { checkToken } from '../utils/tokens';
 import { IList, IUser } from '../utils/types';
 import { apiRequest } from '../utils/fetchFunction';
+
 
 const router = express.Router();
 const populate = [
@@ -16,7 +19,7 @@ const populate = [
 ];
 
 router.get('/allpublic', async (_req: Request, res: Response) => {
-  const lists = await List.find({ public: true }).populate(populate) as IList[];
+  const lists = await List.find({ public: true }).populate(populate);
   res.status(200).json(lists);
 });
 
@@ -24,7 +27,7 @@ router.get('/user', async (req: Request, res: Response) => {
   try {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
-      const lists = await List.find({ createdBy: userId }).populate(populate) as IList[];
+      const lists = await List.find({ createdBy: userId }).populate(populate);
       res.status(200).json(lists);
     } else res.status(401).json({ error: 'unauthorized' });
   } catch (err) {
@@ -101,6 +104,8 @@ router.delete('/delete/:id', async (req: Request, res: Response) => {
       if (list.createdBy.toString() === userId) {
         await List.findOneAndRemove({ _id: req.params.id });
         await Location.deleteMany({ list: req.params.id });
+        await Comment.deleteMany({ list: req.params.id });
+        await Reply.deleteMany({ listId: req.params.id });
         res.status(204).send({ success: `${list.name} deleted` });
       } else {
         res.status(401).send({ error: 'unauthorized' });

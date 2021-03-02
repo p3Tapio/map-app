@@ -6,10 +6,10 @@ const commentSchema: Schema = new Schema({
   list: { type: Schema.Types.ObjectId, ref: 'List', required: true },
   comment: { type: String, required: true },
   date: { type: Date, default: Date.now },
-  // replies: [{
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Comment',
-  // }]
+  replies: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Reply',
+  }],
 });
 
 commentSchema.set('versionKey', false);

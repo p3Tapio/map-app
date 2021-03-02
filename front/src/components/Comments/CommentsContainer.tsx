@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import {
   Button, Col, OverlayTrigger, Row, Tooltip,
 } from 'react-bootstrap';
 import { ChevronDown, ChevronUp, Pen } from 'react-bootstrap-icons';
 import commentService from '../../state/services/commentService';
+import replyService from '../../state/services/replyService';
 import { ListComment } from '../../state/reducers/list/listTypes';
 import { getUser } from '../../state/localStore';
 import CommentElement from './CommentElement';
@@ -22,6 +23,7 @@ const ListComments: React.FC<{
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<ListComment | undefined>(undefined);
+  const [reply, setReply] = useState('');
   const [info, setInfo] = useState({ header: '', message: '' });
   const user = getUser();
 
@@ -91,6 +93,25 @@ const ListComments: React.FC<{
     setCommentToEdit(undefined);
   };
 
+  const handleSaveReply = (text: string, ev: FormEvent): void => {
+    ev.preventDefault();
+    if (commentToEdit && commentToEdit._id && text !== '') {
+      const values = { reply: text, commentId: commentToEdit._id, listId: commentToEdit.list };
+      replyService.addReply(values).then((res) => {
+        if (res && res.data) {
+          const updateComment = comments.find((x) => x._id === res.data.commentId);
+          if (updateComment) updateComment.replies = updateComment.replies.concat(res.data);
+          setComments(comments.map((c) => (updateComment && c._id === updateComment._id ? updateComment : c)));
+        }
+      }).catch(() => {
+        setInfo({ header: 'Error', message: 'Woops, something went wrong :(((' });
+        setShowMessageModal(true);
+      });
+      setReply('');
+      setCommentToEdit(undefined);
+    }
+  };
+
   let currentComments = comments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   if (!latestFirst) currentComments = comments.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
@@ -109,7 +130,7 @@ const ListComments: React.FC<{
                     ? (
                       <Button
                         id="addComment"
-                        style={{ padding: '5px', paddingRight: '15px' }}
+                        style={{ padding: '5px', paddingRight: '15px', whiteSpace: 'nowrap' }}
                         className="m-1"
                         variant="outline-secondary"
                         size="sm"
@@ -145,7 +166,6 @@ const ListComments: React.FC<{
                           </Button>
                         </div>
                       </OverlayTrigger>
-
                     )}
                 </>
               )}
@@ -163,6 +183,9 @@ const ListComments: React.FC<{
             setShowEditModal={setShowEditModal}
             createdBy={createdBy}
             publicListView={publicListView}
+            handleSaveReply={handleSaveReply}
+            reply={reply}
+            setReply={setReply}
           />
         ))}
       </div>

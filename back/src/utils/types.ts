@@ -71,12 +71,24 @@ export interface NewListComment {
 }
 export interface ListComment extends NewListComment {
   list: Types.ObjectId;
-  // replies: Comment[];
-
+  replies: Types.ObjectId[];
 }
 
 export interface IComment extends Document, ListComment {
   _id: Types.ObjectId;
   user: Types.ObjectId;
+  date: Date;
+}
+// -----------------------------------------------------
+export interface NewCommentReply {
+  reply: string;
+  listId: Types.ObjectId;
+}
+export interface CommentReply extends NewCommentReply {
+  user: Types.ObjectId;
+  commentId: Types.ObjectId;
+}
+export interface ICommentReply extends Document, CommentReply {
+  _id: Types.ObjectId;
   date: Date;
 }

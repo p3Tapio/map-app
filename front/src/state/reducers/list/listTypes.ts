@@ -1,4 +1,5 @@
 import { Location } from '../../services/locationTypes';
+import { CommentReply } from '../../services/replyService';
 
 export const GETPUBLICLISTS = 'GETPUBLICLISTS';
 export const GETUSERLISTS = 'GETUSERLISTS';
@@ -19,6 +20,7 @@ export interface NewList {
   country: string;
   place: string;
 }
+
 export interface ListComment {
   _id: string;
   user: {
@@ -28,6 +30,7 @@ export interface ListComment {
   list: string;
   comment: string;
   date: Date;
+  replies: CommentReply[];
 }
 export interface List extends NewList {
   _id: string;

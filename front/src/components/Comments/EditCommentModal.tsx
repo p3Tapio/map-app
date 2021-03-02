@@ -15,17 +15,17 @@ const EditCommentModal: React.FC<{
 }> = ({
   showModal, setShowModal, onSubmit, commentToEdit,
 }) => (
-    <Modal show={showModal} onHide={(): void => setShowModal(false)} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>
-          Edit comment
+  <Modal show={showModal} onHide={(): void => setShowModal(false)} centered>
+    <Modal.Header closeButton>
+      <Modal.Title>
+        Edit comment
       </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <CommentForm setShowModal={setShowModal} onSubmit={onSubmit} commentToEdit={commentToEdit} />
-      </Modal.Body>
-    </Modal>
-  );
+    </Modal.Header>
+    <Modal.Body>
+      <CommentForm setShowModal={setShowModal} onSubmit={onSubmit} commentToEdit={commentToEdit} />
+    </Modal.Body>
+  </Modal>
+);
 
 const CommentForm: React.FC<{
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
