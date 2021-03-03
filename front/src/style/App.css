@@ -169,6 +169,7 @@ hr {
 .commentCard {
   background-color: white;
   border: 3px solid rgba(159,164,158,0.11);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 8px;
 }
 .editDeleteCommentBtn {
@@ -191,3 +192,30 @@ hr {
     outline: 0px solid #fff;
     box-shadow: none !important;
 }
+.replyCard {
+  box-shadow:-5px 5px 15px -5px rgba(0,0,0,0.1);
+  border: 1px solid #c8cbcf;
+  border-radius: 10px;
+  margin-left: 10%;
+  margin-top: -15px;
+  padding: 10px;
+  width: 75%;
+  height:100%;
+}
+.replyDateAndOptionsColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: right;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+@media all and (max-width: 992px) {
+  .replyDateAndOptionsColumn {
+    text-align: left;
+    margin-right: 0px;
+    margin-left: 25px;
+    align-self: flex-end;
+  }
+}
+

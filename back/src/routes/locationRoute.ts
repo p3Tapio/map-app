@@ -36,7 +36,7 @@ router.post('/create', async (req: Request, res: Response) => {
 
       const savedLocation = await location.save();
       user.locations = user.locations.concat(savedLocation);
-      list.locations = list.locations.concat(savedLocation);
+      list.locations = list.locations.concat(savedLocation._id);
       await user.save();
       await list.save();
 
@@ -67,15 +67,18 @@ router.put('/update/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/delete/:id', async (req: Request, res: Response) => {
+router.delete('/delete/:id', async (req: Request, res: Response) => {// TODO jääkö listaan nyt refrenssi kohteesta --> .filter tjsp
   try {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
       const location = await Location.findById(req.params.id) as ILocation;
+      const list = await List.findById(location.list);
 
-      if (!location) throw new Error('No location found');
+      if (!location || !list) throw new Error('No location or list found');
 
       if (location.createdBy.toString() === userId) {
+        list.locations = list.locations.filter(x => !x.equals(location._id));
+        await list.save();
         await Location.findOneAndRemove({ _id: req.params.id });
         res.status(204).send({ success: `${location.name} deleted.` });
 

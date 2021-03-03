@@ -89,7 +89,7 @@ router.delete('/delete/:id', async (req, res) => {
           await user.save();
           await list.save();
           await Comment.findOneAndRemove({ _id: commentId });
-          await Reply.deleteMany({listId: listId});
+          await Reply.deleteMany({commentId: commentId});
           res.status(200).json({ success: `comment deleted`, id: commentId });
         }
       } else {

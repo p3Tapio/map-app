@@ -40,6 +40,7 @@ const ListPage: React.FC = () => {
   }));
 
   useEffect(() => {
+    console.log('USEEFFECT')
     dispatch(getUserLists());
   }, [dispatch, showCreateLocation, showEditList, showEditLocation, showDelete]);
 

@@ -14,15 +14,26 @@ const CommentElement: React.FC<{
   setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   setShowEditModal: React.Dispatch<React.SetStateAction<boolean>> | undefined;
   handleSaveReply: (text: string, ev: FormEvent) => void;
+  handleDeleteReply: (replyToDel: CommentReply, ev: FormEvent) => void;
   publicListView: boolean;
   reply: string;
   setReply: React.Dispatch<React.SetStateAction<string>>;
 }> = ({
-  comment, user, setCommentToEdit, setShowDeleteModal, setShowEditModal, createdBy, publicListView, handleSaveReply, reply, setReply,
+  comment,
+  user,
+  setCommentToEdit,
+  setShowDeleteModal,
+  setShowEditModal,
+  createdBy,
+  publicListView,
+  handleSaveReply,
+  reply,
+  setReply,
+  handleDeleteReply,
 }) => (
   <Container className="mb-2">
     <Accordion>
-      <Card>
+      <Card className="commentCard">
         <Row>
           <Col className="text-right align-self-end mt-3 mr-4">
             <small>
@@ -70,7 +81,7 @@ const CommentElement: React.FC<{
 
                   && (
                     <>
-                      {comment.user._id === user.id && (
+                      {(comment.user._id === user.id || !publicListView) && (
                         <>
                           {' '}
                           |
@@ -93,12 +104,16 @@ const CommentElement: React.FC<{
         <Accordion.Collapse eventKey={comment._id}>
           <Card.Body>
             <div style={{ marginTop: '-70px' }}>
-              <div style={{ borderLeft: '1px solid #c8cbcf', marginLeft: '5%', marginBottom: '20px' }}>
+              <div style={comment.replies.length !== 0 ? { borderLeft: '1px solid #c8cbcf', marginLeft: '5%', marginBottom: '20px' } : {}}>
                 <div>
                   <div style={{ height: '70px' }} />
                   {comment.replies.map((c) => (
                     <div style={{ marginBottom: '20px', marginRight: '40px' }} key={c._id}>
-                      <ReplyElement reply={c} />
+                      <ReplyElement
+                        reply={c}
+                        user={user}
+                        handleDeleteReply={handleDeleteReply}
+                      />
                     </div>
                   ))}
                   <div style={{ height: '20px' }} />
@@ -117,15 +132,58 @@ const CommentElement: React.FC<{
   </Container>
 );
 
-const ReplyElement: React.FC<{ reply: CommentReply }> = ({ reply }) => (
+const ReplyElement: React.FC<{
+  reply: CommentReply;
+  user: LoggedUser;
+  handleDeleteReply: (replyToDel: CommentReply, ev: FormEvent) => void;
+}> = ({ reply, user, handleDeleteReply }) => (
   <>
-    <div style={{ borderBottom: '1px solid #c8cbcf', marginRight: '95%' }} />
-    <div style={{
-      border: '1px solid #c8cbcf', borderRadius: '10px', marginLeft: '5%', marginTop: '-15px', padding: '10px',
-    }}
-    >
-      <p>{reply.reply}</p>
-      <p>{reply.user.username}</p>
+    <div style={{ borderBottom: '1px solid #c8cbcf', marginRight: '90%' }} />
+    <div className="replyCard">
+      <Container fluid>
+        <Row className="justify-content-between">
+          <Col className="text-left" style={{ marginLeft: '10px', marginTop: '10px' }} sm={9} xs={12}>
+            <p>
+              {reply.reply}
+            </p>
+            <p>
+              -
+              {' '}
+              {reply.user.username}
+            </p>
+          </Col>
+          <div className="replyDateAndOptionsColumn">
+            <small>
+              {new Date(reply.date).toLocaleString('default', { day: 'numeric', year: 'numeric', month: 'numeric' })}
+            </small>
+            <div style={{ flexDirection: 'row' }}>
+              {reply.user._id === user.id
+                && (
+                  <>
+                    {/* <button
+                      type="button"
+                      className="editDeleteCommentBtn"
+                      style={{ alignSelf: 'flex-end' }}
+                    >
+                      Edit
+                      {' '}
+                      |
+                    </button>
+                    {' '} */}
+                    <button
+                      type="button"
+                      className="editDeleteCommentBtn"
+                      style={{ alignSelf: 'flex-end' }}
+                      onClick={(ev: FormEvent): void => handleDeleteReply(reply, ev)}
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
+            </div>
+          </div>
+        </Row>
+      </Container>
     </div>
   </>
 );

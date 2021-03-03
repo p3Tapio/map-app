@@ -4,7 +4,7 @@ import {
 } from 'react-bootstrap';
 import { ChevronDown, ChevronUp, Pen } from 'react-bootstrap-icons';
 import commentService from '../../state/services/commentService';
-import replyService from '../../state/services/replyService';
+import replyService, { CommentReply } from '../../state/services/replyService';
 import { ListComment } from '../../state/reducers/list/listTypes';
 import { getUser } from '../../state/localStore';
 import CommentElement from './CommentElement';
@@ -100,16 +100,32 @@ const ListComments: React.FC<{
       replyService.addReply(values).then((res) => {
         if (res && res.data) {
           const updateComment = comments.find((x) => x._id === res.data.commentId);
-          if (updateComment) updateComment.replies = updateComment.replies.concat(res.data);
-          setComments(comments.map((c) => (updateComment && c._id === updateComment._id ? updateComment : c)));
+          if (updateComment) {
+            updateComment.replies = updateComment.replies.concat(res.data);
+            setComments(comments.map((c) => (c._id === updateComment._id ? updateComment : c)));
+          }
         }
       }).catch(() => {
         setInfo({ header: 'Error', message: 'Woops, something went wrong :(((' });
         setShowMessageModal(true);
       });
       setReply('');
-      setCommentToEdit(undefined);
     }
+  };
+  const handleDeleteReply = (replyToDel: CommentReply): void => {
+    const values = { commentId: replyToDel.commentId, replyId: replyToDel._id };
+    replyService.deleteReply(values).then((res) => {
+      if (res && res.data) {
+        const updateComment = comments.find((x) => x._id === replyToDel.commentId);
+        if (updateComment) {
+          updateComment.replies = updateComment.replies.filter((x) => x._id !== res.data.replyId);
+          setComments(comments.map((c) => (c._id === updateComment._id ? updateComment : c)));
+        }
+      }
+    }).catch(() => {
+      setInfo({ header: 'Error', message: 'Woops, something went wrong :(((' });
+      setShowMessageModal(true);
+    });
   };
 
   let currentComments = comments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -186,6 +202,7 @@ const ListComments: React.FC<{
             handleSaveReply={handleSaveReply}
             reply={reply}
             setReply={setReply}
+            handleDeleteReply={handleDeleteReply}
           />
         ))}
       </div>

@@ -54,7 +54,7 @@ export interface NewList {
 }
 export interface List extends NewList {
   createdBy: Types.ObjectId;
-  locations: Location[];
+  locations: Types.ObjectId[];
   favoritedBy: Types.ObjectId[];
   region?: string;
   subregion?: string;
