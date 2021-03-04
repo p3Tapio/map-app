@@ -10,6 +10,7 @@ const commentSchema: Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Reply',
   }],
+  edited: { type: Date }, 
 });
 
 commentSchema.set('versionKey', false);

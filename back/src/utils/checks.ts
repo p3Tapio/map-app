@@ -3,12 +3,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import mongoose, { Types } from "mongoose";
-import { NewUser, Category, NewLocation, Location, NewList, Defaultview, List, NewListComment, ListComment, NewCommentReply } from "./types";
+import { NewUser, Category, NewLocation, Location, NewList, Defaultview, List, NewListComment, ListComment, NewCommentReply, CommentReply,  } from "./types";
 
 const isString = (text: any): text is string => typeof text === 'string' || text instanceof String;
 const isNumeric = (no: any): no is number => !isNaN(Number(no));
 const isCategory = (cat: any): cat is Category => Object.values(Category).includes(cat);
 const isBoolean = (value: any): value is boolean => typeof value === 'boolean' || value instanceof Boolean;
+const isDate = (input: any): boolean => !isNaN(Date.parse(input));//TODO: Tarkasta tämän toiminta?
 
 function parseInputString(input: any): string {
   if (!input || !isString(input)) {
@@ -66,19 +67,26 @@ const parseInputBoolean = (input: any): boolean => {
   }
   return input;
 };
-const parseLocationList = (input: any[]): Location[] => {
-  if (input.length > 0) return input.map((x) => checkUpdatedLocationValues(x));
+const parseLocationList = (input: any[]): Types.ObjectId[] => {
+  if (input.length > 0) return input.map((x) => checkId(x));
   return [];
 };
 const parseFavoritedBy = (input: any[]): Types.ObjectId[] => {
   if (input.length > 0) return input.map((x) => parseId(x));
   return [];
 };
+
+const parseDate = (input: any): Date => {
+  if (!input || !isDate((input))) {
+    throw new Error('input missing or in wrong format: date expected.');
+  }
+  return new Date(input);
+};
 // ---------------------------------------------------------
 const checkId = (value: any): Types.ObjectId => {
   if (!value || value === '') throw new Error('No data.');
-  const listId = parseId(value);
-  return listId;
+  const id = parseId(value);
+  return id;
 };
 const checkIdObj = (object: any): Types.ObjectId => {
   if (!object.id || object.id === '') throw new Error('No data.');
@@ -184,19 +192,19 @@ const checkNewComment = (object: any): NewListComment => {
   }
 };
 const parseCommentReplies = (object:any[]): Types.ObjectId[] => {
-  if(object.length>0) return object.map((c) => parseId(c));
+  if(object && object.length!==0) return object.map((c) => parseId(c));
   return [];
 };
-
 const checkUpdatedComment = (object: any): ListComment => {
   if (!object || Object.keys(object).length === 0) throw new Error('No data.');
-  else if (!("comment" in object) || !("list" in object)) {
+  else if (!("comment" in object) || !("list" in object) || !("date" in object ||!("replies" in object))) {
     throw new Error('object missing required properties.');
   } else {
     const updated = {
       comment: parseInputString(object.comment),
       list: parseId(object.list),
       replies: parseCommentReplies(object.replies),
+      date: parseDate(object.date),
     };
     return updated;
   }
@@ -213,6 +221,25 @@ const checkNewReply = (object: any): NewCommentReply => {
     return reply;
   }
 };
+const checkUpdatedReply = (object: any): CommentReply => {
+  if (!object || Object.keys(object).length === 0) throw new Error('No data.');
+  else if (
+    !("reply" in object) ||
+    !("user" in object) ||
+    !("listId" in object) ||
+    !("commentId" in object)  
+  ) throw new Error('object missing required properties.');
+  else {
+    const reply = {
+      reply: parseInputString(object.reply),
+      user: parseId(object.user),
+      listId: parseId(object.listId),
+      commentId: parseId(object.commentId),
+      date: parseDate(object.date),
+    };
+    return reply;
+  }
+};
 
 export {
   checkUserValues,
@@ -225,4 +252,5 @@ export {
   checkNewComment,
   checkUpdatedComment,
   checkNewReply,
+  checkUpdatedReply, 
 };

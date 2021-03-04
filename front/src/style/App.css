@@ -210,12 +210,20 @@ hr {
   margin-top: 10px;
   margin-right: 10px;
 }
+.no-gutter-div {
+  margin-left: 20px;
+  margin-right: 20px;
+}
 @media all and (max-width: 992px) {
   .replyDateAndOptionsColumn {
     text-align: left;
     margin-right: 0px;
     margin-left: 25px;
     align-self: flex-end;
+  }
+  .no-gutter-div {
+    margin-left: -10px;
+    margin-right: -10px;
   }
 }
 

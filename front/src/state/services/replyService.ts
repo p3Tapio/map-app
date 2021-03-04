@@ -8,6 +8,8 @@ export interface CommentReply {
   user: { _id: string; username: string };
   date: Date;
   commentId: string;
+  listId: string;
+  edited?: Date;
 }
 
 const addReply = async (values: { reply: string; commentId: string; listId: string }): Promise<{ data: CommentReply } | undefined> => {
@@ -18,6 +20,14 @@ const addReply = async (values: { reply: string; commentId: string; listId: stri
   }
   return undefined;
 };
+const updateReply = async (values: CommentReply): Promise<{data: CommentReply } | undefined> => {
+  const config = createConfig();
+  if (config.headers.token) {
+    return axios.put(`${baseUrl}/api/reply/updatereply/${values._id}`, values, config);
+  }
+  return undefined;
+};
+
 const deleteReply = async (values: { commentId: string; replyId: string }): Promise<{ data: { replyId: string } } | undefined> => {
   const config = createConfig();
   if (config.headers.token) {
@@ -30,5 +40,6 @@ const deleteReply = async (values: { commentId: string; replyId: string }): Prom
 
 export default {
   addReply,
+  updateReply,
   deleteReply,
 };

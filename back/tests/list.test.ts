@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const bcrypt = require('bcryptjs');
-import { Types } from 'mongoose';
 import app from '../src/app';
 import List from '../src/models/listModel';
 import User from '../src/models/userModel';
@@ -12,19 +11,6 @@ const user = { username: 'tester', password: 'secret' };
 const anotherUser = { username: 'another', password: 'terces' };
 
 const validPublicList = { name: 'valid list', description: 'this is a valid list for testing', defaultview: { lat: 65.12212, lng: 21.212121, zoom: 12 }, country: 'Finland', place: 'Helsinki', public: true };
-const validLocation = {
-  name: 'location',
-  address: 'address 123',
-  coordinates: {
-    lat: 61.12132311,
-    lng: 24.42332311,
-  },
-  description: 'this is a valid location',
-  category: 'shopping',
-  imageLink: 'www.url.com',
-  list: ''
-}
-
 const validPrivateList = { name: 'Another list', description: 'Another valid list', defaultview: { lat: 61.12212, lng: 27.212121, zoom: 12 }, country: 'Finland', place: 'Helsinki', public: false };
 
 describe('List can be created', () => {
@@ -92,7 +78,7 @@ describe('List can be created', () => {
     const listsInDb = await List.find({});
     expect(listsInDb).toHaveLength(0);
   })
-  test('...not with wrong type of input', async () => {
+  test('...not with wrong type of input', async () => { // invalidLocationIdList ???
     const login = await api.post('/api/user/login/').send(user);
 
     const invalidName = { name: 1234, description: 'this is a valid list for testing', defaultview: { lat: 65.12212, lng: 21.212121, zoom: 12 }, country: 'Finland', place: 'Helsinki', public: true }
@@ -275,10 +261,6 @@ describe('List can be updated', () => {
     response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(withoutPublic).expect(400);
     expect(response.body.error).toEqual('object missing required properties.');
 
-    const withMissingValuesInLocation = { name: 'valid list', description: 'this is a valid list for testing', defaultview: { lat: 65.12212, lng: 21.212121, zoom: 12 }, country: 'Finland', place: 'Helsinki', public: true, createdBy: userlists.body[0].createdBy, locations: [{ _id: new mongoose.Types.ObjectId, name: 'testname' }], favoritedBy: [] }
-    response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(withMissingValuesInLocation).expect(400);
-    expect(response.body.error).toEqual('input missing or in wrong format: string expected.');
-
     const { createdBy, ...withoutCreatedBy } = userlists.body[0];
     response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(withoutCreatedBy).expect(400);
     expect(response.body.error).toEqual('object missing required properties.');
@@ -338,14 +320,6 @@ describe('List can be updated', () => {
     const invalidCreatedBy = { ...userlists.body[0], createdBy: 12345678910112 };
     response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(invalidCreatedBy).expect(400);
     expect(response.body.error).toEqual('input missing or in wrong format: id expected.')
-
-    const invalidLocations = {
-      ...userlists.body[0], locations: [{ ...validLocation, _id: new Types.ObjectId, list: userlists.body[0]._id, createdBy: userlists.body[0].createdBy }, {
-        ...validLocation, _id: new Types.ObjectId, list: userlists.body[0]._id, name: 12345, createdBy: userlists.body[0].createdBy
-      }]
-    }
-    response = await api.put(`/api/list/update/${userlists.body[0]._id}`).set({ 'token': login.body.token }).send(invalidLocations).expect(400);
-    expect(response.body.error).toEqual('input missing or in wrong format: string expected.')
   })
 })
 describe('List can be deleted', () => {

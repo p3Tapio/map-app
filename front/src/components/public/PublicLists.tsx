@@ -87,53 +87,55 @@ const PublicLists: React.FC = () => {
   }
 
   return (
-    <Container className="mt-5">
-      <h4>Public location lists</h4>
-      <Col>
-        <Row>
-          <Button
-            variant="outline-secondary"
-            size="sm"
-            className="m-1"
-            onClick={(): void => {
-              setShowMap(!showMap);
-              setCountryFilter(undefined);
-              setCurrentPage(1);
-            }}
-          >
+    <>
+      <Container className="mt-5">
+        <h4>Public location lists</h4>
+        <Col>
+          <Row>
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              className="m-1"
+              onClick={(): void => {
+                setShowMap(!showMap);
+                setCountryFilter(undefined);
+                setCurrentPage(1);
+              }}
+            >
+              {showMap
+                ? (
+                  <>
+                    <ListIcon size={20} style={{ marginRight: '5px' }} />
+                    View as list
+                  </>
+                )
+                : (
+                  <>
+                    <Map size={18} style={{ marginRight: '5px', marginBottom: '2px' }} />
+                    View on map
+                  </>
+                )}
+            </Button>
             {showMap
-              ? (
-                <>
-                  <ListIcon size={20} style={{ marginRight: '5px' }} />
-                  View as list
-                </>
-              )
+              ? <FilterMapView publicLists={publicLists} setMapView={setMapView} />
               : (
-                <>
-                  <Map size={18} style={{ marginRight: '5px', marginBottom: '2px' }} />
-                  View on map
-                </>
+                <SortAndFilterList
+                  countries={countries}
+                  setCountryFilter={setCountryFilter}
+                  sortCriteria={sortCriteria}
+                  setSortCriteria={setSortCriteria}
+                  setSortDirection={setSortDirection}
+                  sortDirection={sortDirection}
+                />
               )}
-          </Button>
-          {showMap
-            ? <FilterMapView publicLists={publicLists} setMapView={setMapView} />
-            : (
-              <SortAndFilterList
-                countries={countries}
-                setCountryFilter={setCountryFilter}
-                sortCriteria={sortCriteria}
-                setSortCriteria={setSortCriteria}
-                setSortDirection={setSortDirection}
-                sortDirection={sortDirection}
-              />
-            )}
-        </Row>
-      </Col>
+          </Row>
+        </Col>
+      </Container>
       <hr />
       {
         showMap
           ? (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div className="no-gutter-div" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <PublicListMap lists={filteredList} mapView={mapView} />
             </div>
           )
@@ -156,7 +158,7 @@ const PublicLists: React.FC = () => {
             </>
           )
       }
-    </Container>
+    </>
   );
 };
 export default PublicLists;

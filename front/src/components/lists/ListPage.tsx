@@ -40,9 +40,8 @@ const ListPage: React.FC = () => {
   }));
 
   useEffect(() => {
-    console.log('USEEFFECT')
     dispatch(getUserLists());
-  }, [dispatch, showCreateLocation, showEditList, showEditLocation, showDelete]);
+  }, [dispatch, showCreateLocation, showEditList, showEditLocation, showDelete, location]);
 
   useEffect(() => { if (loc.state) setShowMsgModal(loc.state.newList); }, [loc]);
 

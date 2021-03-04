@@ -58,7 +58,9 @@ const ListComments: React.FC<{
   };
   const handleUpdateComment = (values: { comment: string }): void => {
     if (commentToEdit && listId) {
-      const x = { comment: values.comment, list: listId };
+      const x = {
+        comment: values.comment, list: listId, user: user.id, date: commentToEdit.date,
+      };
       commentService.updateComment(commentToEdit._id, x).then((res) => {
         if (res) {
           res.data.user = { username: user.username, _id: user.id };
@@ -92,7 +94,6 @@ const ListComments: React.FC<{
     }
     setCommentToEdit(undefined);
   };
-
   const handleSaveReply = (text: string, ev: FormEvent): void => {
     ev.preventDefault();
     if (commentToEdit && commentToEdit._id && text !== '') {
@@ -112,6 +113,21 @@ const ListComments: React.FC<{
       setReply('');
     }
   };
+  const handleEditReply = (ev: FormEvent, replyToEdit: CommentReply): void => {
+    ev.preventDefault();
+    replyService.updateReply(replyToEdit).then((res) => {
+      if (res && res.data) {
+        const updateComment = comments.find((x) => x._id === res.data.commentId);
+        if (updateComment) {
+          updateComment.replies = updateComment.replies.map((r) => (r._id === res.data._id ? res.data : r));
+          setComments(comments.map((c) => (c._id === updateComment._id ? updateComment : c)));
+        }
+      }
+    }).catch(() => {
+      setInfo({ header: 'Error', message: 'Woops, something went wrong :(((' });
+      setShowMessageModal(true);
+    });
+  };
   const handleDeleteReply = (replyToDel: CommentReply): void => {
     const values = { commentId: replyToDel.commentId, replyId: replyToDel._id };
     replyService.deleteReply(values).then((res) => {
@@ -121,7 +137,7 @@ const ListComments: React.FC<{
           updateComment.replies = updateComment.replies.filter((x) => x._id !== res.data.replyId);
           setComments(comments.map((c) => (c._id === updateComment._id ? updateComment : c)));
         }
-      }
+      }// else?
     }).catch(() => {
       setInfo({ header: 'Error', message: 'Woops, something went wrong :(((' });
       setShowMessageModal(true);
@@ -203,6 +219,7 @@ const ListComments: React.FC<{
             reply={reply}
             setReply={setReply}
             handleDeleteReply={handleDeleteReply}
+            handleEditReply={handleEditReply}
           />
         ))}
       </div>
@@ -226,7 +243,7 @@ const ListComments: React.FC<{
       <EditCommentModal
         showModal={showEditModal}
         setShowModal={setShowEditModal}
-        onSubmit={handleUpdateComment}
+        handleUpdateComment={handleUpdateComment}
         commentToEdit={commentToEdit}
       />
     </>

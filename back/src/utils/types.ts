@@ -72,12 +72,13 @@ export interface NewListComment {
 export interface ListComment extends NewListComment {
   list: Types.ObjectId;
   replies: Types.ObjectId[];
+  date: Date;
 }
 
 export interface IComment extends Document, ListComment {
   _id: Types.ObjectId;
   user: Types.ObjectId;
-  date: Date;
+  edited?:Date;
 }
 // -----------------------------------------------------
 export interface NewCommentReply {
@@ -87,8 +88,9 @@ export interface NewCommentReply {
 export interface CommentReply extends NewCommentReply {
   user: Types.ObjectId;
   commentId: Types.ObjectId;
+  date: Date;
 }
 export interface ICommentReply extends Document, CommentReply {
   _id: Types.ObjectId;
-  date: Date;
+  edited?:Date;
 }

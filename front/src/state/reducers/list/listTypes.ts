@@ -31,6 +31,7 @@ export interface ListComment {
   comment: string;
   date: Date;
   replies: CommentReply[];
+  edited?: Date;
 }
 export interface List extends NewList {
   _id: string;

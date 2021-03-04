@@ -10,10 +10,10 @@ import ErrorMessage from '../user/auth/ErrorMessage';
 const EditCommentModal: React.FC<{
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  onSubmit: (values: { comment: string }) => void;
+  handleUpdateComment: (values: { comment: string }) => void;
   commentToEdit: ListComment | undefined;
 }> = ({
-  showModal, setShowModal, onSubmit, commentToEdit,
+  showModal, setShowModal, handleUpdateComment, commentToEdit,
 }) => (
   <Modal show={showModal} onHide={(): void => setShowModal(false)} centered>
     <Modal.Header closeButton>
@@ -22,7 +22,7 @@ const EditCommentModal: React.FC<{
       </Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      <CommentForm setShowModal={setShowModal} onSubmit={onSubmit} commentToEdit={commentToEdit} />
+      <CommentForm setShowModal={setShowModal} onSubmit={handleUpdateComment} commentToEdit={commentToEdit} />
     </Modal.Body>
   </Modal>
 );

@@ -62,7 +62,8 @@ router.put('/update/:id', async (req, res) => {
       const comment = await Comment.findById(req.params.id);
       if (!comment) throw new Error('No comment found.');
       else if (comment.user.toString() === userId) {
-        const updated = await Comment.findByIdAndUpdate({ _id: req.params.id }, body, { new: true });
+        const withEdited = {...body, edited: new Date()};
+        const updated = await Comment.findByIdAndUpdate({ _id: req.params.id }, withEdited, { new: true });
         res.json(updated);
       } else res.status(401).json({ error: 'unauthorized' });
     } else res.status(401).json({ error: 'unauthorized' });

@@ -26,6 +26,7 @@ const LocationList: React.FC<LocationListProps> = ({
     try {
       await locationService.deleteLocation(locationId); // TODO locations PÄIVITYS EI TOIMI
       setInfo({ header: 'Success', message: `Location ${name} deleted!` });
+      setShowDelete(false);
       setShowMessage(true);
       setLocation(initialLocation);
     } catch {

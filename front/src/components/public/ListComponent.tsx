@@ -13,7 +13,7 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
   const user = getUser();
 
   return (
-    <>
+    <div className="no-gutter-div">
       <Card className="mb-2">
         <Row className="no-gutters">
           <Col md={4}>
@@ -172,7 +172,7 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
           </Col>
         </Row>
       </Card>
-    </>
+    </div>
   );
 };
 
