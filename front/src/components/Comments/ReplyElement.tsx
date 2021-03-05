@@ -103,7 +103,7 @@ const EditReplyForm: React.FC<{
 }) => (
   <>
     <Col xs={12}>
-      <Form style={{ width: '40vw', marginLeft: '-50px' }}>
+      <Form style={{ marginLeft: '-50px', flex: 1 }}>
         <Form.Group controlId="replyForm">
           <Col>
             <Form.Control

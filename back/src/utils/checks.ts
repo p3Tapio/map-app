@@ -212,7 +212,7 @@ const checkUpdatedComment = (object: any): ListComment => {
 // -----------------------------------------------------
 const checkNewReply = (object: any): NewCommentReply => {
   if (!object || Object.keys(object).length === 0) throw new Error('No data.');
-  else if (!("reply" in object)) throw new Error('object missing required properties.');
+  else if (!("reply" in object) || !("listId" in object)) throw new Error('object missing required properties.');
   else {
     const reply = {
       reply: parseInputString(object.reply),
