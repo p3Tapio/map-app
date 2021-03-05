@@ -11,13 +11,14 @@ const ReplyForm: React.FC<{
   <>
     <Col style={{ marginTop: '-25px' }}>
       <Form>
-        <Form.Group controlId="replyForm">
+        <Form.Group>
           <Col xs={11}>
             <Form.Control
               className="form-control"
               rows={1}
               as="textarea"
-              name="comment"
+              name="replyTextArea"
+              id="replyTextArea"
               type="text"
               placeholder="write a reply..."
               value={reply}

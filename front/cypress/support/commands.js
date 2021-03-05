@@ -3,6 +3,7 @@ Cypress.Commands.add('clearDb', () => {
   cy.request('POST', 'http://localhost:3001/api/testing/resetLocations');
   cy.request('POST', 'http://localhost:3001/api/testing/resetLists');
   cy.request('POST', 'http://localhost:3001/api/testing/resetComments');
+  cy.request('POST', 'http://localhost:3001/api/testing/resetReplies')
 
 })
 Cypress.Commands.add('registerAndLogin', () => {
@@ -54,11 +55,18 @@ Cypress.Commands.add('createLocation', () => {
   cy.contains('New location added!');
   cy.contains('Ok').click();
 })
-Cypress.Commands.add('AddNewComment', () => {
+Cypress.Commands.add('addNewComment', () => {
   cy.visit('http://localhost:3000/public');
   cy.get('#viewListDetails').click();
   cy.get('#addComment').click();
   cy.get('#commentField').type('this is a comment for testing');
   cy.get('#submitComment').click();
   cy.contains('Ok').click();
+})
+Cypress.Commands.add('addReply', () => {
+  cy.visit('http://localhost:3000/public');
+  cy.get('#viewListDetails').click();
+  cy.get('#replyToCommentBtn').click();
+  cy.get('#replyTextArea' ).type('Im replying to comment');
+  cy.get('#submitReply').click();
 })

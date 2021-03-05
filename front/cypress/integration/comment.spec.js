@@ -4,7 +4,7 @@ describe('Commenting a list', function () {
     cy.registerAndLogin();
     cy.createPublicList();
   })
-  it('Comment can be added, if logged in', function() {
+  it('Comment can be added, if logged in', function () {
     cy.visit('http://localhost:3000/public');
     cy.get('#viewListDetails').click();
     cy.get('#addComment').click();
@@ -26,24 +26,24 @@ describe('Comment can be edited', function () {
     cy.clearDb();
     cy.registerAndLogin();
     cy.createPublicList();
-    cy.AddNewComment();
+    cy.addNewComment();
   })
-it('By the user who created the comment', function () {
-  cy.contains('Edit').click();
-  cy.get('#commentField').clear();
-  cy.get('#commentField').type('this comment has been edited');
-  cy.contains('Save').click();
-  cy.contains('Comment updated!');
-  cy.contains('Ok').click();
-  cy.contains('this comment has been edited');
-})
-it('Comment cant be edited if not logged in', function () {
-  cy.contains('Logout').click();
-  cy.visit('http://localhost:3000/public');
-  cy.get('#viewListDetails').click();
-  cy.contains('this is a comment for testing');
-  cy.contains('Edit').should('not.exist');
-})
+  it('By the user who created the comment', function () {
+    cy.contains('Edit').click();
+    cy.get('#commentField').clear();
+    cy.get('#commentField').type('this comment has been edited');
+    cy.get('#submitComment').click();
+    cy.contains('Comment updated!');
+    cy.contains('Ok').click();
+    cy.contains('this comment has been edited');
+  })
+  it('Comment cant be edited if not logged in', function () {
+    cy.contains('Logout').click();
+    cy.visit('http://localhost:3000/public');
+    cy.get('#viewListDetails').click();
+    cy.contains('this is a comment for testing');
+    cy.contains('Edit').should('not.exist');
+  })
   it('Comment made by another user cant be edited', function () {
     cy.contains('Logout').click();
     cy.registerAndLoginAnother();
@@ -59,8 +59,8 @@ describe('Comment can be deleted', function () {
     cy.registerAndLogin();
     cy.createPublicList();
   })
-  it('By the user who created it when logged in', function() {
-    cy.AddNewComment();
+  it('By the user who created it when logged in', function () {
+    cy.addNewComment();
     cy.contains('this is a comment for testing');
     cy.contains('Delete').click();
     cy.get('#confirmDelete').click();
@@ -72,7 +72,7 @@ describe('Comment can be deleted', function () {
   it('User who created the list can delete comments via the userpage', function () {
     cy.contains('Logout');
     cy.registerAndLoginAnother();
-    cy.AddNewComment();
+    cy.addNewComment();
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/login');
     cy.get('#username').type('tester');
@@ -89,23 +89,23 @@ describe('Comment can be deleted', function () {
     cy.contains('No comments yet!');
   })
   it('Option to delete comment is not visible when logged out', function () {
-    cy.AddNewComment();
+    cy.addNewComment();
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/public');
     cy.get('#viewListDetails').click();
     cy.contains('this is a comment for testing');
     cy.contains('Delete').should('not.exist');
   })
-  it('Option to delete comments is not visible in public view for another logged user', function() {
+  it('Option to delete comments is not visible in public view for another logged user', function () {
     cy.contains('Logout');
     cy.registerAndLoginAnother();
-    cy.AddNewComment();
+    cy.addNewComment();
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/login');
     cy.get('#username').type('tester');
     cy.get('#password').type('secret');
     cy.get('#submit').click();
-        cy.visit('http://localhost:3000/public');
+    cy.visit('http://localhost:3000/public');
     cy.get('#viewListDetails').click();
     cy.contains('this is a comment for testing');
     cy.contains('Delete').should('not.exist');

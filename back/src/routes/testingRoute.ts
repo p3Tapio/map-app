@@ -3,6 +3,7 @@ import User from '../models/userModel';
 import Location from '../models/locationModel';
 import List from '../models/listModel';
 import Comment from '../models/commentModel';
+import Reply from '../models/replyModel';
 
 const router: Router = express.Router();
 
@@ -20,6 +21,10 @@ router.post('/resetLists', async (_req: Request, res:Response) => {
 });
 router.post('/resetComments', async(_req:Request, res: Response) => {
   await Comment.deleteMany({});
+  res.status(204).end();
+});
+router.post('/resetReplies', async(_req:Request, res: Response) => {
+  await Reply.deleteMany({});
   res.status(204).end();
 });
 

@@ -69,10 +69,10 @@ const CommentElement: React.FC<{
           </Col>
         </Row>
         <hr style={{ marginLeft: '30px', width: '95%' }} />
-        <Row style={comment.user._id === user.id ? {} : { marginTop: '-30px' }}>
+        <Row style={user && comment.user._id === user.id ? {} : { marginTop: '-30px' }}>
           <Col className="text-right align-self-end mr-4">
             <p>
-              {setCommentToEdit && user && user.id === comment.user._id && publicListView
+              {user && user.id === comment.user._id && publicListView
                 ? (
                   <EditAndDelete
                     comment={comment}
@@ -89,33 +89,32 @@ const CommentElement: React.FC<{
                       setShowDeleteModal={setShowDeleteModal}
                     />
                   )}
-              {user
-
-                  && (
-                    <>
-                      {(comment.user._id === user.id || !publicListView) && (
-                        <>
-                          {' '}
-                          |
-                          {' '}
-                        </>
-                      )}
-                      <Accordion.Toggle
-                        className="editDeleteCommentBtn"
-                        as={Button}
-                        eventKey={comment._id}
-                        onClick={(): void => setCommentToEdit(comment)}
-                      >
-                        {comment.replies.length === 0 ? 'Reply' : `Replies (${comment.replies.length})`}
-                      </Accordion.Toggle>
-                    </>
-                  )}
+              <>
+                {(user && (comment.user._id === user.id || !publicListView)) && (
+                  <>
+                    {' '}
+                    |
+                    {' '}
+                  </>
+                )}
+                <Accordion.Toggle
+                  className="editDeleteCommentBtn"
+                  as={Button}
+                  eventKey={comment._id}
+                  onClick={(): void => setCommentToEdit(comment)}
+                  id="replyToCommentBtn"
+                >
+                  {comment.replies.length === 0 ? 'Reply' : `Replies (${comment.replies.length})`}
+                </Accordion.Toggle>
+              </>
+              {/* )} */}
             </p>
           </Col>
         </Row>
         <Accordion.Collapse eventKey={comment._id}>
           <Card.Body>
             <div style={{ marginTop: '-70px' }}>
+              {/* TODO joku ehto tähän miten viiva näkyy kun ei ole kirjautunutta käyttäjää */}
               <div style={comment.replies.length !== 0 ? { borderLeft: '1px solid #c8cbcf', marginLeft: '5%', marginBottom: '20px' } : {}}>
                 <div>
                   <div style={{ height: '70px' }} />
@@ -132,11 +131,14 @@ const CommentElement: React.FC<{
                   <div style={{ height: '20px' }} />
                 </div>
               </div>
-              <ReplyForm
-                handleSaveReply={handleSaveReply}
-                reply={reply}
-                setReply={setReply}
-              />
+              {user
+                  && (
+                    <ReplyForm
+                      handleSaveReply={handleSaveReply}
+                      reply={reply}
+                      setReply={setReply}
+                    />
+                  )}
             </div>
           </Card.Body>
         </Accordion.Collapse>
@@ -155,29 +157,29 @@ const EditAndDelete: React.FC<{
 }) => (
   <>
     {setShowEditModal
-        && (
-          <>
-            <button
-              id="#editComment"
-              className="editDeleteCommentBtn"
-              type="button"
-              onClick={(): void => {
-                setCommentToEdit(comment);
-                setShowEditModal(true);
-              }}
-            >
-              Edit
-            </button>
-            {' '}
-            |
-            {' '}
-            <OnlyDelete
-              comment={comment}
-              setCommentToEdit={setCommentToEdit}
-              setShowDeleteModal={setShowDeleteModal}
-            />
-          </>
-        )}
+                && (
+                  <>
+                    <button
+                      id="#editComment"
+                      className="editDeleteCommentBtn"
+                      type="button"
+                      onClick={(): void => {
+                        setCommentToEdit(comment);
+                        setShowEditModal(true);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    {' '}
+                    |
+                    {' '}
+                    <OnlyDelete
+                      comment={comment}
+                      setCommentToEdit={setCommentToEdit}
+                      setShowDeleteModal={setShowDeleteModal}
+                    />
+                  </>
+                )}
   </>
 );
 const OnlyDelete: React.FC<{
@@ -186,20 +188,20 @@ const OnlyDelete: React.FC<{
   setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ setCommentToEdit, setShowDeleteModal, comment }) => (
   <>
-    { setCommentToEdit
-      && (
-        <button
-          type="button"
-          id="deleteComment"
-          className="editDeleteCommentBtn"
-          onClick={(): void => {
-            setCommentToEdit(comment);
-            setShowDeleteModal(true);
-          }}
-        >
-          Delete
-        </button>
-      )}
+    {setCommentToEdit
+                    && (
+                      <button
+                        type="button"
+                        id="deleteComment"
+                        className="editDeleteCommentBtn"
+                        onClick={(): void => {
+                          setCommentToEdit(comment);
+                          setShowDeleteModal(true);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    )}
   </>
 );
 

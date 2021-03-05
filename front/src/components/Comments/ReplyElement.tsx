@@ -57,12 +57,13 @@ const ReplyElement: React.FC<{
                 </small>
               </div>
               <div style={{ flexDirection: 'row' }}>
-                {reply.user._id === user.id
+                {user && reply.user._id === user.id
                     && (
                       <>
                         <button
                           type="button"
                           className="editDeleteCommentBtn"
+                          id="editReply"
                           style={{ alignSelf: 'flex-end' }}
                           onClick={(): void => {
                             setShowEditForm(!showEditForm);
@@ -77,6 +78,7 @@ const ReplyElement: React.FC<{
                         <button
                           type="button"
                           className="editDeleteCommentBtn"
+                          id="deleteReply"
                           style={{ alignSelf: 'flex-end' }}
                           onClick={(): void => handleDeleteReply(reply)}
                         >
@@ -104,13 +106,14 @@ const EditReplyForm: React.FC<{
   <>
     <Col xs={12}>
       <Form style={{ marginLeft: '-50px', flex: 1 }}>
-        <Form.Group controlId="replyForm">
+        <Form.Group>
           <Col>
             <Form.Control
               className="form-control"
               rows={2}
               as="textarea"
-              name="comment"
+              name="replyEditField"
+              id="replyEditField"
               type="text"
               value={replyToEdit.reply}
               onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => {
@@ -122,7 +125,7 @@ const EditReplyForm: React.FC<{
             <Button
               variant="outline-secondary"
               size="sm"
-              id="submitComment"
+              id="submitReply"
               type="submit"
               onClick={(ev: FormEvent): void => {
                 handleEditReply(ev, replyToEdit);
