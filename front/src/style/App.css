@@ -5,8 +5,61 @@ body {
 .navBar{
   background-color: rgb(53, 53, 53);
 }
+@keyframes shake {
+  25% { transform: rotate(15deg); }
+  50% {transform: rotate(-35deg); }
+  75% { transform: rotate(25deg);}
+  100% { transform: rotate(0deg);}
+}
+.menuBurger{
+  animation-name: shake;
+  animation-duration: 0.9s;
+  animation-iteration-count: 1;
+}
+.openMenu {
+  cursor: pointer;
+}
+.openMenu:hover {
+  color: lightgray !important;
+}
+#overlayMenu {
+  /* margin-top: 56px; */
+  height: 0%;
+  width: 100%;
+  position: absolute;
+  z-index: 999;
+  top: 100%;
+  left: 0;
+  background-color: rgba(34, 34, 34, 0.9);
+  transition: 0.5s;
+}
+.menuItemsWrap {
+  margin-top: 15px;
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.7;
+}
+@keyframes delayDivider {
+  from { border-bottom:rgb(53, 53, 53, 0.0) solid 1px;}
+  to { border-bottom: gray solid 1px; }
+}
+.menuDivider {
+  border-bottom: gray solid 1px;
+  width: 100px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+
+  animation-name: delayDivider;
+  animation-duration: 1.5s;
+  animation-iteration-count: 1;
+}
+@keyframes delayMenu {
+  from { color:rgb(53, 53, 53, 0.0);}
+  to { color: gray;}
+}
 .navLink {
-  font-size: 95%;
+  font-size: 100%;
   text-decoration: 'none'; 
   color: gray; 
 
@@ -16,9 +69,13 @@ body {
   border: none;
   outline: none;
   background: none;
+  
+  animation-name: delayMenu;
+  animation-duration: 0.9s;
+  animation-iteration-count: 1;
 }
 .navLink:hover {
-  font-size: 100%;
+  font-size: 105%;
   text-decoration: none !important;
   color: lightgray; 
   width: 40px;
@@ -226,4 +283,3 @@ hr {
     margin-right: -10px;
   }
 }
-
