@@ -41,7 +41,7 @@ const Home: React.FC = () => (
             <Col className="mx-3">
               <p>
                 This is a map application that can be used for creating lists of locations.
-                These lists can be set either as private or public, and used e.g. as a reminder of places you wish to see or as a guide for others.
+                Lists can be set either as private or public, and used e.g. as a reminder of places you wish to see or as a guide for others.
               </p>
               <p>
                 Unregistered users can browse public location lists and see locations that have been added to them.
@@ -59,8 +59,8 @@ const Home: React.FC = () => (
           </Row>
           <hr />
           <TopLists />
-          <Col className="text-right mr-1">
-            <small>
+          <Col className="text-right mr-2">
+            <small className="mr-1">
               Source code
               {' '}
               <a

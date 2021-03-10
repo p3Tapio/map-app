@@ -49,8 +49,9 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                             {user.favorites.includes(list._id)
                               ? (
                                 <>
-                                  {/* jos yli 10 jne niin sijoittuminen väärin */}
-                                  <p style={{
+                                  <p style={list.favoritedBy.length > 10 ? {
+                                    color: 'white', marginBottom: '-27px', marginRight: '10px', zIndex: 100, position: 'relative',
+                                  } : {
                                     color: 'white', marginBottom: '-27px', marginRight: '13px', zIndex: 100, position: 'relative',
                                   }}
                                   >
@@ -61,8 +62,10 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                               )
                               : (
                                 <>
-                                  <p style={{
-                                    color: 'black', marginBottom: '-27px', marginRight: '13px', zIndex: 100,
+                                  <p style={list.favoritedBy.length > 10 ? {
+                                    color: 'black', marginBottom: '-27px', marginRight: '10px', zIndex: 100, position: 'relative',
+                                  } : {
+                                    color: 'black', marginBottom: '-27px', marginRight: '13px', zIndex: 100, position: 'relative',
                                   }}
                                   >
                                     {list.favoritedBy.length}
@@ -89,8 +92,10 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                           type="button"
                           style={{ all: 'unset', cursor: 'pointer' }}
                         >
-                          <p style={{
-                            color: 'black', marginBottom: '-27px', marginRight: '13px', zIndex: 100,
+                          <p style={list.favoritedBy.length > 10 ? {
+                            color: 'black', marginBottom: '-27px', marginRight: '10px', zIndex: 100, position: 'relative',
+                          } : {
+                            color: 'black', marginBottom: '-27px', marginRight: '13px', zIndex: 100, position: 'relative',
                           }}
                           >
                             {list.favoritedBy.length}

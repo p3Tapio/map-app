@@ -143,15 +143,19 @@ const ListComments: React.FC<{
       setShowMessageModal(true);
     });
   };
+  const toggleStar = (commentId: string): void => {
+    // eslint-disable-next-line no-console
+    console.log('commentId', commentId);
+  };
 
   let currentComments = comments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   if (!latestFirst) currentComments = comments.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   return (
     <>
-      <div>
+      <div className="no-gutter-div">
         <Row className="ml-3 mr-2 mb-2 justify-content-between">
-          <Col className="text-left mt-1">
+          <Col className="text-left mt-1" sm xs={3}>
             <h5>{comments.length !== 0 ? 'Comments' : 'No comments yet!'}</h5>
           </Col>
           <Col className="text-right">
@@ -160,17 +164,19 @@ const ListComments: React.FC<{
                 <>
                   {user
                     ? (
-                      <Button
-                        id="addComment"
-                        style={{ padding: '5px', paddingRight: '15px', whiteSpace: 'nowrap' }}
-                        className="m-1"
-                        variant="outline-secondary"
-                        size="sm"
-                        onClick={(): void => setShowNewCommentModal(true)}
-                      >
-                        <Pen size={20} style={{ marginRight: '5px', marginBottom: '2px' }} />
-                        Add comment
-                      </Button>
+                      <span style={{ marginRight: '-5px' }}>
+                        <Button
+                          id="addComment"
+                          style={{ padding: '5px', paddingRight: '15px', whiteSpace: 'nowrap' }}
+                          className="m-1"
+                          variant="outline-secondary"
+                          size="sm"
+                          onClick={(): void => setShowNewCommentModal(true)}
+                        >
+                          <Pen size={20} style={{ marginRight: '5px', marginBottom: '2px' }} />
+                          Add comment
+                        </Button>
+                      </span>
                     )
                     : (
                       <OverlayTrigger
@@ -196,6 +202,7 @@ const ListComments: React.FC<{
                               Add comment
                             </>
                           </Button>
+
                         </div>
                       </OverlayTrigger>
                     )}
@@ -220,6 +227,7 @@ const ListComments: React.FC<{
             setReply={setReply}
             handleDeleteReply={handleDeleteReply}
             handleEditReply={handleEditReply}
+            toggleStar={toggleStar}
           />
         ))}
       </div>
@@ -255,20 +263,20 @@ export const ToggleRecentComment: React.FC<{
   setLatestFirst: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ latestFirst, setLatestFirst }) => (
   <Button
-    style={{ padding: '5px', paddingRight: '15px' }}
+    style={{ padding: '5px', marginLeft: '5px' }}
     variant="outline-secondary"
     size="sm"
     onClick={(): void => setLatestFirst(!latestFirst)}
   >
     {latestFirst ? (
       <>
-        <ChevronDown size={20} style={{ marginRight: '5px', marginBottom: '2px' }} />
-        Show oldest
+        Oldest
+        <ChevronDown size={20} style={{ marginBottom: '2px', marginLeft: '5px' }} />
       </>
     ) : (
       <>
-        <ChevronUp size={20} style={{ marginRight: '5px', marginBottom: '2px' }} />
-        Show latest
+        Latest
+        <ChevronUp size={20} style={{ marginBottom: '2px' }} />
       </>
     )}
   </Button>
