@@ -116,7 +116,7 @@ const HeaderElement: React.FC<{
       <h4>{publiclist.name}</h4>
       <p>{publiclist.description}</p>
       <Row>
-        <Link to={!loc || loc === 'public' ? '/public' : '/userpage'}>
+        <Link to={!loc || loc === 'public' ? '/public' : '/'}>
           <Button
             className="m-1 pr-3"
             variant="outline-dark"

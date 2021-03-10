@@ -136,10 +136,11 @@ body {
 }
 .form-control:focus {
   border-color: #3b3b3b;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.02), 0 0 4px rgba(71, 71, 71, 0.4);
+  box-shadow: inset 0 1px 1px rgba(71, 71, 71, 0.02), 0 0 4px rgba(71, 71, 71, 0.4);
 }
 .jumboHome {
   background-color: white;
+  box-shadow: -2px 0px 13px 3px rgba(0,0,0,0.36);
 }
 .newLocationError {
   margin-top: 2px;
@@ -282,4 +283,12 @@ hr {
     margin-left: -10px;
     margin-right: -10px;
   }
+}
+@keyframes spin-icon {
+  0% { transform: scale(1) rotateZ(0) }
+  50% { transform: scale(1.5) rotateZ(180deg) }
+  100% {transform: scale(1) rotateZ(360deg) } 
+}
+.spin-home-icon {
+  animation: spin-icon 0.5s linear both;
 }
