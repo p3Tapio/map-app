@@ -240,6 +240,17 @@ const checkUpdatedReply = (object: any): CommentReply => {
     return reply;
   }
 };
+const checkDeleteReplyBody = (object: any): {listId: Types.ObjectId, replyId: Types.ObjectId} => {
+  if (!object || Object.keys(object).length === 0) throw new Error('No data.');
+  else if (!("replyId" in object) || !("listId" in object)) throw new Error('object missing required properties.');
+  else {
+    const body = {
+      replyId: parseId(object.replyId),
+      listId: parseId(object.listId),
+    };
+    return body;
+  }
+};
 
 export {
   checkUserValues,
@@ -253,4 +264,5 @@ export {
   checkUpdatedComment,
   checkNewReply,
   checkUpdatedReply, 
+  checkDeleteReplyBody,
 };

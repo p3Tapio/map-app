@@ -14,6 +14,7 @@ describe('Commenting a list', function () {
     cy.contains('this is a comment for testing');
   })
   it('Commenting is not possible if unauthenticated', function () {
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/public');
     cy.get('#viewListDetails').click();
@@ -38,6 +39,7 @@ describe('Comment can be edited', function () {
     cy.contains('this comment has been edited');
   })
   it('Comment cant be edited if not logged in', function () {
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/public');
     cy.get('#viewListDetails').click();
@@ -45,6 +47,7 @@ describe('Comment can be edited', function () {
     cy.contains('Edit').should('not.exist');
   })
   it('Comment made by another user cant be edited', function () {
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.registerAndLoginAnother();
     cy.visit('http://localhost:3000/public');
@@ -70,9 +73,11 @@ describe('Comment can be deleted', function () {
     cy.contains('No comments yet!');
   })
   it('User who created the list can delete comments via the userpage', function () {
+    cy.get('#navigationBar').click();
     cy.contains('Logout');
     cy.registerAndLoginAnother();
     cy.addNewComment();
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/login');
     cy.get('#username').type('tester');
@@ -90,6 +95,7 @@ describe('Comment can be deleted', function () {
   })
   it('Option to delete comment is not visible when logged out', function () {
     cy.addNewComment();
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/public');
     cy.get('#viewListDetails').click();
@@ -97,9 +103,11 @@ describe('Comment can be deleted', function () {
     cy.contains('Delete').should('not.exist');
   })
   it('Option to delete comments is not visible in public view for another logged user', function () {
+    cy.get('#navigationBar').click();
     cy.contains('Logout');
     cy.registerAndLoginAnother();
     cy.addNewComment();
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/login');
     cy.get('#username').type('tester');

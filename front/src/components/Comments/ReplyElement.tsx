@@ -2,22 +2,27 @@ import React, { FormEvent, useState } from 'react';
 import {
   Button, Col, Container, Form, Row,
 } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { LoggedUser } from '../../state/reducers/user/userTypes';
 import { CommentReply } from '../../state/services/replyService';
+import { RootStore } from '../../state/store';
 
 const ReplyElement: React.FC<{
   reply: CommentReply;
   user: LoggedUser;
   handleDeleteReply: (replyToDel: CommentReply) => void;
   handleEditReply: (ev: FormEvent, replyToEdit: CommentReply) => void;
+  publicListView: boolean;
 }> = ({
-  reply, user, handleDeleteReply, handleEditReply,
+  reply, user, handleDeleteReply, handleEditReply, publicListView,
 }) => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [replyToEdit, setReplyToEdit] = useState(reply);
+  const commentedList = useSelector((state: RootStore) => state.lists.userLists?.find((l) => l._id === reply.listId));
+
   return (
     <>
-      <div style={{ borderBottom: '1px solid #c8cbcf', marginRight: '90%' }} />
+      <div style={user ? { borderBottom: '1px solid #c8cbcf', marginRight: '90%' } : {}} />
       <div className="replyCard">
         <Container fluid>
           <Row className="justify-content-between">
@@ -57,7 +62,7 @@ const ReplyElement: React.FC<{
                 </small>
               </div>
               <div style={{ flexDirection: 'row' }}>
-                {user && reply.user._id === user.id
+                {(user && reply.user._id === user.id)
                     && (
                       <>
                         <button
@@ -75,17 +80,20 @@ const ReplyElement: React.FC<{
                           |
                         </button>
                         {' '}
-                        <button
-                          type="button"
-                          className="editDeleteCommentBtn"
-                          id="deleteReply"
-                          style={{ alignSelf: 'flex-end' }}
-                          onClick={(): void => handleDeleteReply(reply)}
-                        >
-                          Delete
-                        </button>
                       </>
                     )}
+                {(user && reply.user._id === user.id) || (user && commentedList?.createdBy._id === user.id && !publicListView)
+                  ? (
+                    <button
+                      type="button"
+                      className="editDeleteCommentBtn"
+                      id="deleteReply"
+                      style={{ alignSelf: 'flex-end' }}
+                      onClick={(): void => handleDeleteReply(reply)}
+                    >
+                      Delete
+                    </button>
+                  ) : null}
               </div>
             </div>
           </Row>
@@ -104,10 +112,10 @@ const EditReplyForm: React.FC<{
   replyToEdit, setReplyToEdit, handleEditReply, setShowEditForm,
 }) => (
   <>
-    <Col xs={12}>
+    <Col sm xs={12}>
       <Form style={{ marginLeft: '-50px', flex: 1 }}>
         <Form.Group>
-          <Col>
+          <Col style={{ padding: 0, marginLeft: '15px' }} sm xs={12}>
             <Form.Control
               className="form-control"
               rows={2}

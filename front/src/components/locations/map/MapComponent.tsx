@@ -65,8 +65,8 @@ const MapComponent: React.FC<MapProps> = ({
                 {x.name}
               </Popup>
             </Marker>
-          )) }
-        <Pin location={location} setAddress={setAddress} />
+          ))}
+        {location.coordinates.lat !== 0 && location.coordinates.lng !== 0 && <Pin location={location} setAddress={setAddress} />}
         <TileLayer
           noWrap
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

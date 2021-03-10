@@ -125,11 +125,14 @@ const ListPage: React.FC = () => {
           />
         )}
         <hr />
-        <CommentsContainer
-          listId={id}
-          createdBy={userlist[0].createdBy._id}
-          publicListView={false}
-        />
+        {userlist[0] && userlist[0].createdBy
+        && (
+          <CommentsContainer
+            listId={id}
+            createdBy={userlist[0].createdBy._id}
+            publicListView={false}
+          />
+        )}
       </Container>
       {userlist[0].defaultview
         ? (

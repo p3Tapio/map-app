@@ -64,7 +64,7 @@
     "@types/react-leaflet": "^2.5.2",
     "@types/react-redux": "^7.1.15",
     "@types/react-router-dom": "^5.1.7",
-    "cypress": "^6.2.1",
+    "cypress": "^6.6.0",
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",

@@ -47,6 +47,7 @@ describe('Login', function() {
     cy.contains('Welcome tester!');
     cy.contains('Ok').click();
     cy.contains('Hi, tester!');
+    cy.get('#navigationBar').click();
     cy.contains('Logout');
   })
   it('Login fails with wrong password', function() {
@@ -69,6 +70,7 @@ describe('Login', function() {
   })
   it('User cannot access userpage without logging in and is forwarded to login', function() {
     cy.visit('http://localhost:3000/userpage');
+    cy.get('#navigationBar').click();
     cy.contains('Login');
   })
 });

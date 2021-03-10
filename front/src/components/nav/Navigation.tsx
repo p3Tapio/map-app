@@ -12,7 +12,7 @@ interface NavProps {
 
 const Navigation: React.FC<NavProps> = ({ logged, setLogged }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const [shake, setShake] = useState(0);
+  const [shake, setShake] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -29,15 +29,16 @@ const Navigation: React.FC<NavProps> = ({ logged, setLogged }) => {
   return (
     <>
       <Navbar
+        id="navigationBar"
         variant="dark"
         className="navBar openMenu"
         onClick={(): void => {
           setShowMenu(!showMenu);
-          setShake(shake === 1 ? 0 : 1);
+          setShake(!shake);
         }}
       >
         <Navbar.Brand>
-          <List size={28} className={shake === 1 ? 'mr-3 menuBurger' : 'mr-3'} />
+          <List size={28} className={shake ? 'mr-3 menuBurger' : 'mr-3'} />
           MapApp
         </Navbar.Brand>
         <Nav className="mr-auto ml-2">

@@ -2,7 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Reply from '../models/replyModel';
 import Comment from '../models/commentModel';
-import { checkId, checkIdObj, checkNewReply, checkUpdatedReply } from '../utils/checks';
+import List from '../models/listModel';
+import { checkDeleteReplyBody, checkId, checkNewReply, checkUpdatedReply } from '../utils/checks';
 import { checkToken } from '../utils/tokens';
 
 const router = express.Router();
@@ -61,17 +62,19 @@ router.delete('/deletereply/:id', async (req, res) => {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
       const commentId = checkId(req.params.id);
-      const replyId = checkIdObj(req.body);
+      const body = checkDeleteReplyBody(req.body);
 
-      const replyToDel = await Reply.findById(replyId);
+      const replyToDel = await Reply.findById(body.replyId);
       const comment = await Comment.findById(commentId);
-      if (!replyToDel || !comment) throw new Error('No reply or comment found');
+      const list = await List.findById(body.listId);
+      
+      if (!replyToDel || !comment || !list) throw new Error('No reply, list or comment found');
 
-      if (replyToDel.user.toString() === userId) {
-        comment.replies = comment.replies.filter(x => !x.equals(replyId));
+      if (replyToDel.user.toString() === userId || list.createdBy.toString() === userId) {
+        comment.replies = comment.replies.filter(x => !x.equals(body.replyId));
         await comment.save();
-        await Reply.findOneAndRemove({ _id: replyId });
-        res.send({ replyId: replyId });
+        await Reply.findOneAndRemove({ _id: body.replyId });
+        res.send({ replyId: body.replyId });
       } else res.status(401).json({ error: 'unauthorized' });
     } else res.status(401).json({ error: 'unauthorized' });
   } catch (err) {

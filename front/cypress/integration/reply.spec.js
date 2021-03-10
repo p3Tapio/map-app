@@ -16,6 +16,7 @@ describe('Replying to a comment', function () {
     cy.contains('tester');
   })
   it('Commenting is not possible if not logged in', function() {
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/public');
     cy.get('#viewListDetails').click();
@@ -39,6 +40,7 @@ it('Reply can be edited by the user who created it when logged in', function () 
   cy.contains('(Edited');
 })
 it('Option to edit reply doesnt exist when not logged in', function () {
+  cy.get('#navigationBar').click();
   cy.contains('Logout').click();
   cy.visit('http://localhost:3000/public');
   cy.get('#viewListDetails').click();
@@ -46,6 +48,7 @@ it('Option to edit reply doesnt exist when not logged in', function () {
   cy.get('#editReply').should('not.exist');
 })
   it('Reply cant be edited by another user', function () {
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.registerAndLoginAnother();
     cy.visit('http://localhost:3000/public');
@@ -68,6 +71,7 @@ describe('Deleting reply', function () {
     cy.contains('Im replying to comment').should('not.exist');
   })
   it('Option to delete replies is not visible when logged out', function () {
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/public');
     cy.get('#viewListDetails').click();
@@ -75,6 +79,7 @@ describe('Deleting reply', function () {
     cy.get('#deleteReply').should('not.exist');
   })
   it('Reply cant be deleted by another user', function() {
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.registerAndLoginAnother();
     cy.visit('http://localhost:3000/public');

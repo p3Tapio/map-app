@@ -35,25 +35,32 @@ describe('Creating a new list', function () {
   })
   it('Public list is visible for all', function () {
     cy.createPublicList();
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
+    cy.get('#navigationBar').click();
     cy.contains('Location lists').click();
     cy.contains('test list');
     cy.contains('description for testing');
   })
   it('Private list is shown to user who created it, but not listed among public ones', function () {
     cy.createPrivateList();
+    cy.get('#navigationBar').click();
     cy.contains('Userpage').click();
     cy.contains('Private list').click();
     cy.contains('description for private list');
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
+    cy.get('#navigationBar').click();
     cy.contains('Location lists').click();
     cy.contains('Private list').should('not.exist');
   })
   it('Private is shown only to user who created it but not to other registered users', function () {
     cy.createPrivateList();
+    cy.get('#navigationBar').click();
     cy.contains('Userpage').click();
     cy.contains('Private list').click();
     cy.contains('description for private list');
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.registerAndLoginAnother();
     cy.contains('Hi, another!')
@@ -80,6 +87,7 @@ describe('Editing a list', function () {
     cy.contains('Ok').click();
     cy.contains('Edited list');
     cy.contains('Place, Country');
+    cy.get('#navigationBar').click();
     cy.contains('Userpage').click();
     cy.contains('Edited list').click();
     cy.contains('Edited description');
@@ -106,6 +114,7 @@ describe('Editing a list', function () {
     cy.get('#description').clear();
     cy.get('#description').type('Edited description');
     cy.contains('Cancel').click();
+    cy.get('#navigationBar').click();
     cy.contains('Userpage').click();
     cy.contains('test list').click();
     cy.contains('description for testing');
@@ -117,6 +126,7 @@ describe('Editing a list', function () {
     cy.get('#description').should('have.value', 'description for testing');
   })
   it('Editing option is not shown in public lists', function () {
+    cy.get('#navigationBar').click();
     cy.contains('Location lists').click();
     cy.contains('View').first().click();
     cy.contains('Edit list details').should('not.exist');
@@ -160,6 +170,7 @@ describe('Favoriting a list', function () {
     cy.get('#heartFill').should('exist');
   })
   it('If not logged in, list cant be favorited', function () {
+    cy.get('#navigationBar').click();
     cy.contains('Logout').click();
     cy.visit('http://localhost:3000/public');
     cy.get('#heartUnfill').click({force: true});

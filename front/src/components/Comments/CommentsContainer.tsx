@@ -129,7 +129,7 @@ const ListComments: React.FC<{
     });
   };
   const handleDeleteReply = (replyToDel: CommentReply): void => {
-    const values = { commentId: replyToDel.commentId, replyId: replyToDel._id };
+    const values = { commentId: replyToDel.commentId, replyId: replyToDel._id, listId: replyToDel.listId };
     replyService.deleteReply(values).then((res) => {
       if (res && res.data) {
         const updateComment = comments.find((x) => x._id === replyToDel.commentId);

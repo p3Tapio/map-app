@@ -28,11 +28,11 @@ const updateReply = async (values: CommentReply): Promise<{data: CommentReply } 
   return undefined;
 };
 
-const deleteReply = async (values: { commentId: string; replyId: string }): Promise<{ data: { replyId: string } } | undefined> => {
+const deleteReply = async (values: { commentId: string; replyId: string; listId: string }): Promise<{ data: { replyId: string } } | undefined> => {
   const config = createConfig();
   if (config.headers.token) {
     const { commentId } = values;
-    const x = { headers: config.headers, data: { id: values.replyId } };
+    const x = { headers: config.headers, data: { replyId: values.replyId, listId: values.listId } };
     return axios.delete(`${baseUrl}/api/reply/deletereply/${commentId}`, x);
   }
   return undefined;

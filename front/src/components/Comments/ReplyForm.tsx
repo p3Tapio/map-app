@@ -9,10 +9,10 @@ const ReplyForm: React.FC<{
   setReply: React.Dispatch<React.SetStateAction<string>>;
 }> = ({ handleSaveReply, reply, setReply }) => (
   <>
-    <Col style={{ marginTop: '-25px' }}>
+    <Col style={{ marginTop: '-25px'}}>
       <Form>
         <Form.Group>
-          <Col xs={11}>
+          <Col xs={11} style={{padding: 0, marginLeft:'10px'}}>
             <Form.Control
               className="form-control"
               rows={1}

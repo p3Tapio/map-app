@@ -104,7 +104,9 @@ const CommentElement: React.FC<{
                   onClick={(): void => setCommentToEdit(comment)}
                   id="replyToCommentBtn"
                 >
-                  {comment.replies.length === 0 ? 'Reply' : `Replies (${comment.replies.length})`}
+                  {comment.replies.length === 0
+                    ? (user && 'Reply')
+                    : `Replies (${comment.replies.length})`}
                 </Accordion.Toggle>
               </>
               {/* )} */}
@@ -114,8 +116,7 @@ const CommentElement: React.FC<{
         <Accordion.Collapse eventKey={comment._id}>
           <Card.Body>
             <div style={{ marginTop: '-70px' }}>
-              {/* TODO joku ehto tähän miten viiva näkyy kun ei ole kirjautunutta käyttäjää */}
-              <div style={comment.replies.length !== 0 ? { borderLeft: '1px solid #c8cbcf', marginLeft: '5%', marginBottom: '20px' } : {}}>
+              <div style={comment.replies.length !== 0 && user ? { borderLeft: '1px solid #c8cbcf', marginLeft: '5%', marginBottom: '20px' } : {}}>
                 <div>
                   <div style={{ height: '70px' }} />
                   {comment.replies.map((c) => (
@@ -125,6 +126,7 @@ const CommentElement: React.FC<{
                         user={user}
                         handleDeleteReply={handleDeleteReply}
                         handleEditReply={handleEditReply}
+                        publicListView={publicListView}
                       />
                     </div>
                   ))}
