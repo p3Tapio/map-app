@@ -135,8 +135,7 @@ router.post('/favorite/:id', async (req: Request, res: Response) => {
         await user.save();
         await list.save();
         res.json(list);
-      }
-      else throw new Error('List or user error');
+      } else throw new Error('List or user error');
     } else res.status(401).send({ error: 'unauthorized' });
   } catch (err) {
     res.status(400).json({ error: (err as Error).message });

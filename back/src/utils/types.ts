@@ -72,6 +72,7 @@ export interface NewListComment {
 export interface ListComment extends NewListComment {
   list: Types.ObjectId;
   replies: Types.ObjectId[];
+  stars: Types.ObjectId[];
   date: Date;
 }
 

@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import Comment from '../models/commentModel';
 import List from '../models/listModel';
 import Reply from '../models/replyModel';
@@ -101,5 +102,28 @@ router.delete('/delete/:id', async (req, res) => {
     res.status(400).json({ error: (err as Error).message });
   }
 });
-
+router.post('/star/:id', async (req, res) => {
+  try {
+    if (req.header('token') && checkToken(req.header('token'))) {
+      const userId = checkToken(req.header('token'));
+      const commentId = checkId(req.params.id);
+      let comment = await Comment.findById(commentId);
+      if(comment && userId) {
+        if(!comment.stars.some(x => (x.equals(userId)))) {
+          comment.stars = comment.stars.concat(mongoose.Types.ObjectId(userId));
+        } else {
+          comment.stars = comment.stars.filter(x => !x.equals(userId));
+        }
+        await comment.save();
+        comment = await comment.populate([
+          { path: 'user', select: 'username' },
+          { path: 'replies', populate: { path: 'user', select: 'username' } }
+        ]).execPopulate();
+        res.json(comment);
+      } else throw new Error('Comment or userId error');
+    } else res.status(401).json({ error: 'unauthorized' });
+  } catch (err) {
+    res.status(400).json({ error: (err as Error).message });
+  }
+});
 export default router; 

@@ -191,7 +191,7 @@ const checkNewComment = (object: any): NewListComment => {
     return newComment;
   }
 };
-const parseCommentReplies = (object:any[]): Types.ObjectId[] => {
+const parseIdArray= (object:any[]): Types.ObjectId[] => {
   if(object && object.length!==0) return object.map((c) => parseId(c));
   return [];
 };
@@ -203,8 +203,9 @@ const checkUpdatedComment = (object: any): ListComment => {
     const updated = {
       comment: parseInputString(object.comment),
       list: parseId(object.list),
-      replies: parseCommentReplies(object.replies),
+      replies: parseIdArray(object.replies),
       date: parseDate(object.date),
+      stars: parseIdArray(object.stars),
     };
     return updated;
   }

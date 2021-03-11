@@ -7,7 +7,7 @@ const replySchema: Schema = new Schema({
   date: { type: Date, default: Date.now },
   commentId: { type: Schema.Types.ObjectId, ref: 'Comment', required: true },
   listId: { type: Schema.Types.ObjectId, ref: 'List', required: true},
-  edited: { type: Date }, 
+  edited: { type: Date },
 });
 
 replySchema.set('versionKey', false);
