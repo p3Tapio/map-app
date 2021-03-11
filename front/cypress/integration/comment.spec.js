@@ -72,7 +72,7 @@ describe('Comment can be deleted', function () {
     cy.contains('this is a comment for testing').should('not.exist');
     cy.contains('No comments yet!');
   })
-  it('User who created the list can delete comments via the userpage', function () {
+  it('User who created the list can also delete comments via the userpage', function () {
     cy.get('#navigationBar').click();
     cy.contains('Logout');
     cy.registerAndLoginAnother();
@@ -117,5 +117,58 @@ describe('Comment can be deleted', function () {
     cy.get('#viewListDetails').click();
     cy.contains('this is a comment for testing');
     cy.contains('Delete').should('not.exist');
+  })
+})
+describe('Comment can be starred and unstarred', function() {
+  beforeEach(function () {
+    cy.clearDb();
+    cy.registerAndLogin();
+    cy.createPublicList();
+    cy.addNewComment();
+  })
+  it('If logged in comments can be starred and correct messages are shown', function() {
+    cy.visit('http://localhost:3000/public');
+    cy.get('#viewListDetails').click();
+
+    cy.get('#starUnfillBtn').trigger('mouseover');
+    cy.contains('Give comment a star!');
+    cy.get('#starUnfillBtn').click();
+    cy.get('#starFillBtn').should('exist');
+    cy.get('#starFillBtn').contains('1');
+
+    cy.get('#starFillBtn').trigger('mouseover');
+    cy.contains('Remove star from comment');
+    cy.get('#starFillBtn').click();
+    cy.get('#starUnfillBtn').should('exist');
+    cy.get('#starUnfillBtn').contains('0');
+  })
+  it('If unauthorized, starring comment is not possible and correct message is show', function() {
+    cy.get('#navigationBar').click();
+    cy.contains('Logout').click();
+    cy.visit('http://localhost:3000/public');
+    cy.get('#viewListDetails').click();
+
+    cy.get('#starUnAuthBtn').trigger('mouseover');
+    cy.contains('Login or register to like');
+    cy.get('#starUnAuthBtn').click();
+    cy.get('#starUnAuthBtn').contains('0');
+  })
+  it('Stars increase if two users like same comment', function() {
+    cy.visit('http://localhost:3000/public');
+    cy.get('#viewListDetails').click();
+
+    cy.get('#starUnfillBtn').trigger('mouseover');
+    cy.contains('Give comment a star!');
+    cy.get('#starUnfillBtn').click();
+    cy.get('#starFillBtn').should('exist');
+    cy.get('#starFillBtn').contains('1');
+
+    cy.registerAndLoginAnother();
+    cy.visit('http://localhost:3000/public');
+    cy.get('#viewListDetails').click();
+
+    cy.get('#starUnfillBtn').click();
+    cy.get('#starFillBtn').should('exist');
+    cy.get('#starFillBtn').contains('2');
   })
 })

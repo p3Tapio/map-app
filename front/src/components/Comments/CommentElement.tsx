@@ -266,6 +266,7 @@ const StarCommentButtonFill: React.FC<{
     )}
   >
     <button
+      id="starFillBtn"
       type="button"
       style={{ all: 'unset', cursor: 'pointer' }}
       onClick={(): void => {
@@ -313,6 +314,7 @@ const StarCommentButtonUnFill: React.FC<{
     )}
   >
     <button
+      id="starUnfillBtn"
       type="button"
       style={{ all: 'unset', cursor: 'pointer' }}
       onClick={(): void => {
@@ -343,11 +345,12 @@ const StarCommentButtonNoUser: React.FC<{ stars: number }> = ({ stars }) => (
     placement="auto"
     overlay={(
       <Tooltip id="editTooltip">
-        Login or register to favorite
+        Login or register to like
       </Tooltip>
     )}
   >
     <button
+      id="starUnAuthBtn"
       type="button"
       style={{ all: 'unset', cursor: 'pointer' }}
     >

@@ -31,7 +31,8 @@ Cypress.Commands.add('createPublicList', () => {
   cy.get('#name').type('test list');
   cy.get('#description').type('description for testing');
   cy.get('#visibility').check({ force: true });
-  cy.contains('Save').click();
+  cy.contains('Save').click({force: true});
+  cy.wait(500);
   cy.contains('Ok').click();
 })
 Cypress.Commands.add('createPrivateList', () => {
