@@ -22,7 +22,7 @@ const CommentElement: React.FC<{
   publicListView: boolean;
   reply: string;
   setReply: React.Dispatch<React.SetStateAction<string>>;
-  toggleStar: (commentId: string) => void;
+  handleStarClick: (commentId: string) => void;
 }> = ({
   comment,
   user,
@@ -36,16 +36,19 @@ const CommentElement: React.FC<{
   setReply,
   handleDeleteReply,
   handleEditReply,
-  toggleStar,
+  handleStarClick,
 }) => (
   <Accordion className="mb-2">
     <Card className="commentCard">
       <Row>
         <Col className="text-left mt-3 ml-4">
           {user
-            ? <StarCommentButtonFill commentId={comment._id} toggleStar={toggleStar} />
-            : <StarCommentButtonNoUser />}
-
+              && (
+                comment.stars.includes(user.id)
+                  ? <StarCommentButtonFill commentId={comment._id} handleStarClick={handleStarClick} stars={comment.stars.length} />
+                  : <StarCommentButtonUnFill commentId={comment._id} handleStarClick={handleStarClick} stars={comment.stars.length} />
+              )}
+          {!user && <StarCommentButtonNoUser stars={comment.stars.length} />}
         </Col>
         <Col className="text-right align-self-end mt-3 mr-4">
           <div style={{ lineHeight: '90%' }}>
@@ -214,9 +217,10 @@ const OnlyDelete: React.FC<{
 );
 
 const StarCommentButtonFill: React.FC<{
-  toggleStar: (commentId: string) => void;
+  handleStarClick: (commentId: string) => void;
   commentId: string;
-}> = ({ toggleStar, commentId }) => (
+  stars: number;
+}> = ({ handleStarClick, commentId, stars }) => (
   <OverlayTrigger
     placement="auto"
     overlay={(
@@ -228,7 +232,7 @@ const StarCommentButtonFill: React.FC<{
     <button
       type="button"
       style={{ all: 'unset', cursor: 'pointer' }}
-      onClick={(): void => toggleStar(commentId)}
+      onClick={(): void => handleStarClick(commentId)}
     >
       <>
         {/* jos < 10, niin ml = 6px, mb=-28, fontSize=95%,  */}
@@ -236,7 +240,7 @@ const StarCommentButtonFill: React.FC<{
           color: 'white', marginBottom: '-29px', marginLeft: '10px', zIndex: 100, position: 'relative',
         }}
         >
-          4
+          {stars}
         </p>
         <StarFill size={30} style={{ backgroundColor: 'none', zIndex: 1, position: 'relative' }} />
       </>
@@ -245,9 +249,10 @@ const StarCommentButtonFill: React.FC<{
 );
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StarCommentButtonUnFill: React.FC<{
-  toggleStar: (commentId: string) => void;
+  handleStarClick: (commentId: string) => void;
   commentId: string;
-}> = ({ toggleStar, commentId }) => (
+  stars: number;
+}> = ({ handleStarClick, commentId, stars }) => (
   <OverlayTrigger
     placement="auto"
     overlay={(
@@ -259,21 +264,21 @@ const StarCommentButtonUnFill: React.FC<{
     <button
       type="button"
       style={{ all: 'unset', cursor: 'pointer' }}
-      onClick={(): void => toggleStar(commentId)}
+      onClick={(): void => handleStarClick(commentId)}
     >
       <>
         <p style={{
           color: 'black', marginBottom: '-29px', marginLeft: '10px', zIndex: 100, position: 'relative',
         }}
         >
-          4
+          {stars}
         </p>
         <Star size={30} style={{ backgroundColor: 'none', zIndex: 1, position: 'relative' }} />
       </>
     </button>
   </OverlayTrigger>
 );
-const StarCommentButtonNoUser: React.FC = () => (
+const StarCommentButtonNoUser: React.FC<{ stars: number }> = ({ stars }) => (
   <OverlayTrigger
     placement="auto"
     overlay={(
@@ -291,7 +296,7 @@ const StarCommentButtonNoUser: React.FC = () => (
           color: 'black', marginBottom: '-29px', marginLeft: '10px', zIndex: 100, position: 'relative',
         }}
         >
-          4
+          {stars}
         </p>
         <Star size={30} style={{ backgroundColor: 'none', zIndex: 1, position: 'relative' }} />
       </>

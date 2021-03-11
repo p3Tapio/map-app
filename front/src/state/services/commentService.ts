@@ -30,7 +30,12 @@ const deleteComment = async (listId: string, values: { id: string }): Promise<{ 
   }
   return undefined;
 };
+const toggleStar = async (commentId: string): Promise<{data: ListComment} | undefined> => {
+  const config = createConfig();
+  if (config.headers.token) return axios.post(`${baseUrl}/api/comment/star/${commentId}`, {}, config);
+  return undefined;
+};
 
 export default {
-  addComment, getComments, updateComment, deleteComment,
+  addComment, getComments, updateComment, deleteComment, toggleStar,
 };

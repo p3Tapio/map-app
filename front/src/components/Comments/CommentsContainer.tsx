@@ -94,6 +94,16 @@ const ListComments: React.FC<{
     }
     setCommentToEdit(undefined);
   };
+  const handleStarClick = (commentId: string): void => {
+    commentService.toggleStar(commentId).then((res) => {
+      if (res && res.data) {
+        setComments(comments.map((c) => (c._id === res.data._id ? res.data : c)));
+      }
+    }).catch(() => {
+      setInfo({ header: 'Error', message: 'Woops, something went wrong :(((' });
+      setShowMessageModal(true);
+    });
+  };
   const handleSaveReply = (text: string, ev: FormEvent): void => {
     ev.preventDefault();
     if (commentToEdit && commentToEdit._id && text !== '') {
@@ -142,10 +152,6 @@ const ListComments: React.FC<{
       setInfo({ header: 'Error', message: 'Woops, something went wrong :(((' });
       setShowMessageModal(true);
     });
-  };
-  const toggleStar = (commentId: string): void => {
-    // eslint-disable-next-line no-console
-    console.log('commentId', commentId);
   };
 
   let currentComments = comments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -227,7 +233,7 @@ const ListComments: React.FC<{
             setReply={setReply}
             handleDeleteReply={handleDeleteReply}
             handleEditReply={handleEditReply}
-            toggleStar={toggleStar}
+            handleStarClick={handleStarClick}
           />
         ))}
       </div>
