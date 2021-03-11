@@ -212,6 +212,78 @@ describe('Comment can be deleted', () => {
     expect(listsInDb[0].comments).toHaveLength(1);
   })
 })
+describe('Starring a comment', () => {
+  beforeEach(async () => {
+    await List.deleteMany({});
+    await User.deleteMany({});
+    await Comment.deleteMany({});
+    let hashed = bcrypt.hashSync(user.password, 10);
+    const createUser = new User({ _id: new mongoose.Types.ObjectId, username: user.username, password: hashed });
+    await createUser.save();
+    const newList = new List({ createdBy: createUser._id, ...validPublicList });
+    await newList.save();
+  })
+  test('...Comment can be starred and unstarred if logged in', async () => {
+    const login = await api.post('/api/user/login/').send(user);
+    const listsInDb = await List.find({});
+    await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'test comment' }).expect(200);
+    let commentRes = await api.get(`/api/comment/comments/${listsInDb[0]._id}`);
+    expect(commentRes.body[0].stars).toHaveLength(0);
+
+    await api.post(`/api/comment/star/${commentRes.body[0]._id}`).set({ 'token': login.body.token }).expect(200);
+    commentRes = await api.get(`/api/comment/comments/${listsInDb[0]._id}`);
+    expect(commentRes.body[0].stars).toHaveLength(1);
+    expect(commentRes.body[0].stars[0]).toEqual(login.body.id);
+
+    await api.post(`/api/comment/star/${commentRes.body[0]._id}`).set({ 'token': login.body.token }).expect(200);
+    commentRes = await api.get(`/api/comment/comments/${listsInDb[0]._id}`);
+    expect(commentRes.body[0].stars).toHaveLength(0);
+
+    await api.post(`/api/comment/star/${commentRes.body[0]._id}`).set({ 'token': login.body.token }).expect(200);
+    commentRes = await api.get(`/api/comment/comments/${listsInDb[0]._id}`);
+    expect(commentRes.body[0].stars).toHaveLength(1);
+    expect(commentRes.body[0].stars[0]).toEqual(login.body.id);
+  })
+  test('...Starring fails without authorization', async () => {
+    const login = await api.post('/api/user/login/').send(user);
+    let listsInDb = await List.find({});
+    await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'test comment' }).expect(200);
+    let commentRes = await api.get(`/api/comment/comments/${listsInDb[0]._id}`);
+    expect(commentRes.body[0].stars).toHaveLength(0);
+    await api.post(`/api/comment/star/${commentRes.body[0]._id}`).set({ 'token': '' }).expect(401);
+    commentRes = await api.get(`/api/comment/comments/${listsInDb[0]._id}`);
+    expect(commentRes.body[0].stars).toHaveLength(0);
+  })
+  test('...Corrent amout of stars are returned for each comment', async () => {
+    const hashed = bcrypt.hashSync(anotherUser.password, 10);
+    const user_2 = new User({ username: anotherUser.username, password: hashed  });
+    await user_2.save();
+    const login = await api.post('/api/user/login/').send(user);
+    const login_2 = await api.post('/api/user/login/').send(anotherUser);
+    const listsInDb = await List.find({});
+    await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'test comment' });
+    await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'another comment' });
+    await api.post(`/api/comment/newcomment/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send({ comment: 'one more comment' });
+    
+    let commentRes = await api.get(`/api/comment/comments/${listsInDb[0]._id}`);
+    expect(commentRes.body[0].stars).toHaveLength(0);
+    expect(commentRes.body[1].stars).toHaveLength(0);
+    expect(commentRes.body[2].stars).toHaveLength(0);
+
+    await api.post(`/api/comment/star/${commentRes.body[1]._id}`).set({ 'token': login.body.token }).expect(200);
+    await api.post(`/api/comment/star/${commentRes.body[2]._id}`).set({ 'token': login.body.token }).expect(200);
+    await api.post(`/api/comment/star/${commentRes.body[2]._id}`).set({ 'token': login_2.body.token }).expect(200);
+    
+    commentRes = await api.get(`/api/comment/comments/${listsInDb[0]._id}`);
+    expect(commentRes.body[0].stars).toHaveLength(0);
+    expect(commentRes.body[1].stars).toHaveLength(1);
+    expect(commentRes.body[2].stars).toHaveLength(2);
+
+    expect(commentRes.body[1].stars[0]).toEqual(login.body.id);
+    expect(commentRes.body[2].stars[0]).toEqual(login.body.id);
+    expect(commentRes.body[2].stars[1]).toEqual(login_2.body.id);
+  })
+})
 afterAll(async () => {
   mongoose.connection.close();
 })

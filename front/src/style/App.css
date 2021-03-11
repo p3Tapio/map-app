@@ -292,3 +292,15 @@ hr {
 .spin-home-icon {
   animation: spin-icon 0.5s linear both;
 }
+
+@keyframes shakeStar {
+  25% { transform: rotate(5deg); }
+  50% {transform: rotate(-20deg); }
+  75% { transform: rotate(20deg);}
+  100% { transform: rotate(0deg);}
+}
+.starShake {
+  animation-name: shakeStar;
+  animation-duration: 0.7s;
+  animation-iteration-count: 1;
+}
