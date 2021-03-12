@@ -217,9 +217,11 @@ describe('List can be updated', () => {
       createdBy: { _id: listsInDb[0].createdBy, username: 'tester' },
       locations: listsInDb[0].locations,
       favoritedBy: [],
+      region: 'Europe',
+      subregion:'North Europe'
     }
 
-    const res = await api.put(`/api/list/update/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send(updated).expect(401);
+    const res = await api.put(`/api/list/update/${listsInDb[0]._id}`).set({ 'token': login.body.token }).send(updated);
     expect(res.body.error).toEqual('unauthorized');
 
     listsInDb = await List.find({});
@@ -227,6 +229,7 @@ describe('List can be updated', () => {
 
     const login2 = await api.post('/api/user/login/').send(user);
     await api.put(`/api/list/update/${listsInDb[0]._id}`).set({ 'token': login2.body.token }).send(updated).expect(200);
+
   })
   test('...not with missing values', async () => {
     const login = await api.post('/api/user/login/').send(user);
