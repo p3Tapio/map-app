@@ -1,4 +1,5 @@
-# https://location-map.herokuapp.com/
+# Linkki:
+https://location-map.herokuapp.com/
 
 # Tuntikirjaus:
 https://bit.ly/38AbOmD
