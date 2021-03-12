@@ -6,12 +6,13 @@ const FilterMapView: React.FC<{
   publicLists: List[];
   setMapView: React.Dispatch<React.SetStateAction<string>>;
 }> = ({ publicLists, setMapView }) => {
+  if (!publicLists) return null;
   let regionsInUse: string[] = publicLists.map((r) => {
     if (r.subregion.includes('Africa')) return 'Africa';
     if (r.subregion.includes('Europe')) return 'Europe';
     if (r.subregion.includes('Asia')) return 'Asia';
     if (r.subregion.includes('Australia')) return 'Australia';
-    if (r.subregion === 'Central America' || r.subregion === 'North America') return 'North and Central America';
+    if (r.subregion === 'Central America' || r.subregion === 'Northern America') return 'North and Central America';
     return r.subregion;
   });
 

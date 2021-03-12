@@ -13,10 +13,8 @@ export interface PublicListMapProps {
   mapView: string;
 }
 export interface PaginatePublicListProps {
-  listsPerPage: number;
-  totalLists: number;
+  perPage: number;
+  total: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   currentPage: number;
-  setActive: React.Dispatch<React.SetStateAction<number>>;
-  active: number;
 }

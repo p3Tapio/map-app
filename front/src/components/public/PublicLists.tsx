@@ -25,7 +25,6 @@ const PublicLists: React.FC = () => {
   const [mapView, setMapView] = useState('World');
   const [listsPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
-  const [active, setActive] = useState(1);
 
   const dispatch = useDispatch();
 
@@ -36,10 +35,7 @@ const PublicLists: React.FC = () => {
       else setFilteredList(publicLists.filter((l) => l.country === countryFilter));
     }
   }, [countryFilter, publicLists]);
-  useEffect(() => {
-    setCurrentPage(1);
-    setActive(1);
-  }, [countryFilter]);
+  useEffect(() => { setCurrentPage(1); }, [countryFilter]);
 
   const handleToggleFavorite = (listId: string): void => { // TODO try-catch?
     dispatch(toggleFavorite(listId));
@@ -56,9 +52,9 @@ const PublicLists: React.FC = () => {
 
   if (sortCriteria === 'Country') {
     if (sortDirection === 'asc') {
-      currentList = filteredList.sort((a, b) => a.country.localeCompare(b.country)).slice(indexOfFirst, indexOfLast);
-    } else if (sortDirection === 'desc') {
       currentList = filteredList.sort((a, b) => b.country.localeCompare(a.country)).slice(indexOfFirst, indexOfLast);
+    } else if (sortDirection === 'desc') {
+      currentList = filteredList.sort((a, b) => a.country.localeCompare(b.country)).slice(indexOfFirst, indexOfLast);
     }
   } else if (sortCriteria === 'Comments') {
     if (sortDirection === 'asc') {
@@ -80,9 +76,9 @@ const PublicLists: React.FC = () => {
     }
   } else if (sortCriteria === 'Name') {
     if (sortDirection === 'asc') {
-      currentList = filteredList.sort((a, b) => a.name.localeCompare(b.name)).slice(indexOfFirst, indexOfLast);
-    } else if (sortDirection === 'desc') {
       currentList = filteredList.sort((a, b) => b.name.localeCompare(a.name)).slice(indexOfFirst, indexOfLast);
+    } else if (sortDirection === 'desc') {
+      currentList = filteredList.sort((a, b) => a.name.localeCompare(b.name)).slice(indexOfFirst, indexOfLast);
     }
   }
 
@@ -126,6 +122,7 @@ const PublicLists: React.FC = () => {
                   setSortCriteria={setSortCriteria}
                   setSortDirection={setSortDirection}
                   sortDirection={sortDirection}
+                  setCurrentPage={setCurrentPage}
                 />
               )}
           </Row>
@@ -147,12 +144,10 @@ const PublicLists: React.FC = () => {
               {listsPerPage <= filteredList.length
                 && (
                   <PaginatePublicLists
-                    listsPerPage={listsPerPage}
-                    totalLists={filteredList.length}
+                    perPage={listsPerPage}
+                    total={filteredList.length}
                     setCurrentPage={setCurrentPage}
                     currentPage={currentPage}
-                    setActive={setActive}
-                    active={active}
                   />
                 )}
             </>

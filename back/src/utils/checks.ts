@@ -172,6 +172,8 @@ const checkUpdatedListValues = (object: any): List => {
       defaultview: parseDefaultview(object.defaultview),
       country: parseInputString(object.country),
       place: parseInputString(object.place),
+      region: parseInputString(object.region),
+      subregion:parseInputString(object.subregion),
       public: parseInputBoolean(object.public),
       createdBy: parseId(object.createdBy._id),
       locations: parseLocationList(object.locations),
@@ -204,8 +206,8 @@ const checkUpdatedComment = (object: any): ListComment => {
       comment: parseInputString(object.comment),
       list: parseId(object.list),
       replies: parseIdArray(object.replies),
-      date: parseDate(object.date),
       stars: parseIdArray(object.stars),
+      date: parseDate(object.date),
     };
     return updated;
   }

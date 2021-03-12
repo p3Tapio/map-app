@@ -17,7 +17,8 @@ const ListComments: React.FC<{
   listId: string | undefined; createdBy: string; publicListView: boolean;
 }> = ({ listId, createdBy, publicListView }) => {
   const [comments, setComments] = useState<ListComment[] | undefined>(undefined);
-  const [latestFirst, setLatestFirst] = useState(true);
+  const [sortDirection, setSortDirection] = useState('desc');
+  const [sortCriteria, setSortCriteria] = useState('date');
   const [showNewCommentModal, setShowNewCommentModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -61,9 +62,9 @@ const ListComments: React.FC<{
       const x = {
         comment: values.comment, list: listId, user: user.id, date: commentToEdit.date,
       };
+  
       commentService.updateComment(commentToEdit._id, x).then((res) => {
         if (res) {
-          res.data.user = { username: user.username, _id: user.id };
           setComments(comments.map((c) => (c._id === res.data._id ? res.data : c)));
           setShowEditModal(false);
           setInfo({ header: 'Success', message: 'Comment updated!' });
@@ -154,8 +155,20 @@ const ListComments: React.FC<{
     });
   };
 
-  let currentComments = comments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  if (!latestFirst) currentComments = comments.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  let currentComments = comments.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  if (sortCriteria === 'date') {
+    if (sortDirection === 'asc') {
+      currentComments = comments.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    } else if (sortDirection === 'desc') {
+      currentComments = comments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    }
+  } else if (sortCriteria === 'stars') {
+    if (sortDirection === 'asc') {
+      currentComments = comments.sort((a, b) => a.stars.length - b.stars.length);
+    } else if (sortDirection === 'desc') {
+      currentComments = comments.sort((a, b) => b.stars.length - a.stars.length);
+    }
+  }
 
   return (
     <>
@@ -173,13 +186,13 @@ const ListComments: React.FC<{
                       <span style={{ marginRight: '-5px' }}>
                         <Button
                           id="addComment"
-                          style={{ padding: '5px', paddingRight: '15px', whiteSpace: 'nowrap' }}
+                          style={{ paddingRight: '15px', whiteSpace: 'nowrap' }}
                           className="m-1"
                           variant="outline-secondary"
                           size="sm"
                           onClick={(): void => setShowNewCommentModal(true)}
                         >
-                          <Pen size={20} style={{ marginRight: '5px', marginBottom: '2px' }} />
+                          <Pen size={18} style={{ marginRight: '5px' }} />
                           Add comment
                         </Button>
                       </span>
@@ -215,7 +228,14 @@ const ListComments: React.FC<{
                 </>
               )}
             {comments.length !== 0
-              && <ToggleRecentComment latestFirst={latestFirst} setLatestFirst={setLatestFirst} />}
+              && (
+                <SortOptions
+                  sortDirection={sortDirection}
+                  setSortDirection={setSortDirection}
+                  sortCriteria={sortCriteria}
+                  setSortCriteria={setSortCriteria}
+                />
+              )}
           </Col>
         </Row>
         {currentComments.map((c) => (
@@ -264,28 +284,36 @@ const ListComments: React.FC<{
   );
 };
 
-export const ToggleRecentComment: React.FC<{
-  latestFirst: boolean;
-  setLatestFirst: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ latestFirst, setLatestFirst }) => (
-  <Button
-    style={{ padding: '5px', marginLeft: '5px' }}
-    variant="outline-secondary"
-    size="sm"
-    onClick={(): void => setLatestFirst(!latestFirst)}
-  >
-    {latestFirst ? (
-      <>
-        Oldest
-        <ChevronDown size={20} style={{ marginBottom: '2px', marginLeft: '5px' }} />
-      </>
-    ) : (
-      <>
-        Latest
-        <ChevronUp size={20} style={{ marginBottom: '2px' }} />
-      </>
-    )}
-  </Button>
-);
+export const SortOptions: React.FC<{
+  sortDirection: string;
+  setSortDirection: React.Dispatch<React.SetStateAction<string>>;
+  sortCriteria: string;
+  setSortCriteria: React.Dispatch<React.SetStateAction<string>>;
+}> = ({
+  sortDirection, setSortDirection, sortCriteria, setSortCriteria,
+}) => (
+    <>
+      <Button
+        size="sm"
+        variant="outline-secondary"
+        style={{ margin: '3px' }}
+        onClick={(): void => {
+          setSortCriteria(sortCriteria === 'date' ? 'stars' : 'date');
+          setSortDirection('desc');
+        }}
+      >
+        {sortCriteria === 'date' ? 'Sort by stars' : 'Sort by date'}
+      </Button>
+      <Button
+        variant="outline-secondary"
+        size="sm"
+        onClick={(): void => setSortDirection(sortDirection === 'desc' ? 'asc' : 'desc')}
+      >
+        {sortDirection === 'desc'
+          ? <ChevronDown size={18} />
+          : <ChevronUp size={18} />}
+      </Button>
+    </>
+  );
 
 export default ListComments;

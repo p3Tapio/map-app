@@ -7,7 +7,7 @@ import { ArrowLeftShort, List as ListIcon, Map } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { Location } from '../../state/services/locationTypes';
-import { getPublicLists } from '../../state/reducers/list/listActions';
+import { getPublicLists, toggleFavorite } from '../../state/reducers/list/listActions';
 import { List } from '../../state/reducers/list/listTypes';
 import { RootStore } from '../../state/store';
 import { initialLocation } from '../initials';
@@ -15,6 +15,10 @@ import ListLocationsMap from '../lists/ListLocationsMap';
 import LocationCard from '../locations/locationList/LocationCard';
 import SingleLocationMap from '../locations/locationList/SingleLocationMap';
 import ListComments from '../Comments/CommentsContainer';
+import PaginatePublicLists from './PaginatePublicLists';
+import { HeartComponent } from './ListComponent';
+import { getUser } from '../../state/localStore';
+import { LoggedUser } from '../../state/reducers/user/userTypes';
 
 const PublicListDetails: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -27,6 +31,9 @@ const PublicListDetails: React.FC = () => {
   const [categoryFilter, setCategoryFilter] = useState<string | undefined>(undefined);
   const [filteredLocations, setFilteredLocations] = useState<Location[] | undefined>(undefined);
   const [location, setLocation] = useState(initialLocation);
+  const [locationsPerPage] = useState(6);
+  const [currentPage, setCurrentPage] = useState(1);
+  const user = getUser();
 
   useEffect(() => { dispatch(getPublicLists()); }, [dispatch]);
   useEffect(() => {
@@ -40,13 +47,22 @@ const PublicListDetails: React.FC = () => {
     if (publiclist) {
       if (!categoryFilter) setFilteredLocations(publiclist.locations);
       else setFilteredLocations(publiclist.locations.filter((l) => l.category === categoryFilter));
+      setCurrentPage(1);
     }
   }, [categoryFilter, publiclist]);
 
   if (!publiclist || !filteredLocations) return null;
 
+  const handleToggleFavorite = (listId: string): void => {
+    dispatch(toggleFavorite(listId));
+  };
+
   const categories = Array.from(new Set(publiclist.locations.map((x) => x.category)));
   categories.sort((a, b) => a.localeCompare(b));
+
+  const indexOfLast = currentPage * locationsPerPage;
+  const indexOfFirst = indexOfLast - locationsPerPage;
+  const currentLocations = filteredLocations.slice(indexOfFirst, indexOfLast);
 
   return (
     <Container className="mt-5">
@@ -58,6 +74,8 @@ const PublicListDetails: React.FC = () => {
         setCategoryFilter={setCategoryFilter}
         categories={categories}
         loc={loc.state ? loc.state.from : undefined}
+        user={user}
+        toggleFavorite={handleToggleFavorite}
       />
       <hr />
       {showMapComponent
@@ -65,7 +83,7 @@ const PublicListDetails: React.FC = () => {
         : (
           <>
             <Col className="justify-content-center locationCardGrid">
-              {filteredLocations.map((x) => (
+              {currentLocations.map((x) => (
                 <LocationCard
                   key={x._id}
                   type="public"
@@ -77,6 +95,15 @@ const PublicListDetails: React.FC = () => {
             </Col>
             <SingleLocationMap location={location} show={showLittleMap} setShow={setShowLittleMap} />
           </>
+        )}
+      {!showMapComponent && filteredLocations.length > locationsPerPage
+        && (
+          <PaginatePublicLists
+            perPage={locationsPerPage}
+            total={filteredLocations.length}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
         )}
       <hr />
       {publiclist.createdBy && <ListComments listId={id} createdBy={publiclist.createdBy._id} publicListView />}
@@ -92,11 +119,13 @@ const HeaderElement: React.FC<{
   setCategoryFilter: React.Dispatch<SetStateAction<string | undefined>>;
   categories: string[];
   loc: string | undefined;
+  user: LoggedUser | undefined;
+  toggleFavorite: (listId: string) => void;
 }> = ({
-  countryDetails, publiclist, showMapComponent, setShowMapComponent, setCategoryFilter, categories, loc,
+  countryDetails, publiclist, showMapComponent, setShowMapComponent, setCategoryFilter, categories, loc, user, toggleFavorite,
 }) => (
   <Row className="mb-4">
-    <Col md={2} xs={4} className="mt-2">
+    <Col md={2} xs={4} className="mt-1 text-left">
       {countryDetails[0].flag !== ''
         ? <img src={countryDetails[0].flag} alt="Flag" height="50" style={{ border: '1px solid black' }} />
         : null}
@@ -111,6 +140,16 @@ const HeaderElement: React.FC<{
       ))}
       {(publiclist.country !== 'unknown' && publiclist.place === 'unknown' && <small className="mt-1">{publiclist.country}</small>)}
       {(publiclist.country === 'unknown' && publiclist.place !== 'unknown' && <small className="mt-1">{publiclist.place}</small>)}
+      <div style={{ height: '10px' }} />
+      <div style={{ lineHeight: '90%' }}>
+        <small>Created by:</small>
+        <br />
+        <small>
+          {' '}
+          {publiclist.createdBy.username}
+        </small>
+      </div>
+
     </Col>
     <Col md={10} xs={8}>
       <h4>{publiclist.name}</h4>
@@ -167,6 +206,11 @@ const HeaderElement: React.FC<{
             ))}
           </Dropdown.Menu>
         </Dropdown>
+        <HeartComponent
+          user={user}
+          list={publiclist}
+          toggleFavorite={toggleFavorite}
+        />
       </Row>
     </Col>
   </Row>

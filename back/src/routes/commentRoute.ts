@@ -48,7 +48,7 @@ router.get('/comments/:id', async (req, res) => {
         .populate([
           { path: 'user', select: 'username' },
           { path: 'replies', populate: { path: 'user', select: 'username' } }
-        ]) ;
+        ]);
       res.json(comments);
     }
   } catch (err) {
@@ -60,12 +60,17 @@ router.put('/update/:id', async (req, res) => {
     if (req.header('token') && checkToken(req.header('token'))) {
       const userId = checkToken(req.header('token'));
       const body = checkUpdatedComment(req.body);
-      const comment = await Comment.findById(req.params.id);
+      let comment = await Comment.findById(req.params.id);
       if (!comment) throw new Error('No comment found.');
       else if (comment.user.toString() === userId) {
-        const withEdited = {...body, edited: new Date()};
-        const updated = await Comment.findByIdAndUpdate({ _id: req.params.id }, withEdited, { new: true });
-        res.json(updated);
+        comment.edited = new Date();
+        comment.comment = body.comment;
+        await comment.save();
+        comment = await comment.populate([
+          { path: 'user', select: 'username' },
+          { path: 'replies', populate: { path: 'user', select: 'username' } }
+        ]).execPopulate();
+        res.json(comment);
       } else res.status(401).json({ error: 'unauthorized' });
     } else res.status(401).json({ error: 'unauthorized' });
   } catch (err) {
@@ -91,7 +96,7 @@ router.delete('/delete/:id', async (req, res) => {
           await user.save();
           await list.save();
           await Comment.findOneAndRemove({ _id: commentId });
-          await Reply.deleteMany({commentId: commentId});
+          await Reply.deleteMany({ commentId: commentId });
           res.status(200).json({ success: `comment deleted`, id: commentId });
         }
       } else {
@@ -108,8 +113,8 @@ router.post('/star/:id', async (req, res) => {
       const userId = checkToken(req.header('token'));
       const commentId = checkId(req.params.id);
       let comment = await Comment.findById(commentId);
-      if(comment && userId) {
-        if(!comment.stars.some(x => (x.equals(userId)))) {
+      if (comment && userId) {
+        if (!comment.stars.some(x => (x.equals(userId)))) {
           comment.stars = comment.stars.concat(mongoose.Types.ObjectId(userId));
         } else {
           comment.stars = comment.stars.filter(x => !x.equals(userId));
@@ -126,4 +131,4 @@ router.post('/star/:id', async (req, res) => {
     res.status(400).json({ error: (err as Error).message });
   }
 });
-export default router; 
+export default router;

@@ -9,8 +9,9 @@ const SortAndFilterList: React.FC<{
   setSortCriteria: React.Dispatch<React.SetStateAction<string>>;
   sortDirection: string;
   setSortDirection: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }> = ({
-  countries, setCountryFilter, sortCriteria, setSortCriteria, sortDirection, setSortDirection,
+  countries, setCountryFilter, sortCriteria, setSortCriteria, sortDirection, setSortDirection, setCurrentPage,
 }) => {
   const sortingOptions = ['Comments', 'Country', 'Date', 'Favorited', 'Name'];
   return (
@@ -49,7 +50,11 @@ const SortAndFilterList: React.FC<{
           {sortingOptions.map((s) => (
             <Dropdown.Item
               key={s}
-              onClick={(): void => setSortCriteria(s)}
+              onClick={(): void => {
+                setSortCriteria(s);
+                setSortDirection('desc');
+                setCurrentPage(1);
+              }}
             >
               {s}
             </Dropdown.Item>

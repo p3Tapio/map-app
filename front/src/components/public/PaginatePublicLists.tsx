@@ -3,10 +3,10 @@ import { ChevronLeft, ChevronRight } from 'react-bootstrap-icons';
 import { PaginatePublicListProps } from './publicListTypes';
 
 const PaginatePublicLists: React.FC<PaginatePublicListProps> = ({
-  listsPerPage, totalLists, setCurrentPage, currentPage, setActive, active,
+  perPage, total, setCurrentPage, currentPage,
 }) => {
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(totalLists / listsPerPage); i += 1) {
+  for (let i = 1; i <= Math.ceil(total / perPage); i += 1) {
     pageNumbers.push(i);
   }
 
@@ -20,7 +20,6 @@ const PaginatePublicLists: React.FC<PaginatePublicListProps> = ({
           onClick={(): void => {
             if (currentPage > 1) {
               setCurrentPage(currentPage - 1);
-              setActive(active - 1);
             }
           }}
         >
@@ -30,12 +29,11 @@ const PaginatePublicLists: React.FC<PaginatePublicListProps> = ({
           {pageNumbers.map((no) => (
             <li className="page-item" key={no}>
               <button
-                style={no === active ? { backgroundColor: '#eee' } : {}}
+                style={no === currentPage ? { backgroundColor: '#eee' } : {}}
                 className="page-link"
                 type="button"
                 onClick={(): void => {
                   setCurrentPage(no);
-                  setActive(no);
                 }}
               >
                 {no}
@@ -47,9 +45,8 @@ const PaginatePublicLists: React.FC<PaginatePublicListProps> = ({
           className="paginationArrowBtn"
           type="button"
           onClick={(): void => {
-            if (currentPage < Math.ceil(totalLists / listsPerPage)) {
+            if (currentPage < Math.ceil(total / perPage)) {
               setCurrentPage(currentPage + 1);
-              setActive(active + 1);
             }
           }}
         >

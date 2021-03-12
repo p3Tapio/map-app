@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Navbar, Nav } from 'react-bootstrap';
+import {
+  Navbar, Nav, Col, Row,
+} from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { List } from 'react-bootstrap-icons';
 import { logoutUser } from '../../state/reducers/RootReducer';
+import { getUser } from '../../state/localStore';
 
 interface NavProps {
   logged: boolean | undefined;
@@ -15,6 +18,7 @@ const Navigation: React.FC<NavProps> = ({ logged, setLogged }) => {
   const [shake, setShake] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
+  const user = getUser();
 
   const handleLogout = (): void => {
     dispatch(logoutUser());
@@ -36,10 +40,23 @@ const Navigation: React.FC<NavProps> = ({ logged, setLogged }) => {
           setShowMenu(!showMenu);
           setShake(!shake);
         }}
+        style={{ height: '60px' }}
       >
-        <Navbar.Brand>
-          <List size={28} className={shake ? 'mr-3 menuBurger' : 'mr-3'} />
-          MapApp
+        <Navbar.Brand style={{ flex: 1 }} className="mt-3">
+          <Row>
+            <Col className="text-left">
+              <p>
+                <List size={28} className={shake ? 'mr-3 menuBurger' : 'mr-3'} />
+                MapApp
+              </p>
+            </Col>
+            {user
+            && (
+              <Col className="text-right">
+                <p className="loggedUserName mt-2">{`${user.username} logged in`}</p>
+              </Col>
+            )}
+          </Row>
         </Navbar.Brand>
         <Nav className="mr-auto ml-2">
           <div id="overlayMenu">

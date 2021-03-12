@@ -56,8 +56,8 @@ export interface List extends NewList {
   createdBy: Types.ObjectId;
   locations: Types.ObjectId[];
   favoritedBy: Types.ObjectId[];
-  region?: string;
-  subregion?: string;
+  region: string;
+  subregion: string;
 }
 
 export interface IList extends Document, NewList, List {

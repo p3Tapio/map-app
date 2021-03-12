@@ -5,6 +5,8 @@ import {
 import { Search, Heart, HeartFill } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { getUser } from '../../state/localStore';
+import { LoggedUser } from '../../state/reducers/user/userTypes';
+import { List } from '../../state/reducers/list/listTypes';
 import { ListComponentProps } from './publicListTypes';
 import StaticMap from './StaticMap';
 
@@ -29,82 +31,11 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
                     </Card.Title>
                   </div>
                 </Col>
-                {user
-                  ? (
-                    <>
-                      <Col className="text-right mr-2" style={{ height: '10%', marginTop: '5px' }}>
-                        <OverlayTrigger
-                          placement="auto"
-                          overlay={(
-                            <Tooltip id="editTooltip">
-                              {user.favorites.includes(list._id) ? 'Remove from favorites.' : 'Add to your favorites.'}
-                            </Tooltip>
-                          )}
-                        >
-                          <button
-                            onClick={(): void => toggleFavorite(list._id)}
-                            type="button"
-                            style={{ all: 'unset', cursor: 'pointer' }}
-                          >
-                            {user.favorites.includes(list._id)
-                              ? (
-                                <>
-                                  <p style={list.favoritedBy.length > 10 ? {
-                                    color: 'white', marginBottom: '-27px', marginRight: '10px', zIndex: 100, position: 'relative',
-                                  } : {
-                                    color: 'white', marginBottom: '-27px', marginRight: '13px', zIndex: 100, position: 'relative',
-                                  }}
-                                  >
-                                    {list.favoritedBy.length}
-                                  </p>
-                                  <HeartFill id="heartFill" size="35" style={{ backgroundColor: 'none', zIndex: 1, position: 'relative' }} />
-                                </>
-                              )
-                              : (
-                                <>
-                                  <p style={list.favoritedBy.length > 10 ? {
-                                    color: 'black', marginBottom: '-27px', marginRight: '10px', zIndex: 100, position: 'relative',
-                                  } : {
-                                    color: 'black', marginBottom: '-27px', marginRight: '13px', zIndex: 100, position: 'relative',
-                                  }}
-                                  >
-                                    {list.favoritedBy.length}
-                                  </p>
-                                  <Heart id="heartUnfill" size="35" />
-                                </>
-                              )}
-                          </button>
-                        </OverlayTrigger>
-                      </Col>
-                    </>
-                  )
-                  : (
-                    <Col className="text-right mr-2" style={{ height: '10%', marginTop: '5px' }}>
-                      <OverlayTrigger
-                        placement="auto"
-                        overlay={(
-                          <Tooltip id="editTooltip">
-                            Login or register to favorite
-                          </Tooltip>
-                        )}
-                      >
-                        <button
-                          type="button"
-                          style={{ all: 'unset', cursor: 'pointer' }}
-                        >
-                          <p style={list.favoritedBy.length > 10 ? {
-                            color: 'black', marginBottom: '-27px', marginRight: '10px', zIndex: 100, position: 'relative',
-                          } : {
-                            color: 'black', marginBottom: '-27px', marginRight: '13px', zIndex: 100, position: 'relative',
-                          }}
-                          >
-                            {list.favoritedBy.length}
-                          </p>
-                          <Heart id="heartUnfill" size="35" />
-                        </button>
-                      </OverlayTrigger>
-                    </Col>
-                  )}
+                <HeartComponent
+                  user={user}
+                  list={list}
+                  toggleFavorite={toggleFavorite}
+                />
               </Row>
               <hr />
               <Col>
@@ -180,5 +111,89 @@ const ListComponent: React.FC<ListComponentProps> = ({ list, toggleFavorite, fro
     </div>
   );
 };
+export const HeartComponent: React.FC<{
+  user: LoggedUser | undefined;
+  list: List;
+  toggleFavorite: (listId: string) => void;
+}> = ({ user, list, toggleFavorite }) => (
+  <>
+    {user
+      ? (
+        <>
+          <Col className="text-right mr-2" style={{ height: '10%', marginTop: '5px' }}>
+            <OverlayTrigger
+              placement="auto"
+              overlay={(
+                <Tooltip id="editTooltip">
+                  {user.favorites.includes(list._id) ? 'Remove from favorites.' : 'Add to your favorites.'}
+                </Tooltip>
+              )}
+            >
+              <button
+                onClick={(): void => toggleFavorite(list._id)}
+                type="button"
+                style={{ all: 'unset', cursor: 'pointer' }}
+              >
+                {user.favorites.includes(list._id)
+                  ? (
+                    <>
+                      <p style={list.favoritedBy.length > 10 ? {
+                        color: 'white', marginBottom: '-27px', marginRight: '10px', zIndex: 100, position: 'relative',
+                      } : {
+                        color: 'white', marginBottom: '-27px', marginRight: '13px', zIndex: 100, position: 'relative',
+                      }}
+                      >
+                        {list.favoritedBy.length}
+                      </p>
+                      <HeartFill id="heartFill" size="35" style={{ backgroundColor: 'none', zIndex: 1, position: 'relative' }} />
+                    </>
+                  )
+                  : (
+                    <>
+                      <p style={list.favoritedBy.length > 10 ? {
+                        color: 'black', marginBottom: '-27px', marginRight: '10px', zIndex: 100, position: 'relative',
+                      } : {
+                        color: 'black', marginBottom: '-27px', marginRight: '13px', zIndex: 100, position: 'relative',
+                      }}
+                      >
+                        {list.favoritedBy.length}
+                      </p>
+                      <Heart id="heartUnfill" size="35" />
+                    </>
+                  )}
+              </button>
+            </OverlayTrigger>
+          </Col>
+        </>
+      )
+      : (
+        <Col className="text-right mr-2" style={{ height: '10%', marginTop: '5px' }}>
+          <OverlayTrigger
+            placement="auto"
+            overlay={(
+              <Tooltip id="editTooltip">
+                Login or register to favorite
+              </Tooltip>
+            )}
+          >
+            <button
+              type="button"
+              style={{ all: 'unset', cursor: 'pointer' }}
+            >
+              <p style={list.favoritedBy.length > 10 ? {
+                color: 'black', marginBottom: '-27px', marginRight: '10px', zIndex: 100, position: 'relative',
+              } : {
+                color: 'black', marginBottom: '-27px', marginRight: '13px', zIndex: 100, position: 'relative',
+              }}
+              >
+                {list.favoritedBy.length}
+              </p>
+              <Heart id="heartUnfill" size="35" />
+            </button>
+          </OverlayTrigger>
+        </Col>
+      )}
+  </>
+);
 
 export default ListComponent;
