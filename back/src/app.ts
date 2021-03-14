@@ -26,11 +26,11 @@ app.use('/api/list', listRouter);
 app.use('/api/comment', commentRouter);
 app.use('/api/reply', replyRouter);
 
-if (process.env.NODE_ENV === 'production') {  // TODO cross-env ei skulaa herokussa, kommentoi tämä pois toistaiseksi
+// if (process.env.NODE_ENV === 'production') {  // TODO cross-env ei skulaa herokussa, kommentoi tämä pois toistaiseksi
   app.get('*', (_req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
   });
-}
+// }
 if (process.env.NODE_ENV === 'test') {
   app.use('/api/testing', testingRouter);
 }

@@ -13,73 +13,87 @@ import { RootStore } from '../state/store';
 import { getPublicLists } from '../state/reducers/list/listActions';
 import { List } from '../state/reducers/list/listTypes';
 import StaticMap from './public/StaticMap';
+import { getUser } from '../state/localStore';
 
-const Home: React.FC = () => (
-  <div className="no-gutter-div">
-    <Row className="justify-content-center">
-      <Col lg md={10} sm xs={12}>
-        <Jumbotron className="jumboHome mt-4">
-          <Row className="mx-1">
-            <Col className="text-left">
-              <h2>
-                MapApp
-                <GeoAlt className="ml-2 spin-home-icon" />
-              </h2>
-            </Col>
-            <Col className="text-right mt-3">
-              <Link to="/register" style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                Register
-              </Link>
-              {' | '}
-              <Link to="/login" style={{ color: 'inherit', textDecoration: 'inherit', marginLeft: '5px' }}>
-                Login
-              </Link>
-            </Col>
-          </Row>
-          <hr />
-          <Row>
-            <Col className="mx-3">
-              <p>
-                This is a map application that can be used for creating lists of locations.
-                Lists can be set either as private or public, and used e.g. as a reminder of places you wish to see or as a guide for others.
-              </p>
-              <p>
-                Unregistered users can browse public location lists and see locations that have been added to them.
-                After registering, users can create their own lists, as well as comment and favorite lists created by others.
-              </p>
-              <p>
-                Below you can see three most favorited location lists. All public location lists can be accessed
+const Home: React.FC = () => {
+  const user = getUser();
+  return (
+    <div className="no-gutter-div">
+      <Row className="justify-content-center">
+        <Col lg md={10} sm xs={12}>
+          <Jumbotron className="jumboHome mt-4">
+            <Row className="mx-1">
+              <Col className="text-left">
+                <h2>
+                  MapApp
+                  <GeoAlt className="ml-2 spin-home-icon" />
+                </h2>
+              </Col>
+              <Col className="text-right mt-3">
+                {!user
+                  ? (
+                    <>
+                      <Link to="/register" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                        Register
+                      </Link>
+                      {' | '}
+                      <Link to="/login" style={{ color: 'inherit', textDecoration: 'inherit', marginLeft: '5px' }}>
+                        Login
+                      </Link>
+                    </>
+                  )
+                  : (
+                    <Link to="/userpage" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                      Userpage
+                    </Link>
+                  )}
+              </Col>
+            </Row>
+            <hr />
+            <Row>
+              <Col className="mx-3">
+                <p>
+                  This is a map application that can be used for creating lists of locations.
+                  Lists can be set either as private or public, and used e.g. as a reminder of places you wish to see or as a guide for others.
+                </p>
+                <p>
+                  Unregistered users can browse public location lists and see locations that have been added to them.
+                  After registering, users can create their own lists, as well as comment and favorite lists created by others.
+                </p>
+                <p>
+                  Below you can see three most favorited location lists. All public location lists can be accessed
+                  {' '}
+                  <Link to="/public" style={{ color: 'black', textDecoration: 'underline' }}>
+                    here
+                  </Link>
+                  .
+                </p>
+              </Col>
+            </Row>
+            <hr />
+            <TopLists />
+            <Col className="text-right mr-2">
+              <small className="mr-1">
+                Source code
                 {' '}
-                <Link to="/public" style={{ color: 'black', textDecoration: 'underline' }}>
+                <a
+                  href="https://github.com/p3Tapio/fs_project"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'black', textDecoration: 'underline' }}
+                >
                   here
-                </Link>
-                .
-              </p>
+                  <Github className="ml-1" />
+                </a>
+              </small>
             </Col>
-          </Row>
-          <hr />
-          <TopLists />
-          <Col className="text-right mr-2">
-            <small className="mr-1">
-              Source code
-              {' '}
-              <a
-                href="https://github.com/p3Tapio/fs_project"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: 'black', textDecoration: 'underline' }}
-              >
-                here
-                <Github className="ml-1" />
-              </a>
-            </small>
-          </Col>
-        </Jumbotron>
-      </Col>
+          </Jumbotron>
+        </Col>
 
-    </Row>
-  </div>
-);
+      </Row>
+    </div>
+  );
+};
 
 const TopLists: React.FC = () => {
   const publicLists = useSelector((state: RootStore) => state.lists.publicLists);

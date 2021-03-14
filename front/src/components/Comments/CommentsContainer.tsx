@@ -62,7 +62,7 @@ const ListComments: React.FC<{
       const x = {
         comment: values.comment, list: listId, user: user.id, date: commentToEdit.date,
       };
-  
+
       commentService.updateComment(commentToEdit._id, x).then((res) => {
         if (res) {
           setComments(comments.map((c) => (c._id === res.data._id ? res.data : c)));
@@ -292,28 +292,28 @@ export const SortOptions: React.FC<{
 }> = ({
   sortDirection, setSortDirection, sortCriteria, setSortCriteria,
 }) => (
-    <>
-      <Button
-        size="sm"
-        variant="outline-secondary"
-        style={{ margin: '3px' }}
-        onClick={(): void => {
-          setSortCriteria(sortCriteria === 'date' ? 'stars' : 'date');
-          setSortDirection('desc');
-        }}
-      >
-        {sortCriteria === 'date' ? 'Sort by stars' : 'Sort by date'}
-      </Button>
-      <Button
-        variant="outline-secondary"
-        size="sm"
-        onClick={(): void => setSortDirection(sortDirection === 'desc' ? 'asc' : 'desc')}
-      >
-        {sortDirection === 'desc'
-          ? <ChevronDown size={18} />
-          : <ChevronUp size={18} />}
-      </Button>
-    </>
-  );
+  <>
+    <Button
+      size="sm"
+      variant="outline-secondary"
+      style={{ margin: '3px' }}
+      onClick={(): void => {
+        setSortCriteria(sortCriteria === 'date' ? 'stars' : 'date');
+        setSortDirection('desc');
+      }}
+    >
+      {sortCriteria === 'date' ? 'Sort by stars' : 'Sort by date'}
+    </Button>
+    <Button
+      variant="outline-secondary"
+      size="sm"
+      onClick={(): void => setSortDirection(sortDirection === 'desc' ? 'asc' : 'desc')}
+    >
+      {sortDirection === 'desc'
+        ? <ChevronDown size={18} />
+        : <ChevronUp size={18} />}
+    </Button>
+  </>
+);
 
 export default ListComments;

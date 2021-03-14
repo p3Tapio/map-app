@@ -1,4 +1,3 @@
-// TODO populate typing, välillä asserio tyyppiin = error, välillä populate on unsafe???
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import List from '../models/listModel';
