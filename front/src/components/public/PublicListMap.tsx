@@ -4,12 +4,12 @@ import {
 } from 'react-leaflet';
 
 import '../../style/mapstyle.css';
-import '../../../node_modules/leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
-import '../../../node_modules/leaflet-defaulticon-compatibility';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
+import 'leaflet-defaulticon-compatibility';
 
 import Leaflet, { LeafletMouseEvent } from 'leaflet';
 import { Link } from 'react-router-dom';
-import { clearTimeout, setTimeout } from 'timers';
+// import { clearTimeout, setTimeout } from 'timers';
 import { PublicListMapProps } from './publicListTypes';
 import useContainerWidth from '../../hooks/useContainerWidth';
 

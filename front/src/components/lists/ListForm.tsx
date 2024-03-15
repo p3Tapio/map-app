@@ -85,7 +85,7 @@ const ListForm: React.FC<ListFormProps> = ({
             id="visibility"
             checked={list.public}
             label={list.public ? 'Public' : 'Private'}
-            value={list.public}
+            value={list.public ? 'Public' : 'Private'}
             onChange={(): void => {
               setList({ ...list, public: !list.public });
             }}
