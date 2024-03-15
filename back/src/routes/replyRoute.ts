@@ -32,9 +32,10 @@ router.post("/newreply/:id", async (req, res) => {
       let savedReply = await newReply.save();
       comment.replies = comment.replies.concat(savedReply._id);
       await comment.save();
-      savedReply = await savedReply
-        .populate({ path: "user", select: "username" })
-        .execPopulate();
+      savedReply = await savedReply.populate({
+        path: "user",
+        select: "username",
+      });
       res.json(savedReply);
     } else res.status(401).json({ error: "unauthorized" });
   } catch (err) {
@@ -59,13 +60,10 @@ router.put("/updatereply/:id", async (req, res) => {
           { new: true }
         );
         if (updated) {
-          // @ts-ignore
-          const populated = updated.populate({
+          updated = await updated.populate({
             path: "user",
             select: "username",
           });
-          // @ts-ignore
-          updated = await populated.execPopulate();
           res.json(updated);
         } else throw new Error("Update fail.");
       } else res.status(401).json({ error: "unauthorized" });
