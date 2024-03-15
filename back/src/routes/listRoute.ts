@@ -43,7 +43,6 @@ router.post("/create", async (req: Request, res: Response) => {
       const userId = checkToken(req.header("token"));
       const newList = checkNewListValues(req.body);
       const user = (await User.findById(userId)) as IUser;
-      console.log("userId", userId);
       if (!user) throw new Error("No user");
 
       let result: [{ region: string; subregion: string }] = [
@@ -53,7 +52,6 @@ router.post("/create", async (req: Request, res: Response) => {
       if (newList.country) {
         // TODO move restcountries url to somwhere else
         const url = `https://restcountries.com/v3.1/translation/${newList.country}`;
-        console.log("url", url);
         result = await apiRequest<[{ region: string; subregion: string }]>(url);
       }
 
