@@ -21,8 +21,8 @@ const Login: React.FC<LoginProps> = ({ setLogged }) => {
       setInfo({ message: `Welcome ${values.username}!`, header: 'Success' });
       setLogged(true);
     } catch (err) {
-      if (err.response.data.error === 'wrong username or password') {
-        const { error } = err.response.data;
+      if ((err as any).response?.data?.error === 'wrong username or password') {
+        const { error } = (err as any).response.data;
         setInfo({ message: `${error.charAt(0).toUpperCase()}${error.slice(1)}!`, header: 'Error' });
       } else {
         setInfo({ message: 'Woops, something is wrong :(', header: 'Error' });

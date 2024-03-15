@@ -21,7 +21,7 @@ import NotFound from './NotFound';
 const App: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false);
   const dispatch = useDispatch();
-
+  console.log('App rendered');
   useEffect(() => {
     setLogged(!!getUser());
   }, [dispatch]);

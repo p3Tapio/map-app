@@ -17,7 +17,7 @@
     "react-hooks"
   ],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "tsconfig.json"
   },
   "rules": {
     "jsx-a11y/label-has-associated-control": 0,
