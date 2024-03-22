@@ -8,10 +8,10 @@ const mapboxToken = process.env.MAPBOX_TOKEN;
 
 router.get("/mapbox/coordinates/", async (req: Request, res: Response) => {
   if (req.header("token") && checkToken(req.header("token"))) {
-    const { a } = req.query;
+    const { address } = req.query;
 
     const response: Record<string, any> = await apiRequest(
-      `${mapBoxUrl}/${a}.json?access_token=${mapboxToken}`
+      `${mapBoxUrl}/${address}.json?access_token=${mapboxToken}`
     );
 
     console.log("response", response);
