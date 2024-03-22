@@ -1,6 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
-require('dotenv').config();
+require("dotenv").config();
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const environment = process.env.NODE_ENV;
 const isDev = environment !== "production";
@@ -19,6 +19,7 @@ module.exports = {
     chunkFilename: "[name].chunk.js",
     assetModuleFilename: "assets/[name].[contenthash][ext][query]",
     path: path.join(__dirname, "build"),
+    publicPath: '/',
   },
   module: {
     rules: [
