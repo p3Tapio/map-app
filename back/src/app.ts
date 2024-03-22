@@ -10,10 +10,11 @@ import locationRouter from "./routes/locationRoute";
 import listRouter from "./routes/listRoute";
 import commentRouter from "./routes/commentRoute";
 import replyRouter from "./routes/replyRoute";
+import externalsRouter from "./routes/externalsRoute";
 
 const app = express();
 app.use(cors());
-mongoose.set('strictQuery', true);
+mongoose.set("strictQuery", true);
 mongoose
   .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connected to MongoDB: ", MONGODB_URI))
@@ -26,6 +27,7 @@ app.use("/api/location", locationRouter);
 app.use("/api/list", listRouter);
 app.use("/api/comment", commentRouter);
 app.use("/api/reply", replyRouter);
+app.use("/api/externals", externalsRouter);
 app.get("/favicon.ico", (_, res) => res.status(204));
 
 // if (process.env.NODE_ENV === 'production') {  // TODO cross-env ei skulaa herokussa, kommentoi tämä pois toistaiseksi
