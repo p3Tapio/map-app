@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createConfig } from '../localStore';
 import { ListComment } from '../reducers/list/listTypes';
 
-const baseUrl = process.env.REACT_APP_URL;
+const baseUrl = process.env.APP_URL;
 
 const addComment = async (values: { comment: string; id: string }): Promise<{ data: ListComment } | undefined> => {
   const config = createConfig();

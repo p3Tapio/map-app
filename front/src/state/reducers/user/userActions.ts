@@ -5,7 +5,7 @@ import {
 } from './userTypes';
 import { setUser } from '../../localStore';
 
-const baseUrl = process.env.REACT_APP_URL;
+const baseUrl = process.env.APP_URL;
 
 export const registerUser = (newUser: SigningUser) => async (dispatch: Dispatch<UserDispatchTypes>): Promise<void> => {
   const res = await axios.post(`${baseUrl}/api/user/register/`, newUser);
