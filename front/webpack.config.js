@@ -56,6 +56,7 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       APP_URL: process.env.APP_URL,
       MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
+      LOCATIONIQ_TOKEN: process.env.LOCATIONIQ_TOKEN,
     }),
   ],
 };
