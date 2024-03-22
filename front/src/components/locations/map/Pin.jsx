@@ -12,6 +12,14 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
+/*
+TODO
+
+Need to replace ELG with something for reverseGeocode 
+or get token?
+
+*/
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const Pin = ({ location, setAddress }) => {
   useEffect(() => {
