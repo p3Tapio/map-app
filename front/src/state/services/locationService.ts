@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createConfig } from '../localStore';
 import { NewLocation, Location } from './locationTypes';
 
-const baseUrl = process.env.REACT_APP_URL;
+const baseUrl = process.env.APP_URL;
 
 // TODO return & errors ?????
 const createNewLocation = async (location: NewLocation): Promise<void> => {

@@ -5,7 +5,7 @@ import {
 } from './listTypes';
 import { createConfig, getUser, setUser } from '../../localStore';
 
-const baseUrl = process.env.REACT_APP_URL;
+const baseUrl = process.env.APP_URL;
 
 export const getPublicLists = () => async (dispatch: Dispatch<ListDispatchTypes>): Promise<void> => {
   const res = await axios.get(`${baseUrl}/api/list/allpublic`);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createConfig } from '../localStore';
 
-const baseUrl = process.env.REACT_APP_URL;
+const baseUrl = process.env.APP_URL;
 export interface CommentReply {
   _id: string;
   reply: string;

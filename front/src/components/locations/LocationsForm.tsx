@@ -12,7 +12,7 @@ const LocationForm: React.FC<LocationFormProps> = ({
 
   const dropPin = async (): Promise<void> => {
     if (address.length >= 3) {
-      const response = await axios.get(`${mapBoxUrl}/${address}.json?access_token=${process.env.REACT_APP_MAPBOX}`);
+      const response = await axios.get(`${mapBoxUrl}/${address}.json?access_token=${process.env.MAPBOX_TOKEN}`);
       if (response.data.features[0]) {
         setLocation({
           ...location,

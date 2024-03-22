@@ -30,7 +30,7 @@ const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
     let country = 'unknown';
     let place = 'unknown';
     const response = await axios.get(
-      `${mapBoxUrl}/${list.defaultview.lng},${list.defaultview.lat}.json?access_token=${process.env.REACT_APP_MAPBOX}`,
+      `${mapBoxUrl}/${list.defaultview.lng},${list.defaultview.lat}.json?access_token=${process.env.MAPBOX_TOKEN}`,
     );
     if (response.data.features.length > 0) {
       response.data.features.filter((x: { id: string; text: string }) => {
