@@ -12,6 +12,7 @@ const LocationForm: React.FC<LocationFormProps> = ({
 
   const dropPin = async (): Promise<void> => {
     if (address.length >= 3) {
+      // TODO move this to backend to avoid exposing token
       const response = await axios.get(`${mapBoxUrl}/${address}.json?access_token=${process.env.MAPBOX_TOKEN}`);
       if (response.data.features[0]) {
         setLocation({

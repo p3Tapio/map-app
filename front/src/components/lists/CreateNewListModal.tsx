@@ -29,6 +29,7 @@ const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
     ev.preventDefault();
     let country = 'unknown';
     let place = 'unknown';
+    // TODO move this to backend to avoid exposing token
     const response = await axios.get(
       `${mapBoxUrl}/${list.defaultview.lng},${list.defaultview.lat}.json?access_token=${process.env.MAPBOX_TOKEN}`,
     );
