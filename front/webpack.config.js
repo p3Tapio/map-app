@@ -19,7 +19,7 @@ module.exports = {
     chunkFilename: "[name].chunk.js",
     assetModuleFilename: "assets/[name].[contenthash][ext][query]",
     path: path.join(__dirname, "build"),
-    publicPath: '/',
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -56,8 +56,6 @@ module.exports = {
     }),
     new webpack.EnvironmentPlugin({
       APP_URL: process.env.APP_URL,
-      MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
-      LOCATIONIQ_TOKEN: process.env.LOCATIONIQ_TOKEN,
     }),
   ],
 };
