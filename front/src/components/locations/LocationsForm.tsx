@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { FormEvent } from "react";
 import { Form, Col, Container, Modal, Button } from "react-bootstrap";
 import { LocationFormProps } from "./locationsTypes";
-import { createConfig } from "../../state/localStore";
+import externalService from "../../state/services/externalsService";
 const baseUrl = process.env.APP_URL;
 
 const LocationForm: React.FC<LocationFormProps> = ({
@@ -15,24 +15,21 @@ const LocationForm: React.FC<LocationFormProps> = ({
   setAddress,
 }) => {
   const dropPin = async (): Promise<void> => {
-    // TODO move this to services
     if (address.length >= 3) {
-      const config = createConfig();
-      if (config.headers.token) {
-        const res = await axios.get(
-          `${baseUrl}/api/externals/mapbox/coordinates/?address=${address}`,
-          config
-        );
-        const { data } = res;
-        if (data.coordinates.lat && data.coordinates.lng) {
-          setLocation({
-            ...location,
-            coordinates: {
-              lat: data.coordinates.lat,
-              lng: data.coordinates.lng,
-            },
-          });
-        }
+      const response = await externalService.getCoordinates(address);
+      // TODO show error message if no coordinates found
+      if (!response || !response.data.coordinates) {
+        return;
+      }
+      const { data } = response;
+      if (data.coordinates.lat && data.coordinates.lng) {
+        setLocation({
+          ...location,
+          coordinates: {
+            lat: data.coordinates.lat,
+            lng: data.coordinates.lng,
+          },
+        });
       }
     }
   };

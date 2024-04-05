@@ -4,6 +4,7 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import L from "leaflet";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import axios from "axios";
+import externalsService from "../../../state/services/externalsService";
 import { createConfig } from "../../../state/localStore";
 const baseUrl = process.env.APP_URL;
 
@@ -20,11 +21,10 @@ const Pin = ({ location, setAddress }) => {
     if (location.coordinates.lat !== 0) {
       (async () => {
         try {
-          // TODO Move this to a service
-          const config = createConfig();
-          const response = await axios.get(
-            `${baseUrl}/api/externals/mapbox/address/?lat=${location.coordinates.lat}&lng=${location.coordinates.lng}`,
-            config
+          const { coordinates } = location;
+          const response = await externalsService.getAddress(
+            coordinates.lat,
+            coordinates.lng
           );
           const { data } = response;
           const { features } = data;

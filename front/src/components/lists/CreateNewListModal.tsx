@@ -10,7 +10,7 @@ import ListForm from "./ListForm";
 import { validateNewList } from "../validation";
 import { createNewList } from "../../state/reducers/list/listActions";
 import MessageModal from "../MessageModal";
-import { createConfig } from "../../state/localStore";
+import externalService from "../../state/services/externalsService";
 const baseUrl = process.env.APP_URL;
 
 const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
@@ -34,13 +34,23 @@ const CreateNewListModal: React.FC<CreateNewListModalProps> = ({
     ev.preventDefault();
     let country = "unknown";
     let place = "unknown";
-    // TODO Move this to services
-    const config = createConfig();
-    const response = await axios.get(
-      `${baseUrl}/api/externals/mapbox/address/?lat=${list.defaultview.lat}&lng=${list.defaultview.lng}`,
-      config
+
+    const { defaultview } = list;
+    const response = await externalService.getAddress(
+      defaultview.lat,
+      defaultview.lng
     );
-    console.log("response", response);
+
+    if (!response || !response.data.features) {
+      // TODO these should be in some function
+      setInfo({
+        header: "Error",
+        message: "Oh no, something went wrong! Try again.",
+      });
+      setShowMsgModal(true);
+      return;
+    }
+
     if (response.data.features.length > 0) {
       response.data.features.filter((x: { id: string; text: string }) => {
         if (x.id.includes("country")) country = x.text;
