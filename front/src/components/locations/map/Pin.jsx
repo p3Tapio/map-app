@@ -4,6 +4,8 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import L from "leaflet";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import axios from "axios";
+import { createConfig } from "../../../state/localStore";
+const baseUrl = process.env.APP_URL;
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -18,14 +20,18 @@ const Pin = ({ location, setAddress }) => {
     if (location.coordinates.lat !== 0) {
       (async () => {
         try {
-          const locationIqToken = process.env.LOCATIONIQ_TOKEN;
-          // TODO move this to backend call to avoid exposing token
+          // TODO Move this to a service
+          const config = createConfig();
           const response = await axios.get(
-            `https://us1.locationiq.com/v1/reverse?key=${locationIqToken}&lat=${location.coordinates.lat}&lon=${location.coordinates.lng}&format=json`
+            `${baseUrl}/api/externals/mapbox/address/?lat=${location.coordinates.lat}&lng=${location.coordinates.lng}`,
+            config
           );
           const { data } = response;
-          const { display_name } = data;
-          setAddress(display_name);
+          const { features } = data;
+          const placeName = features.find(
+            (feature) => feature.place_name !== undefined
+          )?.place_name;
+          setAddress(placeName);
         } catch (error) {
           console.error("error", error);
         }
